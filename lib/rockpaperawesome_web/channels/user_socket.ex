@@ -2,7 +2,7 @@ defmodule RockpaperawesomeWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", RockpaperawesomeWeb.RoomChannel
+  channel "game:*", RockpaperawesomeWeb.GameChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
