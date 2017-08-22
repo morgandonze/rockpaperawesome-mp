@@ -1,8 +1,0 @@
-<h1> Rockpaperawesome </h1>
-
-User: <span id="User"><%= @conn.params["user"] %></span>
-<div id="game">
-  <button id="input-rock">Rock</button>
-  <button id="input-paper">Paper</button>
-  <button id="input-scissors">Scissors</button>
-</div>
