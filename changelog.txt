@@ -1,0 +1,6 @@
+21 Aug 2017
+
+Replacing master branch and moving current master branch to master_21_aug_2017.
+
+It seems that Presence works differently in the current version of Elixir, so
+I want to start fresh again.
