@@ -20,14 +20,14 @@ defmodule RockpaperawesomeWeb.UserSocket do
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
 
-  # Temporary!!! Remove this after implementing real user ids
-  def connect(%{user_id: user_id}, socket) do
+  # TODO: AUTHENTICATE USER
+  def connect(%{"user_id" => user_id}, socket) do
     {:ok, assign(socket, :user_id, user_id)}
   end
 
-  def connect(_params, socket) do
-    {:ok, socket}
-  end
+  # def connect(_params, socket) do
+  #   {:ok, socket}
+  # end
 
   # Socket id's are topics that allow you to identify all sockets for a given user:
   #
