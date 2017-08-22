@@ -11,7 +11,7 @@
 //
 // If you no longer want to use a dependency, remember
 // to also remove its path from "config.paths.watched".
-import "phoenix_html"
+import 'phoenix_html'
 
 // Import local files
 //
@@ -19,3 +19,22 @@ import "phoenix_html"
 // paths "./socket" or full ones "web/static/js/socket".
 
 // import socket from "./socket"
+
+import {Socket, Presence} from 'phoenix'
+
+let userId = document.getElementById('User').innerText
+let socket = new Socket('/socket', {params: {user_id: userId}})
+socket.connect()
+
+let queue = socket.channel('game:queue')
+let presences = {}
+
+queue.on('presence_state', state => {
+  presences = Presence.syncState(presences, state)
+})
+
+queue.on('presence_diff', diff => {
+  presences = Presence.syncDiff(presences, diff)
+})
+
+queue.join()

@@ -2,7 +2,7 @@ defmodule RockpaperawesomeWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  channel "game:*", RockpaperawesomeWeb.GameChannel
+  channel "game:*", Rockpaperawesome.GameChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
@@ -19,6 +19,12 @@ defmodule RockpaperawesomeWeb.UserSocket do
   #
   # See `Phoenix.Token` documentation for examples in
   # performing token verification on connect.
+
+  # Temporary!!! Remove this after implementing real user ids
+  def connect(%{user_id: user_id}, socket) do
+    {:ok, assign(socket, :user_id, user_id)}
+  end
+
   def connect(_params, socket) do
     {:ok, socket}
   end

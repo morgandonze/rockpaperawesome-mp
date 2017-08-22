@@ -1,4 +1,4 @@
-defmodule RockpaperawesomeWeb.Presence do
+defmodule Rockpaperawesome.Presence do
   @moduledoc """
   Provides presence tracking to channels and processes.
 
