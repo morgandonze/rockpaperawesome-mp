@@ -1,4 +1,4 @@
-<div class="jumbotron">
+<div class="page-title">
   <h2>Rockpaperaweso.me</h2>
   User: <span id="User"><%= @conn.params["user"] %></span>
 </div>
