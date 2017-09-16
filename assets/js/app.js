@@ -43,15 +43,15 @@ let listBy = (user, {metas: metas}) => {
 
 let userList = document.getElementById("UserList")
 let render = (presences) => {
-    userList.innerHTML = Presence.list(presences, listBy)
-        .map(presence => `
-      <li>
-        ${presence.user}
-        <br>
-        <small>online since ${presence.onlineAt}</small>
-      </li>
-    `)
-        .join("")
+  userList.innerHTML = Presence.list(presences, listBy)
+    .map(presence => `
+    <li>
+    ${presence.user}
+    <br>
+    <small>online since ${presence.onlineAt}</small>
+    </li>
+  `)
+    .join("")
 }
 
 queue.on('presence_state', state => {
@@ -62,6 +62,25 @@ queue.on('presence_state', state => {
 queue.on('presence_diff', diff => {
   presences = Presence.syncDiff(presences, diff)
   render(presences)
+  console.log(presences)
+})
+
+queue.on('test:receive', msg => {
+  console.log(msg)
 })
 
 queue.join()
+
+let handler = function (hand) {
+  queue.push('test', hand)
+}
+
+let handlerClosure = function (hand) {
+  return function () {
+    return handler(hand)
+  }
+}
+
+document.getElementById('input-rock').onclick = handlerClosure('rock')
+document.getElementById('input-paper').onclick = handlerClosure('paper')
+document.getElementById('input-scissors').onclick = handlerClosure('scissors')
