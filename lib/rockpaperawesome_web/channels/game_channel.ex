@@ -1,6 +1,6 @@
 defmodule Rockpaperawesome.GameChannel do
   use RockpaperawesomeWeb, :channel
-  alias Rockpaperawesome.Presence
+  alias Rockpaperawesome.{Presence, MatchMaker}
 
   def join("game:queue", _, socket) do
     send(self(), :after_join)
@@ -29,6 +29,7 @@ defmodule Rockpaperawesome.GameChannel do
     broadcast! socket, "test:receive", %{
       "test": message
     }
+    MatchMaker.check
     {:noreply, socket}
   end
 end
