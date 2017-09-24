@@ -16,11 +16,7 @@ defmodule Rockpaperawesome.GameChannel do
       game_id: "de1e7e"
     })
 
-    # Assign user to a game
-    # TODO: implement actual queueing in a child process
-    # {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
-    #   game_id: "de1e7e"
-    # })
+    MatchMaker.add_player_to_queue(socket.assigns.user_id)
 
     {:noreply, socket}
   end
@@ -29,7 +25,6 @@ defmodule Rockpaperawesome.GameChannel do
     broadcast! socket, "test:receive", %{
       "test": message
     }
-    MatchMaker.check
     {:noreply, socket}
   end
 end
