@@ -20,6 +20,14 @@ import 'phoenix_html'
 
 // import socket from "./socket"
 
+
+
+
+
+
+
+// Setup
+
 import {Socket, Presence} from 'phoenix'
 
 let userId = document.getElementById('User').innerText
@@ -30,15 +38,17 @@ let queue = socket.channel('game:queue')
 
 let presences = {}
 
+// Rendering
+
 let formatTimestamp = (timestamp) => {
-    let date = new Date(timestamp)
-    return date.toLocaleTimeString()
+  let date = new Date(timestamp)
+  return date.toLocaleTimeString()
 }
 let listBy = (user, {metas: metas}) => {
-    return {
-        user: user,
-        onlineAt: formatTimestamp(metas[0].online_at)
-    }
+  return {
+    user: user,
+    onlineAt: formatTimestamp(metas[0].online_at)
+  }
 }
 
 let userList = document.getElementById("UserList")
@@ -51,8 +61,10 @@ let render = (presences) => {
     <small>online since ${presence.onlineAt}</small>
     </li>
   `)
-    .join("")
+    .join('')
 }
+
+// Receivers
 
 queue.on('presence_state', state => {
   presences = Presence.syncState(presences, state)
@@ -62,14 +74,12 @@ queue.on('presence_state', state => {
 queue.on('presence_diff', diff => {
   presences = Presence.syncDiff(presences, diff)
   render(presences)
-  console.log(presences)
-})
-
-queue.on('test:receive', msg => {
-  console.log(msg)
 })
 
 queue.join()
+
+
+// Message senders
 
 let handler = function (hand) {
   queue.push('test', hand)

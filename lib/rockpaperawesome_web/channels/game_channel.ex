@@ -20,11 +20,4 @@ defmodule Rockpaperawesome.GameChannel do
 
     {:noreply, socket}
   end
-
-  def handle_in("test", message, socket) do
-    broadcast! socket, "test:receive", %{
-      "test": message
-    }
-    {:noreply, socket}
-  end
 end
