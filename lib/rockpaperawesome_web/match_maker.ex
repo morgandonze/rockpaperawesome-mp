@@ -19,15 +19,20 @@ defmodule Rockpaperawesome.MatchMaker do
   end
 
   def handle_call({:add_player, player_id}, _from, state) do
-    if Enum.member?(state.queue, player_id) do
-      IO.inspect state
-      {:reply, :ok, state}
-    else
+    if should_queue?(player_id, state) do
       queue = state.queue ++ [player_id]
       new_state = Map.put(state, :queue, queue)
       IO.inspect new_state
       {:reply, :ok, new_state}
+    else
+      {:reply, :ok, state}
     end
+  end
+
+  def should_queue?(player_id, state) do
+    in_game = List.flatten(state.games)
+    !Enum.member?(state.queue, player_id) &&
+    !Enum.member?(in_game, player_id)
   end
 
   def handle_call({:check_for_new_games}, _from, state) do
@@ -39,6 +44,7 @@ defmodule Rockpaperawesome.MatchMaker do
         state
         |> Map.put(:queue, rest)
         |> Map.put(:games, new_games)
+      IO.inspect new_state
       {:reply, :ok, new_state}
     else
       {:reply, :ok, state}
