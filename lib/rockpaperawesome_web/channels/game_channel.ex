@@ -20,8 +20,13 @@ defmodule Rockpaperawesome.GameChannel do
 
   def handle_in("check_for_game", _, %{assigns: %{user_id: user_id}} = socket) do
     with {:ok, game_id} <- GameServer.find_game_id(user_id) do
-      game_id_inputter = fn meta -> Map.put(meta, :game_id, game_id) end
-      Presence.update(socket, user_id, game_id_inputter)
+      Presence.update(
+        socket,
+        user_id,
+        &( Map.put(&1, :game_id, game_id) )
+      )
+
+      assign(socket, :game_id, game_id)
     end
 
     {:noreply, socket}

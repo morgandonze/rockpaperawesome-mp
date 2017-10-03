@@ -30,20 +30,19 @@ defmodule Rockpaperawesome.GameServer do
   end
 
   def handle_call({:find_game_id, player_id}, _from, state) do
-    filter_fn =
-      fn game, player_id ->
-        Game.player_in?(game, player_id)
-      end
+    matching_games =
+      Enum.filter( state.games, &(game_filter(&1, player_id)) )
 
-    case Enum.filter(state.games,
-         fn game -> filter_fn.(game, player_id) end) do
-      [] ->
-        {:reply, :ok, state}
-      [game] ->
-        {:reply, {:ok, game}, state}
-      x ->
+    case matching_games do
+      [%{id: game_id}] ->
+        {:reply, {:ok, game_id}, state}
+      _ ->
         {:reply, :ok, state}
     end
+  end
+
+  def game_filter(game, player_id) do
+    Game.player_in?(game, player_id)
   end
 
   # TODO create another call handler that will allow GameChannel to check whether a given user
