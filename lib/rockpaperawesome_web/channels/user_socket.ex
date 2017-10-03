@@ -21,8 +21,12 @@ defmodule RockpaperawesomeWeb.UserSocket do
   # performing token verification on connect.
 
   # TODO: AUTHENTICATE USER
-  def connect(%{"user_id" => user_id}, socket) do
-    {:ok, assign(socket, :user_id, user_id)}
+  def connect(%{"user_name" => user_name}, socket) do
+    new_socket =
+      socket
+      |> assign(:user_id, Ecto.UUID.generate)
+      |> assign(:user_name, user_name)
+    {:ok, new_socket}
   end
 
   # def connect(_params, socket) do

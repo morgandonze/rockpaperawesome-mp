@@ -30,8 +30,8 @@ import 'phoenix_html'
 
 import {Socket, Presence} from 'phoenix'
 
-let userId = document.getElementById('User').innerText
-let socket = new Socket('/socket', {params: {user_id: userId}})
+let userName = document.getElementById('User').innerText
+let socket = new Socket('/socket', {params: {user_name: userName}})
 socket.connect()
 
 let queue = socket.channel('game:queue')
@@ -63,7 +63,7 @@ queue.join()
 // Message senders
 
 let handler = function (hand) {
-  queue.push('test', hand)
+  queue.push('throw', hand)
 }
 
 let handlerClosure = function (hand) {

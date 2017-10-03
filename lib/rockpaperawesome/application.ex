@@ -13,7 +13,8 @@ defmodule Rockpaperawesome.Application do
       # Start the endpoint when the application starts
       supervisor(RockpaperawesomeWeb.Endpoint, []),
       supervisor(Rockpaperawesome.Presence, []),
-      worker(Rockpaperawesome.MatchMaker, [])
+      worker(Rockpaperawesome.MatchMaker, []),
+      worker(Rockpaperawesome.GameServer, [])
       # Start your own worker by calling: Rockpaperawesome.Worker.start_link(arg1, arg2, arg3)
       # worker(Rockpaperawesome.Worker, [arg1, arg2, arg3]),
     ]
