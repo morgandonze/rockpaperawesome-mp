@@ -36,43 +36,49 @@ socket.connect()
 
 let queue = socket.channel('queue')
 
-let presences = {}
-
+// ============================================================================
 // Rendering
+// ============================================================================
 
 // let formatTimestamp = (timestamp) => {
 //   let date = new Date(timestamp)
 //   return date.toLocaleTimeString()
 // }
 
+// ============================================================================
 // Receivers
+// ============================================================================
 
-queue.on('presence_state', state => {
-  presences = Presence.syncState(presences, state)
-  console.log(presences)
-})
+let joinCheckId = null
 
-queue.on('presence_diff', diff => {
-  presences = Presence.syncDiff(presences, diff)
-  console.log(presences)
+queue.on('game_found', gameId => {
+  console.log('Joined game', gameId)
+  clearInterval(joinCheckId)
 })
 
 queue.join()
 
-
-// Message senders
-
-let handler = function (hand) {
-  // queue.push('throw', hand)
+// Poll for joined game
+let joinCheck = function () {
   queue.push('check_for_game')
 }
 
-let handlerClosure = function (hand) {
-  return function () {
-    return handler(hand)
-  }
-}
+joinCheckId = setInterval(joinCheck, 1000)
 
-document.getElementById('input-rock').onclick = handlerClosure('rock')
-document.getElementById('input-paper').onclick = handlerClosure('paper')
-document.getElementById('input-scissors').onclick = handlerClosure('scissors')
+// ============================================================================
+// Message senders
+// ============================================================================
+
+// let handler = function (hand) {
+//   queue.push('throw', hand)
+// }
+
+// let handlerClosure = function (hand) {
+//   return function () {
+//     return handler(hand)
+//   }
+// }
+
+// document.getElementById('input-rock').onclick = handlerClosure('rock')
+// document.getElementById('input-paper').onclick = handlerClosure('paper')
+// document.getElementById('input-scissors').onclick = handlerClosure('scissors')

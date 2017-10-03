@@ -8,6 +8,11 @@ defmodule Rockpaperawesome.GameChannel do
   end
 
   def handle_info(:after_join, socket) do
+    {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
+      user_name: socket.assigns.user_name,
+      online_at: inspect(System.system_time(:seconds)),
+    })
+
     {:noreply, socket}
   end
 

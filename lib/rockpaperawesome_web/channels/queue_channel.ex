@@ -9,8 +9,8 @@ defmodule Rockpaperawesome.QueueChannel do
 
   def handle_info(:after_join, socket) do
     {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
-          user_name: socket.assigns.user_name,
-          online_at: inspect(System.system_time(:seconds)),
+      user_name: socket.assigns.user_name,
+      online_at: inspect(System.system_time(:seconds)),
      })
 
     MatchMaker.queue_player(socket.assigns.user_id)
@@ -20,13 +20,9 @@ defmodule Rockpaperawesome.QueueChannel do
 
   def handle_in("check_for_game", _, %{assigns: %{user_id: user_id}} = socket) do
     with {:ok, game_id} <- GameServer.find_game_id(user_id) do
-      Presence.update(
-        socket,
-        user_id,
-        &( Map.put(&1, :game_id, game_id) )
-      )
-
       assign(socket, :game_id, game_id)
+
+      push(socket, "game_found", %{game_id: game_id})
     end
 
     {:noreply, socket}
