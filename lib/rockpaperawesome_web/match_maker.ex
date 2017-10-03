@@ -46,10 +46,7 @@ defmodule Rockpaperawesome.MatchMaker do
     if length(state.queue) > 1 do
       {two, rest} = Enum.split(state.queue, 2)
 
-      {:ok, game_id} = GameServer.start_game(two)
-
-      # Notify GameChannel of the new game
-      # bkm
+      GameServer.start_game(two)
 
       # record users ids to playing list
       playing = state.playing ++ two
