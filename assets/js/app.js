@@ -34,7 +34,7 @@ let userName = document.getElementById('User').innerText
 let socket = new Socket('/socket', {params: {user_name: userName}})
 socket.connect()
 
-let queue = socket.channel('game:queue')
+let queue = socket.channel('queue')
 
 let presences = {}
 
@@ -63,7 +63,8 @@ queue.join()
 // Message senders
 
 let handler = function (hand) {
-  queue.push('throw', hand)
+  // queue.push('throw', hand)
+  queue.push('check_for_game')
 }
 
 let handlerClosure = function (hand) {

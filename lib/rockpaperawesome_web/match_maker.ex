@@ -1,6 +1,5 @@
 defmodule Rockpaperawesome.MatchMaker do
   use GenServer
-
   alias Rockpaperawesome.GameServer
 
   def start_link do
