@@ -44,7 +44,4 @@ defmodule Rockpaperawesome.GameServer do
   def game_filter(game, player_id) do
     Game.player_in?(game, player_id)
   end
-
-  # TODO create another call handler that will allow GameChannel to check whether a given user
-  # has been put into a game.
 end
