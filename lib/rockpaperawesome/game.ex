@@ -10,8 +10,6 @@ defmodule Rockpaperawesome.Game do
   end
 
   def player_in?(game, player_id) do
-    IO.inspect game
-    IO.inspect player_id
     game.p1 == player_id || game.p2 == player_id
   end
 end
