@@ -19,8 +19,20 @@ defmodule Rockpaperawesome.GameChannel do
     {:noreply, socket}
   end
 
-  # Handles moves made by players (e.g. rock, paper, or scissors)
-  def handle_in("throw", hand, socket) do
+  def handle_in("throw", move, socket) do
+    player_id = socket.assigns.player_id
+
+    game =
+      player_id
+      |> get_game_from_presence()
+      |> Game.make_move(player_id, move, game)
+
     {:noreply, socket}
+  end
+
+  def get_game_from_presence(player_id) do
+    %{^player_id => %{metas: metas}} = Presence.list(socket)
+    [%{game: game} | _] = metas
+    game
   end
 end

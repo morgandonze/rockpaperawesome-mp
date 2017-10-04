@@ -69,16 +69,16 @@ joinCheckId = setInterval(joinCheck, 1000)
 // Message senders
 // ============================================================================
 
-// let handler = function (hand) {
-//   queue.push('throw', hand)
-// }
+let throwHandler = function (hand) {
+  game && game.push('throw', hand)
+}
 
-// let handlerClosure = function (hand) {
-//   return function () {
-//     return handler(hand)
-//   }
-// }
+let throwHandlerClosure = function (hand) {
+  return function () {
+    return throwHandler(hand)
+  }
+}
 
-// document.getElementById('input-rock').onclick = handlerClosure('rock')
-// document.getElementById('input-paper').onclick = handlerClosure('paper')
-// document.getElementById('input-scissors').onclick = handlerClosure('scissors')
+document.getElementById('input-rock').onclick = throwHandlerClosure('rock')
+document.getElementById('input-paper').onclick = throwHandlerClosure('paper')
+document.getElementById('input-scissors').onclick = throwHandlerClosure('scissors')
