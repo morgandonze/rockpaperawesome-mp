@@ -11,7 +11,7 @@ defmodule Rockpaperawesome.QueueChannel do
     {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
       user_name: socket.assigns.user_name,
       online_at: inspect(System.system_time(:seconds)),
-     })
+    })
 
     MatchMaker.queue_player(socket.assigns.user_id)
 
