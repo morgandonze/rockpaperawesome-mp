@@ -19,6 +19,10 @@ defmodule Rockpaperawesome.GameServer do
     GenServer.call(__MODULE__, {:find_game_id, player_id})
   end
 
+  def get_game(game_id) do
+    GenServer.call(__MODULE__, {:get_game, game_id})
+  end
+
   def handle_call({:start_game, players}, _from, state) do
     game = Game.create(players)
 
@@ -43,5 +47,17 @@ defmodule Rockpaperawesome.GameServer do
 
   def game_filter(game, player_id) do
     Game.player_in?(player_id, game)
+  end
+
+  def handle_call({:get_game, game_id}, _from, state) do
+    games =
+      Enum.filter( state.games, &(&1.id == game_id) )
+
+    case games do
+      [game] ->
+        {:reply, {:ok, game}, state}
+      _ ->
+        {:reply, :ok, state}
+    end
   end
 end
