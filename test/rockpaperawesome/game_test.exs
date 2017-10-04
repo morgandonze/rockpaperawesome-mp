@@ -37,4 +37,23 @@ defmodule Rockpaperawesome.GameTest do
 
     assert game.turns == [%{p2: 'rock'}]
   end
+
+  test "make_move for p1 in new game after p2 has moved" do
+    game =
+      Game.create(@p1, @p2)
+      |> Game.make_move(@p1, 'paper')
+      |> Game.make_move(@p2, 'rock')
+
+    assert game.turns == [%{p1: 'paper', p2: 'rock'}]
+  end
+
+  test "make_move after first turn of the game" do
+    game =
+      Game.create(@p1, @p2)
+      |> Game.make_move(@p1, 'paper')
+      |> Game.make_move(@p2, 'rock')
+      |> Game.make_move(@p1, 'rock')
+
+    assert game.turns == [%{p1: 'rock'}, %{p1: 'paper', p2: 'rock'}]
+  end
 end
