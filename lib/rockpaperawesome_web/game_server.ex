@@ -23,8 +23,8 @@ defmodule Rockpaperawesome.GameServer do
     GenServer.call(__MODULE__, {:get_game, game_id})
   end
 
-  def handle_call({:start_game, players}, _from, state) do
-    game = Game.create(players)
+  def handle_call({:start_game, [p1, p2]}, _from, state) do
+    game = Game.create(p1, p2)
 
     games = state.games
     new_state =

@@ -24,13 +24,13 @@ defmodule Rockpaperawesome.GameChannel do
 
     game =
       player_id
-      |> get_game_from_presence()
-      |> Game.make_move(player_id, move, game)
+      |> get_game_from_presence(socket)
+      |> Game.make_move(player_id, move)
 
     {:noreply, socket}
   end
 
-  def get_game_from_presence(player_id) do
+  def get_game_from_presence(player_id, socket) do
     %{^player_id => %{metas: metas}} = Presence.list(socket)
     [%{game: game} | _] = metas
     game

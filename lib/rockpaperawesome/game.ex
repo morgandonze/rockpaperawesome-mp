@@ -20,7 +20,7 @@ defmodule Rockpaperawesome.Game do
 
   alias Rockpaperawesome.Game.Turn
 
-  def create([p1, p2]) do
+  def create(p1, p2) do
     %{
       id: Ecto.UUID.generate,
       players: %{p1: p1, p2: p2},
@@ -34,7 +34,7 @@ defmodule Rockpaperawesome.Game do
     players.p1 == player_id || players.p2 == player_id
   end
 
-  def make_move(player_id, move, game) do
+  def make_move(game, player_id, move) do
     players = game.players
 
     {turn, prev_turns} = split_current_turn(game)
@@ -49,6 +49,9 @@ defmodule Rockpaperawesome.Game do
     Turn.p2_move(move, turn)
   end
 
+  def split_current_turn(%{turns: []}) do
+    {Turn.create, []}
+  end
   def split_current_turn(game) do
     [turn | prev_turns] = game.turns
     if Turn.complete?(turn) do
