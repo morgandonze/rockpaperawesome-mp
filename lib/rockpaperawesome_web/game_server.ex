@@ -8,7 +8,7 @@ defmodule Rockpaperawesome.GameServer do
   end
 
   def init(:ok) do
-    {:ok, %{games: []}}
+    {:ok, %{games: Map.new()}}
   end
 
   def start_game(players) do
@@ -23,41 +23,44 @@ defmodule Rockpaperawesome.GameServer do
     GenServer.call(__MODULE__, {:get_game, game_id})
   end
 
+  def update_game(game, game_id) do
+    GenServer.call(__MODULE__, {:update_game, game, game_id})
+  end
+
   def handle_call({:start_game, [p1, p2]}, _from, state) do
     game = Game.create(p1, p2)
-
-    games = state.games
+    new_games = Map.put(state.games, game.id, game)
     new_state =
       state
-      |> Map.put(:games, games ++ [game])
+      |> Map.put(:games, new_games)
     {:reply, :ok, new_state}
   end
 
   def handle_call({:find_game_id, player_id}, _from, state) do
-    matching_games =
-      Enum.filter( state.games, &(game_filter(&1, player_id)) )
+    game =
+      Map.values(state.games)
+      |> Enum.find(fn game -> Game.player_in?(player_id, game) end)
 
-    case matching_games do
-      [%{id: game_id}] ->
+    case game do
+      %{id: game_id} ->
         {:reply, {:ok, game_id}, state}
       _ ->
         {:reply, :ok, state}
     end
   end
 
-  def game_filter(game, player_id) do
-    Game.player_in?(player_id, game)
+  def handle_call({:get_game, game_id}, _from, state) do
+    case Map.get(state.games, game_id) do
+      nil ->
+        {:reply, :ok, state}
+      game ->
+        {:reply, {:ok, game}, state}
+    end
   end
 
-  def handle_call({:get_game, game_id}, _from, state) do
-    games =
-      Enum.filter( state.games, &(&1.id == game_id) )
-
-    case games do
-      [game] ->
-        {:reply, {:ok, game}, state}
-      _ ->
-        {:reply, :ok, state}
-    end
+  def handle_call({:update_game, game, game_id}, _from, state) do
+    games = Map.put(state.games, game_id, game)
+    new_state = Map.put(state, :games, games)
+    {:reply, :ok, new_state}
   end
 end
