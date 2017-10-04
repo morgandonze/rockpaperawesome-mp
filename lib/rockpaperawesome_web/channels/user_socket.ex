@@ -3,6 +3,7 @@ defmodule RockpaperawesomeWeb.UserSocket do
 
   ## Channels
   channel "queue", Rockpaperawesome.QueueChannel
+  channel "game:*", Rockpaperawesome.GameChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

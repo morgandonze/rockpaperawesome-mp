@@ -20,21 +20,19 @@ import 'phoenix_html'
 
 // import socket from "./socket"
 
-
-
-
-
-
-
+// ============================================================================
 // Setup
+// ============================================================================
 
 import {Socket, Presence} from 'phoenix'
 
 let userName = document.getElementById('User').innerText
+let joinCheckId = null
 let socket = new Socket('/socket', {params: {user_name: userName}})
 socket.connect()
 
 let queue = socket.channel('queue')
+let game = null
 
 // ============================================================================
 // Rendering
@@ -49,11 +47,13 @@ let queue = socket.channel('queue')
 // Receivers
 // ============================================================================
 
-let joinCheckId = null
-
-queue.on('game_found', gameId => {
+queue.on('game_found', data => {
+  let gameId = data['game_id']
   console.log('Joined game', gameId)
   clearInterval(joinCheckId)
+
+  game = socket.channel('game:' + gameId)
+  game.join()
 })
 
 queue.join()
