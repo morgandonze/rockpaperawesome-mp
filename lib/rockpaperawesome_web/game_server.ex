@@ -42,6 +42,6 @@ defmodule Rockpaperawesome.GameServer do
   end
 
   def game_filter(game, player_id) do
-    Game.player_in?(game, player_id)
+    Game.player_in?(player_id, game)
   end
 end
