@@ -5,7 +5,7 @@ defmodule Rockpaperawesome.GameTest do
   @rock     0
   @paper    1
   @scissors 2
-  @mode     3
+  # @mode     3
 
   @p1 'abcde'
   @p2 'fghij'
@@ -62,17 +62,40 @@ defmodule Rockpaperawesome.GameTest do
     assert game.turns == [%{p1: @rock}, %{p1: @paper, p2: @rock}]
   end
 
-  test "result_parity" do
-    assert Game.result_parity(@rock,    @rock) == 0
-    assert Game.result_parity(@rock,   @paper) == 2
-    assert Game.result_parity(@rock,@scissors) == 1
+  test "update_score p1 win" do
+    scores =
+      Game.create(@p1, @p2)
+      |> Game.make_move(@p1, @paper)
+      |> Game.make_move(@p2, @rock)
+      |> fn game -> Game.update_score(game).scores end.()
+    assert scores == %{p1: 1, p2: 0}
+  end
 
-    assert Game.result_parity(@paper,    @rock) == 1
-    assert Game.result_parity(@paper,   @paper) == 0
-    assert Game.result_parity(@paper,@scissors) == 2
+  test "update_score p2 win" do
+    scores =
+      Game.create(@p1, @p2)
+      |> Game.make_move(@p1, @paper)
+      |> Game.make_move(@p2, @scissors)
+      |> fn game -> Game.update_score(game).scores end.()
+    assert scores == %{p1: 0, p2: 1}
+  end
 
-    assert Game.result_parity(@scissors,    @rock) == 2
-    assert Game.result_parity(@scissors,   @paper) == 1
-    assert Game.result_parity(@scissors,@scissors) == 0
+  test "update_score tie" do
+    scores =
+      Game.create(@p1, @p2)
+      |> Game.make_move(@p1, @paper)
+      |> Game.make_move(@p2, @paper)
+      |> fn game -> Game.update_score(game).scores end.()
+    assert scores == %{p1: 0, p2: 0}
+  end
+
+  test "update_score previous score" do
+    scores =
+      Game.create(@p1, @p2)
+      |> Map.put(:scores, %{p1: 3, p2: 7})
+      |> Game.make_move(@p1, @scissors)
+      |> Game.make_move(@p2, @paper)
+      |> fn game -> Game.update_score(game).scores end.()
+    assert scores == %{p1: 4, p2: 7}
   end
 end
