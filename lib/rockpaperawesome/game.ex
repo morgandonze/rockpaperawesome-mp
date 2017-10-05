@@ -22,11 +22,11 @@ defmodule Rockpaperawesome.Game do
 
   @default_mode 3
 
-  def create(p1, p2) do
+  def create(p1, p2, mode \\ @default_mode) do
     %{
       id: Ecto.UUID.generate,
       players: %{p1: p1, p2: p2},
-      mode: 3,
+      mode: mode,
       turns: [],
       scores: %{p1: 0, p2: 0},
     }
@@ -37,6 +37,9 @@ defmodule Rockpaperawesome.Game do
     players.p1 == player_id || players.p2 == player_id
   end
 
+  def make_move(game, player_id, move) when is_bitstring(move) do
+    make_move(game, player_id, String.to_integer(move))
+  end
   def make_move(game, player_id, move) do
     players = game.players
 
