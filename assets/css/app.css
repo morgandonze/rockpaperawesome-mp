@@ -1,4 +1,4 @@
-body, .page-title {
+body, .page-title, #output, #gameId {
   background-color : #333 !important;
   color: #ccc;
 }

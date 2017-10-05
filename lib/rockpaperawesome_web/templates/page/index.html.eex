@@ -1,6 +1,15 @@
 <div class="page-title">
   <h2>Rockpaperaweso.me</h2>
-  User: <span id="User"><%= @conn.params["user"] %></span>
+  <div style="display: none; visibility: hidden">
+    User: <span id="User" ><%= @conn.params["user"] %></span>
+  </div>
+</div>
+
+<div id="gameId">
+   Game ID
+</div>
+<div id="output">
+  Output
 </div>
 
 <div id="game">

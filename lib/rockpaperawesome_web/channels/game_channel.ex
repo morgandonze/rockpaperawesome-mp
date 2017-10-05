@@ -14,6 +14,8 @@ defmodule Rockpaperawesome.GameChannel do
       game_id: game_id,
     })
 
+    push(socket, "presence_state", Presence.list(socket))
+
     {:noreply, socket}
   end
 
@@ -24,6 +26,7 @@ defmodule Rockpaperawesome.GameChannel do
     with {:ok, game} <- GameServer.get_game(game_id),
          game <- Game.make_move(game, user_id, move) do
       GameServer.update_game(game, game_id)
+      broadcast(socket, "throw_complete", game)
     end
 
     {:noreply, socket}
