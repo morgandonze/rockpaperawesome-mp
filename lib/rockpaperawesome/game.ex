@@ -20,6 +20,8 @@ defmodule Rockpaperawesome.Game do
 
   alias Rockpaperawesome.Game.Turn
 
+  @default_mode 3
+
   def create(p1, p2) do
     %{
       id: Ecto.UUID.generate,
@@ -39,15 +41,36 @@ defmodule Rockpaperawesome.Game do
     players = game.players
 
     {turn, prev_turns} = split_current_turn(game)
-    new_turn = make_move(player_id, players.p1, players.p2, move, turn)
+    new_turn = make_move(turn, player_id, players.p1, players.p2, move)
 
-    Map.put(game, :turns, [new_turn] ++ prev_turns)
+    game
+    |> Map.put(:turns, [new_turn] ++ prev_turns)
+    |> update_score()
   end
-  def make_move(player_id, player_id, _, move, turn) do
+  def make_move(turn, player_id, player_id, _, move) do
     Turn.p1_move(move, turn)
   end
-  def make_move(player_id, _, player_id, move, turn) do
+  def make_move(turn, player_id, _, player_id, move) do
     Turn.p2_move(move, turn)
+  end
+
+  def update_score(game) do
+    {turn,_} = split_current_turn(game)
+    update_score(game, turn, Turn.complete?(turn))
+  end
+  def update_score(game, turn, turn_complete) when turn_complete do
+    result_parity(turn.p1, turn.p2, game.mode)
+  end
+  def update_score(game, _, turn_complete) do
+    game
+  end
+
+  def result_parity(p1_move, p2_move, mode \\ @default_mode) do
+    Integer.mod((p1_move - p2_move + mode), mode)
+  end
+
+  def score_diff(result, player) do
+    max(0, ((result*2 - 3) * (player*2 - 3)))
   end
 
   def split_current_turn(%{turns: []}) do
