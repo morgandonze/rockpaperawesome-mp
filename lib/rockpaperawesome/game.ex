@@ -44,15 +44,14 @@ defmodule Rockpaperawesome.Game do
     players = game.players
 
     {turn, prev_turns} = split_current_turn(game)
-    new_turn = make_move(turn, player_id, players.p1, players.p2, move)
+    new_turn =
+      if player_id == players.p1 do
+        Turn.p1_move(move, turn)
+      else
+        Turn.p2_move(move, turn)
+      end
 
     Map.put(game, :turns, [new_turn] ++ prev_turns)
-  end
-  def make_move(turn, player_id, player_id, _, move) do
-    Turn.p1_move(move, turn)
-  end
-  def make_move(turn, player_id, _, player_id, move) do
-    Turn.p2_move(move, turn)
   end
 
   def update_score(%{turns: [turn|_]}=game) do
