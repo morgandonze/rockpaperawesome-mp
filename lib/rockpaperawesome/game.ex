@@ -24,6 +24,7 @@ defmodule Rockpaperawesome.Game do
     %{
       id: Ecto.UUID.generate,
       players: %{p1: p1, p2: p2},
+      mode: 3,
       turns: [],
       scores: %{p1: 0, p2: 0},
     }
