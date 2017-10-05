@@ -37,6 +37,7 @@ let presences = {}
 let game = null
 const outputElem = document.getElementById('output')
 const gameIdElem = document.getElementById('gameId')
+const moveElem = document.getElementById('move')
 
 // ============================================================================
 // Data handling
@@ -56,6 +57,11 @@ let playerNames = (presences) => {
   return content.join(' vs ')
 }
 
+let turnComplete = (data) => {
+  let turn = data && data.turns[0]
+  return Object.keys(turn).length === 2
+}
+
 // ============================================================================
 // Receivers
 // ============================================================================
@@ -64,6 +70,9 @@ const onThrowComplete = data => {
   let scores = data.scores
   let content = `${scores.p1} ${scores.p2}`
   outputElem.innerText = content
+  if (turnComplete(data)) {
+    moveElem.innerText = '[Move]'
+  }
 }
 
 queue.on('game_found', data => {
@@ -100,16 +109,17 @@ joinCheckId = setInterval(joinCheck, 1000)
 // Message senders
 // ============================================================================
 
-let throwHandler = function (hand) {
-  game && game.push('throw', hand)
+let throwHandler = function (handCode, hand) {
+  moveElem.innerText = hand
+  game && game.push('throw', handCode)
 }
 
-let throwHandlerClosure = function (hand) {
+let throwHandlerClosure = function (handCode, hand) {
   return function () {
-    return throwHandler(hand)
+    return throwHandler(handCode, hand)
   }
 }
 
-document.getElementById('input-rock').onclick = throwHandlerClosure('0')
-document.getElementById('input-paper').onclick = throwHandlerClosure('1')
-document.getElementById('input-scissors').onclick = throwHandlerClosure('2')
+document.getElementById('input-rock').onclick = throwHandlerClosure('0', 'rock')
+document.getElementById('input-paper').onclick = throwHandlerClosure('1', 'paper')
+document.getElementById('input-scissors').onclick = throwHandlerClosure('2', 'scissors')

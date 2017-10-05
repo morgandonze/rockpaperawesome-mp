@@ -5,11 +5,16 @@
   </div>
 </div>
 
-<div id="gameId">
-   Game ID
-</div>
-<div id="output">
-  Output
+<div class="display">
+  <div id="gameId">
+     [Game ID]
+  </div>
+  <div id="output">
+    [Output]
+  </div>
+  <div id="move">
+    [Move]
+  </div>
 </div>
 
 <div id="game">
