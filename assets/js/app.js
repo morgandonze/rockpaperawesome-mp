@@ -61,10 +61,8 @@ let playerNames = (presences) => {
 // ============================================================================
 
 const onThrowComplete = data => {
-  let turn = data.turns[0]
-  let content = `${turn.p1} ${turn.p2}`
-  console.log('p1', turn.p1)
-  console.log('p2', turn.p2)
+  let scores = data.scores
+  let content = `${scores.p1} ${scores.p2}`
   outputElem.innerText = content
 }
 
