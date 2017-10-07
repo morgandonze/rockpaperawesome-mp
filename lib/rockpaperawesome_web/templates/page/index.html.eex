@@ -7,7 +7,7 @@
 
 <div class="display">
   <div id="gameId">
-     [Game ID]
+    [Game ID]
   </div>
   <div id="output">
     [Output]
