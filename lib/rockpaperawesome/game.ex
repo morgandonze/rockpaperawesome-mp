@@ -1,23 +1,30 @@
 defmodule Rockpaperawesome.Game do
   defmodule Turn do
     def create() do
-      %{}
+      [nil, nil]
     end
 
     def complete?(turn) do
-      Map.has_key?(turn, :p1) &&
-        Map.has_key?(turn, :p2)
+      Enum.all?(
+        turn,
+        fn x -> !is_nil(x) end
+      )
     end
 
-    def p1_move(move, turn) do
-      Map.put(turn, :p1, move)
+    def move(turn, player, move) do
+      List.replace_at(turn, player - 1, move)
     end
 
-    def p2_move(move, turn) do
-      Map.put(turn, :p2, move)
+    def p1(turn) do
+      Enum.at turn, 0
+    end
+
+    def p2(turn) do
+      Enum.at turn, 1
     end
   end
 
+  alias Rockpaperawesome.Game
   alias Rockpaperawesome.Game.Turn
 
   @default_mode 3
@@ -25,32 +32,31 @@ defmodule Rockpaperawesome.Game do
   def create(p1, p2, mode \\ @default_mode) do
     %{
       id: Ecto.UUID.generate,
-      players: %{p1: p1, p2: p2},
+      players: [p1, p2],
       mode: mode,
       turns: [],
-      scores: %{p1: 0, p2: 0},
+      scores: [0, 0],
     }
   end
 
+  def player_num(player_id, game) do
+    Enum.find_index(game.players, &(&1 == player_id)) + 1
+  end
+
   def player_in?(player_id, game) do
-    players = game.players
-    players.p1 == player_id || players.p2 == player_id
+    Enum.member?(game.players, player_id)
   end
 
   def make_move(game, player_id, move) when is_bitstring(move) do
     make_move(game, player_id, String.to_integer(move))
   end
   def make_move(game, player_id, move) do
-    players = game.players
-
     {turn, prev_turns} = split_current_turn(game)
     new_turn =
-      if player_id == players.p1 do
-        Turn.p1_move(move, turn)
-      else
-        Turn.p2_move(move, turn)
-      end
-
+      Turn.move(
+        turn,
+        Game.player_num(player_id, game),
+        move)
     Map.put(game, :turns, [new_turn] ++ prev_turns)
   end
 
@@ -58,11 +64,11 @@ defmodule Rockpaperawesome.Game do
     update_score(game, turn, Turn.complete?(turn))
   end
   def update_score(%{scores: scores}=game, turn, turn_complete) when turn_complete do
-    result = result_parity(turn.p1, turn.p2, game.mode)
-    new_scores = %{
-      p1: scores.p1 + score_diff_for_player(result, 1),
-      p2: scores.p2 + score_diff_for_player(result, 2)
-    }
+    result = result_parity(Turn.p1(turn), Turn.p2(turn), game.mode)
+    new_scores = [
+      Enum.at(scores,0) + score_diff_for_player(result, 1),
+      Enum.at(scores,1) + score_diff_for_player(result, 2)
+    ]
     Map.put(game, :scores, new_scores)
   end
   def update_score(game, _, _) do

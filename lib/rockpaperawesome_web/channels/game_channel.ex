@@ -1,6 +1,6 @@
 defmodule Rockpaperawesome.GameChannel do
   use RockpaperawesomeWeb, :channel
-  alias Rockpaperawesome.{Presence, MatchMaker, GameServer, Game}
+  alias Rockpaperawesome.{Presence, GameServer, Game}
 
   def join("game:" <> game_id, _, socket) do
     send(self(), {:after_join, game_id})
@@ -26,6 +26,11 @@ defmodule Rockpaperawesome.GameChannel do
     with {:ok, game} <- GameServer.get_game(game_id),
          game <- Game.make_move(game, user_id, move),
          game <- Game.update_score(game) do
+
+      user_id
+      |> Game.player_num(game)
+      |> track_player_number(socket)
+
       GameServer.update_game(game, game_id)
       broadcast(socket, "throw_complete", game)
     end
@@ -37,5 +42,12 @@ defmodule Rockpaperawesome.GameChannel do
     %{^user_id => %{metas: metas}} = Presence.list(socket)
     [%{game_id: game_id} | _] = metas
     game_id
+  end
+
+  def track_player_number(n, socket) do
+    Presence.update(socket, socket.assigns.user_id, %{
+      player_number: n
+    })
+    Presence.list(socket) |> IO.inspect
   end
 end

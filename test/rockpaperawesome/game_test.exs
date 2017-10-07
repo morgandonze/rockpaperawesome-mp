@@ -32,7 +32,7 @@ defmodule Rockpaperawesome.GameTest do
       Game.create(@p1, @p2)
       |> Game.make_move(@p1, @rock)
 
-    assert game.turns == [%{p1: @rock}]
+    assert game.turns == [[@rock, nil]]
   end
 
   test "make_move in new game for player 2" do
@@ -40,7 +40,7 @@ defmodule Rockpaperawesome.GameTest do
       Game.create(@p1, @p2)
       |> Game.make_move(@p2, @rock)
 
-    assert game.turns == [%{p2: @rock}]
+    assert game.turns == [[nil,@rock]]
   end
 
   test "make_move for p1 in new game after p2 has moved" do
@@ -49,7 +49,7 @@ defmodule Rockpaperawesome.GameTest do
       |> Game.make_move(@p1, @paper)
       |> Game.make_move(@p2, @rock)
 
-    assert game.turns == [%{p1: @paper, p2: @rock}]
+    assert game.turns == [[@paper, @rock]]
   end
 
   test "make_move after first turn of the game" do
@@ -59,7 +59,7 @@ defmodule Rockpaperawesome.GameTest do
       |> Game.make_move(@p2, @rock)
       |> Game.make_move(@p1, @rock)
 
-    assert game.turns == [%{p1: @rock}, %{p1: @paper, p2: @rock}]
+    assert game.turns == [[@rock, nil], [@paper, @rock]]
   end
 
   test "update_score p1 win" do
@@ -68,7 +68,7 @@ defmodule Rockpaperawesome.GameTest do
       |> Game.make_move(@p1, @paper)
       |> Game.make_move(@p2, @rock)
       |> fn game -> Game.update_score(game).scores end.()
-    assert scores == %{p1: 1, p2: 0}
+    assert scores == [1, 0]
   end
 
   test "update_score p2 win" do
@@ -77,7 +77,7 @@ defmodule Rockpaperawesome.GameTest do
       |> Game.make_move(@p1, @paper)
       |> Game.make_move(@p2, @scissors)
       |> fn game -> Game.update_score(game).scores end.()
-    assert scores == %{p1: 0, p2: 1}
+    assert scores == [0, 1]
   end
 
   test "update_score tie" do
@@ -86,16 +86,16 @@ defmodule Rockpaperawesome.GameTest do
       |> Game.make_move(@p1, @paper)
       |> Game.make_move(@p2, @paper)
       |> fn game -> Game.update_score(game).scores end.()
-    assert scores == %{p1: 0, p2: 0}
+    assert scores == [0,0]
   end
 
   test "update_score previous score" do
     scores =
       Game.create(@p1, @p2)
-      |> Map.put(:scores, %{p1: 3, p2: 7})
+      |> Map.put(:scores, [3, 7])
       |> Game.make_move(@p1, @scissors)
       |> Game.make_move(@p2, @paper)
       |> fn game -> Game.update_score(game).scores end.()
-    assert scores == %{p1: 4, p2: 7}
+    assert scores == [4, 7]
   end
 end
