@@ -47,8 +47,11 @@ defmodule Rockpaperawesome.GameChannel do
   end
 
   def player_number(game_id, socket) do
-    {:ok, game} = GameServer.get_game(game_id)
-    Game.player_number(game, socket.assigns.user_id)
-    |> IO.inspect
+    case GameServer.get_game(game_id) do
+      {:ok, game} ->
+        Game.player_number(game, socket.assigns.user_id)
+      _ ->
+        nil
+     end
   end
 end
