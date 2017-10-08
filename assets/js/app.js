@@ -28,6 +28,7 @@ import {Socket, Presence} from 'phoenix'
 
 let userName = document.getElementById('User').innerText
 let joinCheckId = null
+let gameId = null
 let userId = null
 let socket = new Socket('/socket', {params: {user_name: userName}})
 socket.connect()
@@ -77,9 +78,9 @@ const onThrowComplete = data => {
 }
 
 queue.on('game_found', data => {
-  let gameId = data['game_id']
   console.log('Joined game', gameId)
   clearInterval(joinCheckId)
+  gameId = data['game_id']
   userId = data['user_id']
 
   game = socket.channel('game:' + gameId)
