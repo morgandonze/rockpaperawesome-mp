@@ -22,7 +22,7 @@ defmodule Rockpaperawesome.QueueChannel do
     with {:ok, game_id} <- GameServer.find_game_id(user_id) do
       assign(socket, :game_id, game_id)
 
-      push(socket, "game_found", %{game_id: game_id})
+      push(socket, "game_found", %{game_id: game_id, user_id: user_id})
     end
 
     {:noreply, socket}
