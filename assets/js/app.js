@@ -83,7 +83,6 @@ const onThrowComplete = data => {
 
 queue.on('game_found', data => {
   console.log('Joined game', gameId)
-  clearInterval(joinCheckId)
   gameId = data['game_id']
   userId = data['user_id']
   clearInterval(joinCheckTimerId)
