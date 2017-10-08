@@ -12,11 +12,34 @@
   <div id="playerNumber">
     [Player Number]
   </div>
-  <div id="output">
-    [Output]
+
+  <br>Score:
+  <div id="playerScore">
+    [Score]
   </div>
+  <br>
+
+  Opponent score:
+  <div id="opponentScore">
+    [Opponent Score]
+  </div>
+  <br>
+
+  Last move:
+  <div id="lastMove">
+    [Last move]
+  </div>
+  <br>
+
+  Opponent last move:
+  <div id="opponentLastMove">
+    [Opponent's last move]
+  </div>
+  <br>
+
+  Current move:
   <div id="move">
-    [Move]
+    [Current Move]
   </div>
 </div>
 

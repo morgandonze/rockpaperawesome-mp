@@ -29,6 +29,9 @@ import {Socket, Presence} from 'phoenix'
 let userName = document.getElementById('User').innerText
 let gameId = null
 let userId = null
+let playerNumber = null
+let opponentNumber = null
+
 let joinCheckTimerId = null
 let socket = new Socket('/socket', {params: {user_name: userName}})
 socket.connect()
@@ -36,18 +39,18 @@ socket.connect()
 let queue = socket.channel('queue')
 let presences = {}
 let game = null
-const outputElem = document.getElementById('output')
-const gameIdElem = document.getElementById('gameId')
-const moveElem = document.getElementById('move')
+
+const gameIdDisplay = document.getElementById('gameId')
+const playerNumDisplay = document.getElementById('playerNumber')
+const playerScoreDisplay = document.getElementById('playerScore')
+const opponentScoreDisplay = document.getElementById('opponentScore')
+const lastMoveDisplay = document.getElementById('lastMove')
+const opponentLastMoveDisplay = document.getElementById('opponentLastMove')
+const moveDisplay = document.getElementById('move')
 
 // ============================================================================
 // Data handling
 // ============================================================================
-
-let formatTimestamp = (timestamp) => {
-  let date = new Date(timestamp)
-  return date.toLocaleTimeString()
-}
 
 let playerNames = (presences) => {
   let values = presences && Object.values(presences)
@@ -63,26 +66,44 @@ let turnComplete = (data) => {
   return turn.every(e => e !== null)
 }
 
-let playerNumber = (presences) => {
+let setPlayerNumber = (presences) => {
   let presence = presences[userId]
-  return presence && presence['metas'][0]['player_number']
+  playerNumber = presence && presence['metas'][0]['player_number']
+  opponentNumber = ([2, 1])[playerNumber - 1]
+}
+
+let translateMove = (move) => {
+  let key = ['rock', 'paper', 'scissors']
+  return key[move]
+}
+
+let presenceUiUpdate = (presences) => {
+  setPlayerNumber(presences)
+  document.getElementById('playerNumber').innerText = 'Player ' + playerNumber
+  gameIdDisplay.innerText = playerNames(presences)
 }
 
 // ============================================================================
 // Receivers
 // ============================================================================
 
+// bkm
 const onThrowComplete = data => {
-  let scores = data.scores
-  let content = `${scores[0]} ${scores[1]}`
-  outputElem.innerText = content
+  playerScoreDisplay.innerText = data.scores[playerNumber - 1]
+  opponentScoreDisplay.innerText = data.scores[opponentNumber - 1]
+
+  let turns = data.turns
+  if (turns && turnComplete(data)) {
+    lastMoveDisplay.innerText = translateMove(turns[0][playerNumber - 1])
+    opponentLastMoveDisplay.innerText = translateMove(turns[0][opponentNumber - 1])
+  }
+
   if (turnComplete(data)) {
-    moveElem.innerText = '[Move]'
+    moveDisplay.innerText = '[Move]'
   }
 }
 
 queue.on('game_found', data => {
-  // bkm
   gameId = data['game_id']
   userId = data['user_id']
   clearInterval(joinCheckTimerId)
@@ -94,14 +115,12 @@ queue.on('game_found', data => {
 
   game.on('presence_state', state => {
     presences = Presence.syncState(presences, state)
-    document.getElementById('playerNumber').innerText = 'Player ' + playerNumber(presences)
-
-    gameIdElem.innerText = playerNames(presences)
+    presenceUiUpdate(presences)
   })
 
   game.on('presence_diff', diff => {
     presences = Presence.syncDiff(presences, diff)
-    gameIdElem.innerText = playerNames(presences)
+    presenceUiUpdate(presences)
   })
 })
 
@@ -119,7 +138,7 @@ joinCheckTimerId = setInterval(joinCheck, 1000)
 // ============================================================================
 
 let throwHandler = function (handCode, hand) {
-  moveElem.innerText = hand
+  moveDisplay.innerText = hand
   game && game.push('throw', handCode)
 }
 
