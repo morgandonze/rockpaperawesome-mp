@@ -27,9 +27,9 @@ import 'phoenix_html'
 import {Socket, Presence} from 'phoenix'
 
 let userName = document.getElementById('User').innerText
-let joinCheckId = null
 let gameId = null
 let userId = null
+let joinCheckTimerId = null
 let socket = new Socket('/socket', {params: {user_name: userName}})
 socket.connect()
 
@@ -82,6 +82,7 @@ queue.on('game_found', data => {
   clearInterval(joinCheckId)
   gameId = data['game_id']
   userId = data['user_id']
+  clearInterval(joinCheckTimerId)
 
   game = socket.channel('game:' + gameId)
   game.join()
@@ -106,7 +107,7 @@ let joinCheck = function () {
   queue.push('check_for_game')
 }
 
-joinCheckId = setInterval(joinCheck, 1000)
+joinCheckTimerId = setInterval(joinCheck, 1000)
 
 // ============================================================================
 // Message senders
