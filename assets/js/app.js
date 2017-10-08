@@ -60,11 +60,12 @@ let playerNames = (presences) => {
 
 let turnComplete = (data) => {
   let turn = data && data.turns[0]
-  return Object.keys(turn).length === 2
+  return turn.every(e => e !== null)
 }
 
 let playerNumber = (presences) => {
-  return presences[userId]['metas'][0]['player_number']
+  let presence = presences[userId]
+  return presence && presence['metas'][0]['player_number']
 }
 
 // ============================================================================
@@ -72,9 +73,8 @@ let playerNumber = (presences) => {
 // ============================================================================
 
 const onThrowComplete = data => {
-  console.log(data)
   let scores = data.scores
-  let content = `${scores.p1} ${scores.p2}`
+  let content = `${scores[0]} ${scores[1]}`
   outputElem.innerText = content
   if (turnComplete(data)) {
     moveElem.innerText = '[Move]'
@@ -85,7 +85,6 @@ queue.on('game_found', data => {
   // bkm
   gameId = data['game_id']
   userId = data['user_id']
-  console.log('Joined game', gameId, '; userId:', userId)
   clearInterval(joinCheckTimerId)
 
   game = socket.channel('game:' + gameId)
