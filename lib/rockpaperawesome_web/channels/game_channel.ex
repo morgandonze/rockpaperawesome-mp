@@ -21,6 +21,7 @@ defmodule Rockpaperawesome.GameChannel do
          game <- Game.make_move(game, user_id, move),
          game <- Game.update_score(game) do
 
+      IO.inspect game
       GameServer.update_game(game, game_id)
       broadcast(socket, "throw_complete", game)
     end
@@ -48,5 +49,6 @@ defmodule Rockpaperawesome.GameChannel do
   def player_number(game_id, socket) do
     {:ok, game} = GameServer.get_game(game_id)
     Game.player_number(game, socket.assigns.user_id)
+    |> IO.inspect
   end
 end

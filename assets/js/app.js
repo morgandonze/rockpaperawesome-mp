@@ -35,7 +35,6 @@ socket.connect()
 
 let queue = socket.channel('queue')
 let presences = {}
-
 let game = null
 const outputElem = document.getElementById('output')
 const gameIdElem = document.getElementById('gameId')
@@ -73,6 +72,7 @@ let playerNumber = (presences) => {
 // ============================================================================
 
 const onThrowComplete = data => {
+  console.log(data)
   let scores = data.scores
   let content = `${scores.p1} ${scores.p2}`
   outputElem.innerText = content
@@ -82,9 +82,10 @@ const onThrowComplete = data => {
 }
 
 queue.on('game_found', data => {
-  console.log('Joined game', gameId)
+  // bkm
   gameId = data['game_id']
   userId = data['user_id']
+  console.log('Joined game', gameId, '; userId:', userId)
   clearInterval(joinCheckTimerId)
 
   game = socket.channel('game:' + gameId)
