@@ -55,7 +55,7 @@ defmodule Rockpaperawesome.Game do
     new_turn =
       Turn.move(
         turn,
-        Game.player_number(player_id, game),
+        Game.player_number(game, player_id),
         move)
     Map.put(game, :turns, [new_turn] ++ prev_turns)
   end
