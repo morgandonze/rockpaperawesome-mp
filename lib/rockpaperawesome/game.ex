@@ -39,7 +39,7 @@ defmodule Rockpaperawesome.Game do
     }
   end
 
-  def player_num(player_id, game) do
+  def player_number(game, player_id) do
     Enum.find_index(game.players, &(&1 == player_id)) + 1
   end
 
@@ -55,7 +55,7 @@ defmodule Rockpaperawesome.Game do
     new_turn =
       Turn.move(
         turn,
-        Game.player_num(player_id, game),
+        Game.player_number(player_id, game),
         move)
     Map.put(game, :turns, [new_turn] ++ prev_turns)
   end
