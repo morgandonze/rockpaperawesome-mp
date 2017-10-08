@@ -64,6 +64,10 @@ let turnComplete = (data) => {
   return Object.keys(turn).length === 2
 }
 
+let playerNumber = (presences) => {
+  return presences[userId]['metas'][0]['player_number']
+}
+
 // ============================================================================
 // Receivers
 // ============================================================================
@@ -91,6 +95,8 @@ queue.on('game_found', data => {
 
   game.on('presence_state', state => {
     presences = Presence.syncState(presences, state)
+    document.getElementById('playerNumber').innerText = 'Player ' + playerNumber(presences)
+
     gameIdElem.innerText = playerNames(presences)
   })
 

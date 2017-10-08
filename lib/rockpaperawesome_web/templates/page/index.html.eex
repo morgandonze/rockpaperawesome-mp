@@ -9,6 +9,9 @@
   <div id="gameId">
     [Game ID]
   </div>
+  <div id="playerNumber">
+    [Player Number]
+  </div>
   <div id="output">
     [Output]
   </div>
