@@ -1,8 +1,7 @@
-body, .page-title, #output, #gameId {
+body {
   background-color : #333 !important;
-  color: #ccc;
 }
 
-main .display {
+#rockpaperawesome {
   color: #ccc;
 }
