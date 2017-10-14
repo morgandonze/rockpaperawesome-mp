@@ -1,0 +1,51 @@
+<div class="page-title">
+  <h2>Rockpaperaweso.me</h2>
+  <div style="display: none; visibility: hidden">
+    User: <span id="User" ><%= @conn.params["user"] %></span>
+  </div>
+</div>
+
+
+<div class="display">
+  <div id="gameId">
+    [Game ID]
+  </div>
+  <div id="playerNumber">
+    [Player Number]
+  </div>
+
+  <br>Score:
+  <div id="playerScore">
+    [Score]
+  </div>
+  <br>
+
+  Opponent score:
+  <div id="opponentScore">
+    [Opponent Score]
+  </div>
+  <br>
+
+  Last move:
+  <div id="lastMove">
+    [Last move]
+  </div>
+  <br>
+
+  Opponent last move:
+  <div id="opponentLastMove">
+    [Opponent's last move]
+  </div>
+  <br>
+
+  Current move:
+  <div id="move">
+    [Current Move]
+  </div>
+</div>
+
+<div id="game">
+  <button id="input-rock">Rock</button>
+  <button id="input-paper">Paper</button>
+  <button id="input-scissors">Scissors</button>
+</div>
