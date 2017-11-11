@@ -65,7 +65,6 @@ let presenceUiUpdate = (presences) => {
 // Receivers
 // ============================================================================
 
-// bkm
 const onThrowComplete = data => {
   playerScoreDisplay.innerText = data.scores[playerNumber - 1]
   opponentScoreDisplay.innerText = data.scores[opponentNumber - 1]
