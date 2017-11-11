@@ -1,3 +1,3 @@
-Rockpaperawesome Multiplayer Version
+# Rockpaperawesome
 
-Started on 14 Aug 2017
+Multiplayer Rock Paper Scissors with Font Awesome graphics
