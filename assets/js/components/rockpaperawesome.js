@@ -43,9 +43,11 @@ class Rockpaperawesome extends Component {
   }
 
   render () {
+    let topic = this.state.game && this.state.game.topic
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
+        <p>Game: {topic}</p>
       </div>
     )
   }
