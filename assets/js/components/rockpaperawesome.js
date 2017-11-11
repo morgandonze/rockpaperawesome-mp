@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
 import { Socket, Presence } from 'phoenix'
-import queue from './queue.js'
+import queue from '../queue.js'
 
 class Rockpaperawesome extends Component {
   constructor (props) {
     super(props)
 
-    let game = null
     let userName = document.getElementById('User').innerText
-    let socket = new Socket('/socket', {params: {user_name: userName}})
-    socket.connect()
-    queue(socket, this.setGame)
+    queue(userName, this.setGame)
 
     const { game } = this.props
     this.state = {
@@ -19,26 +16,27 @@ class Rockpaperawesome extends Component {
     }
   }
 
-  setGame = (newGame) => {
-    game = newGame
+  setGame = (game) => {
+    this.setState({game: game})
     game.join()
 
     // game.on('throw_complete', onThrowComplete)
 
     game.on('presence_state', state => {
-      presences = Presence.syncState(presences, state)
+      let presences = Presence.syncState(this.state.presences, state)
+      this.setState({presences: presences})
       // presenceUiUpdate(presences)
     })
 
     game.on('presence_diff', diff => {
-      presences = Presence.syncDiff(presences, diff)
+      let presences = Presence.syncDiff(this.state.presences, diff)
+      this.setState({presences: presences})
       // presenceUiUpdate(presences)
     })
   }
 
   componentWillReceiveProps (props) {
     const { game } = props
-    console.log(props)
     this.setState({
       game: game
     })
@@ -48,7 +46,6 @@ class Rockpaperawesome extends Component {
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
-        <p>Game: {this.state.game}</p>
       </div>
     )
   }
