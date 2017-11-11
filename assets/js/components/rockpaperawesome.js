@@ -19,7 +19,7 @@ class Rockpaperawesome extends Component {
     }
   }
 
-  fooz = (newGame) => {
+  setGame = (newGame) => {
     game = newGame
     game.join()
 
