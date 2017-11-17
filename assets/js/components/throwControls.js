@@ -3,23 +3,10 @@ import React, { Component } from 'react'
 class ThrowControls extends Component {
   constructor (props) {
     super(props)
-    const { game } = props
+    const { game, handleThrow } = props
     this.state = {
       game: game,
-      hand: null
-    }
-  }
-
-  handleClick = (hand) => {
-    return () => {
-      this.setState(
-        Object.assign(
-          this.state,
-          {hand: hand}
-        )
-      )
-      let game = this.state.game
-      game && game.push('throw', hand)
+      handleThrow: handleThrow
     }
   }
 
@@ -33,14 +20,12 @@ class ThrowControls extends Component {
   }
 
   render () {
-    let hand = this.state && this.state.hand;
-    console.log(hand)
+    const { handleThrow } = this.state
     return(
       <div>
-        <div>Move: {hand}</div>
-        <button onClick={this.handleClick(1)}>Rock</button>
-        <button onClick={this.handleClick(2)}>Paper</button>
-        <button onClick={this.handleClick(3)}>Scissors</button>
+        <button onClick={handleThrow(1)}>Rock</button>
+        <button onClick={handleThrow(2)}>Paper</button>
+        <button onClick={handleThrow(3)}>Scissors</button>
       </div>
     )
   }

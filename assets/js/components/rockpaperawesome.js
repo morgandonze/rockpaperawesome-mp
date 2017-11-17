@@ -13,6 +13,7 @@ class Rockpaperawesome extends Component {
     const { game } = this.props
     this.state = {
       game: null,
+      hand: null,
       presences: {}
     }
   }
@@ -38,19 +39,40 @@ class Rockpaperawesome extends Component {
 
   componentWillReceiveProps (props) {
     const { game } = props
-    this.setState({
-      game: game
-    })
+    this.setState(
+      Object.assign(
+        this.state,
+        {
+          game: game,
+          hand: hand
+        }
+      )
+    )
+  }
+
+  handleThrow = (hand) => {
+    return () => {
+      this.setState(
+        Object.assign(
+          this.state,
+          {hand: hand}
+        )
+      )
+      let game = this.state.game
+      game && game.push('throw', hand)
+    }
   }
 
   render () {
     let topic = this.state.game && this.state.game.topic
     let game = this.state.game
+    let hand = this.state.hand
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
         <p>Game: {topic}</p>
-        <ThrowControls game={game} />
+        <div>Throw: {hand}</div>
+        <ThrowControls game={game} handleThrow={this.handleThrow} />
       </div>
     )
   }
