@@ -18,14 +18,11 @@ class Rockpaperawesome extends Component {
     }
   }
 
-  onThrowComplete = (data) => {
-  }
-
-  setGame = (game) => {
-    this.setState({game: game})
+  setGame = (game, playerId) => {
+    this.setState({game: game, playerId: playerId})
     game.join()
 
-    game.on('throw_complete', this.onThrowComplete)
+    game.on('throw_complete', (d) => {this.setState(Object.assign(this.state, {data: d}))})
 
     game.on('presence_state', state => {
       let presences = Presence.syncState(this.state.presences, state)
