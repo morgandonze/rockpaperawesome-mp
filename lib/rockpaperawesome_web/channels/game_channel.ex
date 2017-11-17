@@ -29,9 +29,7 @@ defmodule Rockpaperawesome.GameChannel do
   end
 
   def broadcast_throw_complete(socket, %{turns: [turn|_]}=game) do
-    yeah = Rockpaperawesome.Game.Turn.complete?(turn)
-    IO.inspect yeah
-    if yeah do
+    if Rockpaperawesome.Game.Turn.complete?(turn) do
       broadcast(socket, "throw_complete", game)
     end
   end
