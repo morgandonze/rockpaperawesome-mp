@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Socket, Presence } from 'phoenix'
 import queue from '../queue.js'
+import Scores from './scores'
+import Throws from './throws'
 import ThrowControls from './throwControls'
 
 class Rockpaperawesome extends Component {
@@ -14,6 +16,8 @@ class Rockpaperawesome extends Component {
     this.state = {
       game: null,
       hand: null,
+      data: null,
+      playerId: null,
       presences: {}
     }
   }
@@ -39,39 +43,33 @@ class Rockpaperawesome extends Component {
 
   componentWillReceiveProps (props) {
     const { game } = props
-    this.setState(
-      Object.assign(
-        this.state,
-        {
-          game: game,
-          hand: hand
-        }
-      )
-    )
+    this.setState( Object.assign(
+      this.state,
+      {
+        game: game,
+        hand: hand,
+        data: data
+      }))
   }
 
   handleThrow = (hand) => {
     return () => {
-      this.setState(
-        Object.assign(
-          this.state,
-          {hand: hand}
-        )
-      )
+      this.setState( Object.assign(
+          this.state, {hand: hand}
+        ))
       let game = this.state.game
       game && game.push('throw', hand)
     }
   }
 
   render () {
-    let topic = this.state.game && this.state.game.topic
-    let game = this.state.game
-    let hand = this.state.hand
+    const { game, data } = this.state
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
-        <p>Game: {topic}</p>
-        <div>Throw: {hand}</div>
+        <p>Game: {game && game.topic}</p>
+        <Scores data={data} playerId={this.state.playerId} />
+        <Throws data={data} />
         <ThrowControls game={game} handleThrow={this.handleThrow} />
       </div>
     )
