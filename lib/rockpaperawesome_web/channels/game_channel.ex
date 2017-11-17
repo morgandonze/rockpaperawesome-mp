@@ -21,12 +21,19 @@ defmodule Rockpaperawesome.GameChannel do
          game <- Game.make_move(game, user_id, move),
          game <- Game.update_score(game) do
 
-      IO.inspect game
       GameServer.update_game(game, game_id)
-      broadcast(socket, "throw_complete", game)
+      broadcast_throw_complete(socket, game)
     end
 
     {:noreply, socket}
+  end
+
+  def broadcast_throw_complete(socket, %{turns: [turn|_]}=game) do
+    yeah = Rockpaperawesome.Game.Turn.complete?(turn)
+    IO.inspect yeah
+    if yeah do
+      broadcast(socket, "throw_complete", game)
+    end
   end
 
   def game_id(socket, user_id) do
