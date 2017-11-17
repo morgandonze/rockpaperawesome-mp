@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Socket, Presence } from 'phoenix'
 import queue from '../queue.js'
+import ThrowControls from './throwControls'
 
 class Rockpaperawesome extends Component {
   constructor (props) {
@@ -44,10 +45,12 @@ class Rockpaperawesome extends Component {
 
   render () {
     let topic = this.state.game && this.state.game.topic
+    let game = this.state.game
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
         <p>Game: {topic}</p>
+        <ThrowControls game={game} />
       </div>
     )
   }
