@@ -9,9 +9,11 @@ class Throws extends Component {
   }
 
   componentWillReceiveProps (props) {
-    const { data } = props
+    const { data, playerId } = props
     let turns = data && data.turns
     let hands = data && data.turns && data.turns[0]
+    let players = data && data.players
+    let player = players && players.indexOf(playerId)
     let orderedHands = hands && orderByPlayer(hands, player)
     this.setState( Object.assign(this.state, {
       hands: orderedHands

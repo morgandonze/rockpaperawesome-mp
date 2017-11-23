@@ -3,7 +3,8 @@ import React, { Component } from 'react'
 class Hand extends Component {
   constructor (props) {
     super(props)
-    this.state = {hand: null}
+    const { hand } = props
+    this.state = {hand: this.translateHand(hand)}
   }
 
   translateHand = (hand) => {

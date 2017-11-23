@@ -11,7 +11,6 @@ class Scores extends Component {
     const { data, playerId } = props
     let scores = data && data.scores
     let players = data && data.players
-
     let player = players && players.indexOf(playerId)
     let orderedScores = orderByPlayer(scores, player)
     this.setState(

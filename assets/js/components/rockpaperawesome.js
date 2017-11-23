@@ -26,7 +26,7 @@ class Rockpaperawesome extends Component {
     this.setState({game: game, playerId: playerId})
     game.join()
 
-    game.on('throw_complete', (d) => {this.setState(Object.assign(this.state, {data: d}))})
+    game.on('throw_complete', (d) => {console.log(d); this.setState(Object.assign(this.state, {data: d}))})
 
     game.on('presence_state', state => {
       let presences = Presence.syncState(this.state.presences, state)
@@ -47,16 +47,12 @@ class Rockpaperawesome extends Component {
       this.state,
       {
         game: game,
-        hand: hand,
         data: data
       }))
   }
 
   handleThrow = (hand) => {
     return () => {
-      this.setState( Object.assign(
-          this.state, {hand: hand}
-        ))
       let game = this.state.game
       game && game.push('throw', hand)
     }
@@ -69,7 +65,7 @@ class Rockpaperawesome extends Component {
         <h1>Rockpaperawesome!</h1>
         <p>Game: {game && game.topic}</p>
         <Scores data={data} playerId={this.state.playerId} />
-        <Throws data={data} />
+        <Throws data={data} playerId={this.state.playerId} />
         <ThrowControls game={game} handleThrow={this.handleThrow} />
       </div>
     )
