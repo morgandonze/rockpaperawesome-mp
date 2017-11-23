@@ -60,12 +60,16 @@ class Rockpaperawesome extends Component {
 
   render () {
     const { game, data } = this.state
+    let players = data && data.players
+    let playerId = this.state.playerId
+    let player = players && players.indexOf(playerId)
+
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
         <p>Game: {game && game.topic}</p>
-        <Scores data={data} playerId={this.state.playerId} />
-        <Throws data={data} playerId={this.state.playerId} />
+        <Scores data={data} player={player} />
+        <Throws data={data} player={player} />
         <ThrowControls game={game} handleThrow={this.handleThrow} />
       </div>
     )
