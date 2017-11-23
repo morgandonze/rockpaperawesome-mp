@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Hand from './hand'
+import orderByPlayer from '../orderByPlayer'
 
 class Throws extends Component {
   constructor (props) {
@@ -10,22 +11,25 @@ class Throws extends Component {
   componentWillReceiveProps (props) {
     const { data } = props
     let turns = data && data.turns
-    this.setState(
-      Object.assign(this.state, {turns: turns})
-    )
+    let hands = data && data.turns && data.turns[0]
+    let orderedHands = hands && orderByPlayer(hands, player)
+    this.setState( Object.assign(this.state, {
+      hands: orderedHands
+    }))
   }
 
   render () {
-    const { turns } = this.state
-    let lastTurn = turns && turns[0]
-    let throw1 = lastTurn && lastTurn[0]
-    let throw2 = lastTurn && lastTurn[1]
-    return(
-      <div>
-        <Hand hand={throw1} />
-        <Hand hand={throw2} />
-      </div>
-    )
+    const { hands } = this.state
+    if (hands) {
+      return (
+        <div>
+          <Hand hand={hands[0]} />
+          <Hand hand={hands[1]} />
+        </div>
+      )
+    } else {
+      return(<div>[ ] [ ]</div>)
+    }
   }
 }
 

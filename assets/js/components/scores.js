@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import orderByPlayer from '../orderByPlayer'
 
 class Scores extends Component {
   constructor (props) {
@@ -12,35 +13,24 @@ class Scores extends Component {
     let players = data && data.players
 
     let player = players && players.indexOf(playerId)
+    let orderedScores = orderByPlayer(scores, player)
     this.setState(
       Object.assign(this.state, {
-        scores: scores,
+        scores: orderedScores,
         player: player
       }))
   }
 
   render () {
     const { scores, player } = this.state
-
     if (!scores) {
-      return(
-        <div>0 0</div>
-      )
+      return( <div>0 0</div>)
     }
-
-    if (player == 0) {
-      return(
-        <div>
-          {scores[0]} {scores[1]}
-        </div>
-      )
-    } else {
-      return(
-        <div>
-          {scores[1]} {scores[0]}
-        </div>
-      )
-    }
+    return (
+      <div>
+        {scores[0]} {scores[1]}
+      </div>
+    )
   }
 }
 
