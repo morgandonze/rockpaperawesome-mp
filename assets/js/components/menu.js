@@ -32,12 +32,24 @@ class Menu extends Component {
     document.getElementById("looking").innerHTML = "<h3>Looking for game...</h3>"
   }
 
+  invite = () => {
+    const { userName } = this.state
+    let socket = new Socket('/socket', {params: {user_name: userName}})
+    socket.connect()
+    let invite = socket.channel('invite')
+    invite.on("invite_created", (d) => {
+      console.log(d)
+    })
+    invite.join()
+  }
+
   render () {
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
         <div>
           <button onClick={this.joinQueue}>Join Queue</button>
+          <button onClick={this.invite}>Invite a Friend to Play</button>
         </div>
         <div id={"looking"} />
       </div>

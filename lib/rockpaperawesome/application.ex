@@ -14,7 +14,8 @@ defmodule Rockpaperawesome.Application do
       supervisor(RockpaperawesomeWeb.Endpoint, []),
       supervisor(Rockpaperawesome.Presence, []),
       worker(Rockpaperawesome.MatchMaker, []),
-      worker(Rockpaperawesome.GameServer, [])
+      worker(Rockpaperawesome.GameServer, []),
+      worker(Rockpaperawesome.InvitationServer, [])
       # Start your own worker by calling: Rockpaperawesome.Worker.start_link(arg1, arg2, arg3)
       # worker(Rockpaperawesome.Worker, [arg1, arg2, arg3]),
     ]
