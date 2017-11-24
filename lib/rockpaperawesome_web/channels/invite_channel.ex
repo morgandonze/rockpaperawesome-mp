@@ -12,8 +12,6 @@ defmodule Rockpaperawesome.InviteChannel do
       user_name: socket.assigns.user_name,
       online_at: inspect(System.system_time(:seconds)),
     })
-    # IO.inspect "########################################"
-    # IO.inspect socket
     push(socket, "invite_created", %{invite_token: socket.assigns.invite_token})
 
     {:noreply, socket}
