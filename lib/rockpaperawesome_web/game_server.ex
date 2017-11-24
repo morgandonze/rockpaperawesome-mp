@@ -1,4 +1,7 @@
 defmodule Rockpaperawesome.GameServer do
+  @moduledoc """
+  Starts, stops and stores games
+  """
   use GenServer
 
   alias Rockpaperawesome.Game

@@ -18,8 +18,8 @@ defmodule Rockpaperawesome.GameChannel do
     game_id = game_id(socket, user_id)
 
     with {:ok, game} <- GameServer.get_game(game_id),
-         game <- Game.make_move(game, user_id, move),
-         game <- Game.update_score(game) do
+        game <- Game.make_move(game, user_id, move),
+        game <- Game.update_score(game) do
 
       GameServer.update_game(game, game_id)
       broadcast_throw_complete(socket, game)
@@ -57,6 +57,6 @@ defmodule Rockpaperawesome.GameChannel do
         Game.player_number(game, socket.assigns.user_id)
       _ ->
         nil
-     end
+    end
   end
 end

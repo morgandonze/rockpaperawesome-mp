@@ -1,4 +1,7 @@
 defmodule Rockpaperawesome.MatchMaker do
+  @moduledoc """
+  Manages the queue of players waiting to find a game
+  """
   use GenServer
   alias Rockpaperawesome.GameServer
 
