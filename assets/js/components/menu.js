@@ -38,7 +38,11 @@ class Menu extends Component {
     socket.connect()
     let invite = socket.channel('invite')
     invite.on("invite_created", (d) => {
-      console.log(d)
+      let invite_token = d.invite_token
+      let invite_link = "localhost:4000/invite/" + invite_token
+      document.getElementById("looking").innerHTML =
+        "Send a friend this invitation link:<br>" + invite_link
+
     })
     invite.join()
   }
