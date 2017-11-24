@@ -10,7 +10,6 @@ class Game extends Component {
       game: props.game,
       data: props.data,
       player: props.player,
-      handleThrow: props.handleThrow
     }
   }
 
@@ -27,15 +26,22 @@ class Game extends Component {
     )
   }
 
+  handleThrow = (hand) => {
+    return () => {
+      let game = this.state.game
+      game && game.push('throw', hand)
+    }
+  }
+
   render () {
-    const { game, data, player, handleThrow } = this.state
+    const { game, data, player } = this.state
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
         <p>Game: {game && game.topic}</p>
         <Scores data={data} player={player} />
         <Throws data={data} player={player} />
-        <ThrowControls game={game} handleThrow={handleThrow} />
+        <ThrowControls game={game} handleThrow={this.handleThrow} />
       </div>
     )
   }

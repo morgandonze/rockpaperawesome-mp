@@ -22,13 +22,6 @@ class Rockpaperawesome extends Component {
     ))
   }
 
-  handleThrow = (hand) => {
-    return () => {
-      let game = this.state.game
-      game && game.push('throw', hand)
-    }
-  }
-
   render () {
     const { game, data, userName } = this.state
     let players = data && data.players
@@ -41,7 +34,7 @@ class Rockpaperawesome extends Component {
       )
     } else {
       return (
-        <Game game={game} data={data} player={player} handleThrow={this.handleThrow} />
+        <Game game={game} data={data} player={player} />
       )
     }
   }
