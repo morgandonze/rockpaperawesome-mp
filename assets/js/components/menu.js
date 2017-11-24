@@ -29,6 +29,7 @@ class Menu extends Component {
   joinQueue = () => {
     const { userName } = this.state
     queue(userName, this.setGame)
+    document.getElementById("looking").innerHTML = "<h3>Looking for game...</h3>"
   }
 
   render () {
@@ -36,9 +37,9 @@ class Menu extends Component {
       <div>
         <h1>Rockpaperawesome!</h1>
         <div>
-          <button onClick={this.joinQueue()}>Join Queue</button>
+          <button onClick={this.joinQueue}>Join Queue</button>
         </div>
-        <h3>Looking for game...</h3>
+        <div id={"looking"} />
       </div>
     )
   }
