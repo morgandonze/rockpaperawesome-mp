@@ -9,6 +9,18 @@ class Menu extends Component {
       parent: props.parent,
       userName: props.userName
     }
+
+    let token = this.inviteTokenFromAddress()
+    if (!!token) {
+      this.acceptInvite(token)
+    }
+  }
+
+  inviteTokenFromAddress = () => {
+    let path = document.location.pathname
+    let pattern = /\/invite\/([a-f0-9]{8}\-([a-f0-9]{4}\-){3}[a-f0-9]{12})/
+    let match = path.match(pattern)
+    return match && match[1]
   }
 
   setGame = (game, playerId) => {
@@ -47,7 +59,16 @@ class Menu extends Component {
     invite.join()
   }
 
+  acceptInvite = (token) => {
+    const { userName } = this.state
+    let socket = new Socket('/socket', {params: {user_name: userName}})
+    socket.connect()
+    let invite = socket.channel('invite:' + token)
+    invite.join()
+  }
+
   render () {
+    let token = this.inviteTokenFromAddress()
     return (
       <div>
         <h1>Rockpaperawesome!</h1>

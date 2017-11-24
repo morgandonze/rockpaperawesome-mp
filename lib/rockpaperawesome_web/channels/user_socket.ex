@@ -4,6 +4,7 @@ defmodule RockpaperawesomeWeb.UserSocket do
   ## Channels
   channel "queue", Rockpaperawesome.QueueChannel
   channel "invite", Rockpaperawesome.InviteChannel
+  channel "invite:*", Rockpaperawesome.InviteChannel
   channel "game:*", Rockpaperawesome.GameChannel
 
   ## Transports

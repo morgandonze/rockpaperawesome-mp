@@ -7,6 +7,10 @@ defmodule Rockpaperawesome.InviteChannel do
     {:ok, set_invitation_token(socket)}
   end
 
+  def join("invite:" <> token, params, socket) do
+    {:ok, socket}
+  end
+
   def handle_info(:after_join, socket) do
     {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
       user_name: socket.assigns.user_name,
@@ -21,5 +25,9 @@ defmodule Rockpaperawesome.InviteChannel do
     {:ok, token} =
       InvitationServer.create_invitation(socket.assigns.user_id)
     assign(socket, :invite_token, token)
+  end
+
+  def handle_in("accept_invite", %{invite_token: token, user_id: user_id}) do
+    InvitationServer.accept_invite(token, user_id)
   end
 end
