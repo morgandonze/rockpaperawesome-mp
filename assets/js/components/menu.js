@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Socket, Presence } from 'phoenix'
 import queue from '../queue.js'
 
 class Menu extends Component {

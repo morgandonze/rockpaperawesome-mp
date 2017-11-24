@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Socket, Presence } from 'phoenix'
 import queue from '../queue.js'
 import Game from './game'
 import Menu from './menu'
