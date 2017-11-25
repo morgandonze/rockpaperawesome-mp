@@ -49,7 +49,6 @@ class Menu extends Component {
         if (gameId) {
           waitInvite.leave()
           let game = socket.channel('game:' + gameId)
-          console.log(setGame(parent))
           setGame(parent)(game, userName)
         }
       })
