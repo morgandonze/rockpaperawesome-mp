@@ -1,3 +1,5 @@
+import { Socket, Presence } from 'phoenix'
+
 let setGame = function (elem) {
   return (game, playerId) => {
     // TODO check whether elem has method setState
@@ -19,10 +21,10 @@ let setGame = function (elem) {
 
     game.on('presence_diff', diff => {
       let presences =
-        Presence.syncDiff(parent.state.presences, diff)
-      parent.setState(
+        Presence.syncDiff(elem.state.presences, diff)
+      elem.setState(
         Object.assign(
-          parent.state, {presences: presences}
+          elem.state, {presences: presences}
       ))
     })
 
