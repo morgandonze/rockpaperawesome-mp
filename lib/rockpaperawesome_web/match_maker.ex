@@ -30,10 +30,6 @@ defmodule Rockpaperawesome.MatchMaker do
     GenServer.call(__MODULE__, {:check_for_new_games})
   end
 
-  #=============================================================================
-  # Call handlers
-  #=============================================================================
-
   def handle_call({:queue_player, player_id}, _from, state) do
     if should_queue?(player_id, state) do
       queue = state.queue ++ [player_id]
