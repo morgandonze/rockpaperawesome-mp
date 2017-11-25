@@ -24,7 +24,7 @@ defmodule Rockpaperawesome.GameServer do
     new_state =
       state
       |> Map.put(:games, new_games)
-    {:reply, :ok, new_state}
+    {:reply, {:ok, game.id}, new_state}
   end
 
   def find_game_id(player_id) do
