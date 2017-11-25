@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Socket, Presence } from 'phoenix'
-import queue from '../queue.js'
+import queue from '../queue'
+import setGame from '../setGame'
 
 class Menu extends Component {
   constructor (props) {
@@ -23,29 +24,14 @@ class Menu extends Component {
     return match && match[1]
   }
 
-  setGame = (game, playerId) => {
-    const { parent } = this.state
-    parent.setState({game: game, playerId: playerId})
-    game.join()
-    game.on('throw_complete', (d) => {parent.setState(Object.assign(parent.state, {data: d}))})
-    game.on('presence_state', state => {
-      let presences = Presence.syncState(parent.state.presences, state)
-      parent.setState(Object.assign(parent.state, {presences: presences}))
-    })
-    game.on('presence_diff', diff => {
-      let presences = Presence.syncDiff(parent.state.presences, diff)
-      parent.setState(Object.assign(parent.state, {presences: presences}))
-    })
-  }
-
   joinQueue = () => {
-    const { userName } = this.state
-    queue(userName, this.setGame)
+    const { userName, parent } = this.state
+    queue(userName, this.setGame(parent))
     document.getElementById("looking").innerHTML = "<h3>Looking for game...</h3>"
   }
 
   invite = () => {
-    const { userName } = this.state
+    const { userName, parent } = this.state
     let socket = new Socket('/socket', {params: {user_name: userName}})
     socket.connect()
     let invite = socket.channel('invite')
@@ -63,7 +49,8 @@ class Menu extends Component {
         if (gameId) {
           waitInvite.leave()
           let game = socket.channel('game:' + gameId)
-          this.setGame(game, userName)
+          console.log(setGame(parent))
+          setGame(parent)(game, userName)
         }
       })
       waitInvite.join()
@@ -72,6 +59,7 @@ class Menu extends Component {
   }
 
   acceptInvite = (token, userName) => {
+    let { parent } = this.state
     let socket = new Socket('/socket', {params: {user_name: 'bob'}})
     socket.connect()
     let invite = socket.channel('invite:' + token)
@@ -80,7 +68,7 @@ class Menu extends Component {
       if (gameId) {
         invite.leave()
         let game = socket.channel('game:' + gameId)
-        this.setGame(game, userName)
+        setGame(parent)(game, userName)
       }
     })
     invite.join()
