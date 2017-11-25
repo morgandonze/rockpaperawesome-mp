@@ -12,7 +12,7 @@ class Menu extends Component {
 
     let token = this.inviteTokenFromAddress()
     if (!!token) {
-      this.acceptInvite(token)
+      this.acceptInvite(token, props.userName)
     }
   }
 
@@ -53,18 +53,26 @@ class Menu extends Component {
       let invite_token = d.invite_token
       let invite_link = "localhost:4000/invite/" + invite_token
       document.getElementById("looking").innerHTML =
-        "Send a friend this invitation link:<br>" + invite_link
+        "Send a friend this invitation link:<br><a href='" + invite_link + "'>" + invite_link + "</a>"
 
     })
     invite.join()
   }
 
-  acceptInvite = (token) => {
-    const { userName } = this.state
-    let socket = new Socket('/socket', {params: {user_name: userName}})
+  acceptInvite = (token, userName) => {
+    let socket = new Socket('/socket', {params: {user_name: 'bob'}})
     socket.connect()
     let invite = socket.channel('invite:' + token)
+    invite.on("game_started", (d) => {
+      let gameId = d && d['game_id']
+      if (gameId) {
+        invite.leave()
+        let game = socket.channel('game:' + gameId)
+        this.setGame(game, userName)
+      }
+    })
     invite.join()
+    invite.push("accept_invite", {token: token, user_id: userName || 'dingus'})
   }
 
   render () {
