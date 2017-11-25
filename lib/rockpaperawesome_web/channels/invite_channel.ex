@@ -29,7 +29,7 @@ defmodule Rockpaperawesome.InviteChannel do
 
   def handle_in("accept_invite", %{"token" => token, "user_id" => user_id}=params, socket) do
     with {:ok, game_id} <- InvitationServer.accept_invite(token, user_id) do
-      push(socket, "game_started", %{game_id: game_id})
+      broadcast(socket, "game_started", %{game_id: game_id})
     end
     {:reply, :ok, socket}
   end

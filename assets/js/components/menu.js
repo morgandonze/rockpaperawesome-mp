@@ -53,8 +53,20 @@ class Menu extends Component {
       let invite_token = d.invite_token
       let invite_link = "localhost:4000/invite/" + invite_token
       document.getElementById("looking").innerHTML =
-        "Send a friend this invitation link:<br><a href='" + invite_link + "'>" + invite_link + "</a>"
-
+        "Send a friend this invitation link:<br><a href='" +
+        invite_link + "'>" + invite_link + "</a>" +
+        "<h3>Waiting for opponent to join...</h3>"
+      invite.leave()
+      let waitInvite = socket.channel('invite:' + invite_token, userName)
+      waitInvite.on('game_started', (d) => {
+        let gameId = d && d['game_id']
+        if (gameId) {
+          waitInvite.leave()
+          let game = socket.channel('game:' + gameId)
+          this.setGame(game, userName)
+        }
+      })
+      waitInvite.join()
     })
     invite.join()
   }
