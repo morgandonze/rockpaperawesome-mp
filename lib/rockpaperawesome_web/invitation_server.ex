@@ -14,15 +14,15 @@ defmodule Rockpaperawesome.InvitationServer do
     GenServer.call(__MODULE__, {:create_invitation, player_id})
   end
 
-  def accept_invite(token, player_id) do
-    GenServer.call(__MODULE__, {:create_invite, token, player_id})
-  end
-
   def handle_call({:create_invitation, player_id}, _from, state) do
     invite = Invitation.create(player_id)
     invitations = Map.put(state.invitations, invite.token, invite)
     new_state = %{invitations: invitations}
     {:reply, {:ok, invite.token}, new_state}
+  end
+
+  def accept_invite(token, player_id) do
+    GenServer.call(__MODULE__, {:accept_invite, token, player_id})
   end
 
   def handle_call({:accept_invite, token, player_id}, _from, state) do
