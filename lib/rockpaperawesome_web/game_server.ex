@@ -18,18 +18,6 @@ defmodule Rockpaperawesome.GameServer do
     GenServer.call(__MODULE__, {:start_game, players})
   end
 
-  def find_game_id(player_id) do
-    GenServer.call(__MODULE__, {:find_game_id, player_id})
-  end
-
-  def get_game(game_id) do
-    GenServer.call(__MODULE__, {:get_game, game_id})
-  end
-
-  def update_game(game, game_id) do
-    GenServer.call(__MODULE__, {:update_game, game, game_id})
-  end
-
   def handle_call({:start_game, [p1, p2]}, _from, state) do
     game = Game.create(p1, p2)
     new_games = Map.put(state.games, game.id, game)
@@ -37,6 +25,10 @@ defmodule Rockpaperawesome.GameServer do
       state
       |> Map.put(:games, new_games)
     {:reply, :ok, new_state}
+  end
+
+  def find_game_id(player_id) do
+    GenServer.call(__MODULE__, {:find_game_id, player_id})
   end
 
   def handle_call({:find_game_id, player_id}, _from, state) do
@@ -52,6 +44,10 @@ defmodule Rockpaperawesome.GameServer do
     end
   end
 
+  def get_game(game_id) do
+    GenServer.call(__MODULE__, {:get_game, game_id})
+  end
+
   def handle_call({:get_game, game_id}, _from, state) do
     case Map.get(state.games, game_id) do
       nil ->
@@ -59,6 +55,10 @@ defmodule Rockpaperawesome.GameServer do
       game ->
         {:reply, {:ok, game}, state}
     end
+  end
+
+  def update_game(game, game_id) do
+    GenServer.call(__MODULE__, {:update_game, game, game_id})
   end
 
   def handle_call({:update_game, game, game_id}, _from, state) do
