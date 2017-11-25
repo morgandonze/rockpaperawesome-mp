@@ -40,7 +40,10 @@ defmodule Rockpaperawesome.Game do
   end
 
   def player_number(game, player_id) do
-    Enum.find_index(game.players, &(&1 == player_id)) + 1
+    case Enum.find_index(game.players, &(&1 == player_id)) do
+      nil -> nil
+      i -> i + 1
+    end
   end
 
   def player_in?(player_id, game) do
