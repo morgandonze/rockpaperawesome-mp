@@ -6,4 +6,10 @@ defmodule Rockpaperawesome.Invitation do
       accepting_player: nil
     }
   end
+
+  def players(invite) do
+    [ invite.inviting_player,
+      invite.accepting_player
+    ]
+  end
 end
