@@ -1,6 +1,6 @@
 defmodule Rockpaperawesome.InvitationServer do
   use GenServer
-  alias Rockpaperawesome.Invitation
+  alias Rockpaperawesome.{Invitation, GameServer}
 
   def start_link do
     GenServer.start_link(__MODULE__, :ok, name: __MODULE__)
@@ -30,15 +30,15 @@ defmodule Rockpaperawesome.InvitationServer do
       {:ok, invite} ->
         new_invite = Map.put(invite, :accepting_player, player_id)
         new_state = Map.put(state, invite.token, new_invite)
-        {:reply, :ok, new_state}
+        {:ok, game_id} = GameServer.start_game(Invitation.players(invite))
+        {:reply, {:ok, game_id}, new_state}
       _other ->
         {:reply, :ok, state}
     end
   end
 
   def find_invite(token, state) do
-    match_token? = fn(inv) -> inv.token == token end
-    case Enum.find(state.invitations, match_token?) do
+    case get_in(state, [:invitations, token]) do
       nil -> {:error, :not_found}
       invite -> {:ok, invite}
     end
