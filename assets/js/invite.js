@@ -8,51 +8,54 @@ let inviteTokenFromAddress = () => {
   return match && match[1]
 }
 
+let invitedMessage = (invite_link) => {
+  "Send a friend this invitation link:<br><a href='" +
+  invite_link + "'>" + invite_link + "</a>" +
+  "<h3>Waiting for opponent to join...</h3>"
+}
+
+let gameStartedHandler = (preChannel) => {
+  (d) => {
+    let gameId = d && d['game_id']
+    if (gameId) {
+      preChannel.leave()
+      let game = socket.channel('game:' + gameId)
+      setGame(parent)(game)
+    }
+  }
+}
+
+let inviteCreatedHandler = (d) => {
+  let invite_token = d.invite_token
+  let invite_link = "localhost:4000/invite/" + invite_token
+  document.getElementById("looking").innerHTML = this.invitedMessage(invite_link)
+  invite.leave()
+
+  let waitInvite = socket.channel('invite:' + invite_token)
+  waitInvite.on('game_started', this.gameStartedHandler(waitInvite))
+  waitInvite.join()
+}
+
 let invite = (elem) => {
   return function () {
-    const { userName, parent } = elem.state
-    let socket = new Socket('/socket', {params: {user_name: userName}})
+    const { parent } = elem.state
+    let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite')
-    invite.on("invite_created", (d) => {
-      let invite_token = d.invite_token
-      let invite_link = "localhost:4000/invite/" + invite_token
-      document.getElementById("looking").innerHTML =
-        "Send a friend this invitation link:<br><a href='" +
-        invite_link + "'>" + invite_link + "</a>" +
-        "<h3>Waiting for opponent to join...</h3>"
-      invite.leave()
-      let waitInvite = socket.channel('invite:' + invite_token, userName)
-      waitInvite.on('game_started', (d) => {
-        let gameId = d && d['game_id']
-        if (gameId) {
-          waitInvite.leave()
-          let game = socket.channel('game:' + gameId)
-          setGame(parent)(game, userName)
-        }
-      })
-      waitInvite.join()
-    })
+    invite.on("invite_created", this.inviteCreatedHandler)
     invite.join()
   }
 }
 
 let acceptInvite = (elem) => {
-  return (token, userName) => {
+  return (token) => {
     let { parent } = elem.state
-    let socket = new Socket('/socket', {params: {user_name: 'bob'}})
+    let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite:' + token)
-    invite.on("game_started", (d) => {
-      let gameId = d && d['game_id']
-      if (gameId) {
-        invite.leave()
-        let game = socket.channel('game:' + gameId)
-        setGame(parent)(game, userName)
-      }
-    })
+    invite.on("game_started", this.gameStartedHandler(invite))
     invite.join()
-    invite.push("accept_invite", {token: token, user_id: userName || 'dingus'})
+    invite.push("accept_invite", {token: token})
   }
 }
 
