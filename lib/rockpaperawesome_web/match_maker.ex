@@ -19,14 +19,6 @@ defmodule Rockpaperawesome.MatchMaker do
 
   def queue_player(player_id) do
     GenServer.call(__MODULE__, {:queue_player, player_id})
-
-    # Maybe:
-    # This shouldn't be run once after queueing players,
-    # it should be run periodically
-    # For now it makes sense since a game is simply created
-    # after every other player joins.
-    # There are no game modes or game preferences that would
-    # make it otherwise.
     GenServer.call(__MODULE__, {:check_for_new_games})
   end
 
@@ -43,16 +35,12 @@ defmodule Rockpaperawesome.MatchMaker do
   def handle_call({:check_for_new_games}, _from, state) do
     if length(state.queue) > 1 do
       {two, rest} = Enum.split(state.queue, 2)
-
       GameServer.start_game(two)
-
-      # record users ids to playing list
       playing = state.playing ++ two
       new_state =
         state
         |> Map.put(:queue, rest)
         |> Map.put(:playing, playing)
-
       {:reply, :ok, new_state}
     else
       {:reply, :ok, state}

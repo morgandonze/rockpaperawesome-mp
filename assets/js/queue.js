@@ -1,7 +1,7 @@
 import { Socket } from 'phoenix'
 
-export default (userName, setGame) => {
-  let socket = new Socket('/socket', {params: {user_name: userName}})
+export default (setGame) => {
+  let socket = new Socket('/socket')
   socket.connect()
   let queue = socket.channel('queue')
 

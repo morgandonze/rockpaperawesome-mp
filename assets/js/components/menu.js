@@ -8,13 +8,12 @@ class Menu extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      parent: props.parent,
-      userName: props.userName
+      parent: props.parent
     }
 
     let token = Invite.inviteTokenFromAddress()
     if (!!token) {
-      Invite.acceptInvite(this)(token, props.userName)
+      Invite.acceptInvite(this)(token)
     }
   }
 

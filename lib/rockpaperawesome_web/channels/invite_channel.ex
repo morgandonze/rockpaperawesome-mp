@@ -13,7 +13,6 @@ defmodule Rockpaperawesome.InviteChannel do
 
   def handle_info(:after_join, socket) do
     {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
-      user_name: socket.assigns.user_name,
       online_at: inspect(System.system_time(:seconds)),
     })
     push(socket, "invite_created", %{invite_token: socket.assigns.invite_token})
@@ -27,8 +26,8 @@ defmodule Rockpaperawesome.InviteChannel do
     assign(socket, :invite_token, token)
   end
 
-  def handle_in("accept_invite", %{"token" => token, "user_id" => user_id}=params, socket) do
-    with {:ok, game_id} <- InvitationServer.accept_invite(token, user_id) do
+  def handle_in("accept_invite", %{"token" => token}, socket) do
+    with {:ok, game_id} <- InvitationServer.accept_invite(token) do
       broadcast(socket, "game_started", %{game_id: game_id})
     end
     {:reply, :ok, socket}

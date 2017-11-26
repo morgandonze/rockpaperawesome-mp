@@ -6,9 +6,7 @@ import Menu from './menu'
 class Rockpaperawesome extends Component {
   constructor (props) {
     super(props)
-    let userName = document.getElementById('User').innerText
     this.state = {
-      userName: userName,
       playerId: null,
       presences: {}
     }
@@ -30,7 +28,7 @@ class Rockpaperawesome extends Component {
 
     if (!game) {
       return (
-        <Menu parent={this} userName={userName} />
+        <Menu parent={this} />
       )
     } else {
       return (

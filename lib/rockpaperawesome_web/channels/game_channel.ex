@@ -45,7 +45,6 @@ defmodule Rockpaperawesome.GameChannel do
 
   def user_presence(socket, game_id) do
     %{
-      user_name: socket.assigns.user_name,
       player_number: player_number(game_id, socket),
       game_id: game_id
     }
