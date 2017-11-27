@@ -1,9 +1,9 @@
 import { Socket, Presence } from 'phoenix'
 
 let setGame = function (elem) {
-  return (game) => {
+  return (game, playerId) => {
     // TODO check whether elem has method setState
-    elem.setState({game: game})
+    elem.setState({game: game, playerId: playerId})
     game.on('throw_complete', (d) => {
       elem.setState(
         Object.assign(elem.state, {data: d})
