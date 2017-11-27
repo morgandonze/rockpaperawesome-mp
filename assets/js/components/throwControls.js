@@ -5,8 +5,7 @@ class ThrowControls extends Component {
     super(props)
     const { game, handleThrow } = props
     this.state = {
-      game: game,
-      handleThrow: handleThrow
+      game: game
     }
   }
 
@@ -19,13 +18,19 @@ class ThrowControls extends Component {
     )
   }
 
+  handleThrow = (hand) => {
+    return () => {
+      let game = this.state.game
+      game && game.push('throw', hand)
+    }
+  }
+
   render () {
-    const { handleThrow } = this.state
     return(
       <div>
-        <button onClick={handleThrow(1)}>Rock</button>
-        <button onClick={handleThrow(2)}>Paper</button>
-        <button onClick={handleThrow(3)}>Scissors</button>
+        <button onClick={this.handleThrow(1)}>Rock</button>
+        <button onClick={this.handleThrow(2)}>Paper</button>
+        <button onClick={this.handleThrow(3)}>Scissors</button>
       </div>
     )
   }
