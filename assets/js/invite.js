@@ -9,7 +9,7 @@ let inviteTokenFromAddress = () => {
 }
 
 let invitedMessage = (invite_link) => {
-  "Send a friend this invitation link:<br><a href='" +
+  return "Send a friend this invitation link:<br><a href='" +
   invite_link + "'>" + invite_link + "</a>" +
   "<h3>Waiting for opponent to join...</h3>"
 }
