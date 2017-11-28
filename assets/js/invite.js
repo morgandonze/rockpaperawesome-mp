@@ -25,15 +25,17 @@ let gameStartedHandler = (preChannel) => {
   }
 }
 
-let inviteCreatedHandler = (d) => {
-  let invite_token = d.invite_token
-  let invite_link = "localhost:4000/invite/" + invite_token
-  document.getElementById("looking").innerHTML = this.invitedMessage(invite_link)
-  invite.leave()
+let inviteCreatedHandler = (socket, invite) => {
+  return (d) => {
+    let invite_token = d.invite_token
+    let invite_link = "localhost:4000/invite/" + invite_token
+    document.getElementById("looking").innerHTML = invitedMessage(invite_link)
+    invite.leave()
 
-  let waitInvite = socket.channel('invite:' + invite_token)
-  waitInvite.on('game_started', this.gameStartedHandler(waitInvite))
-  waitInvite.join()
+    let waitInvite = socket.channel('invite:' + invite_token)
+    waitInvite.on('game_started', gameStartedHandler(waitInvite))
+    waitInvite.join()
+  }
 }
 
 let invite = (elem) => {
@@ -42,7 +44,7 @@ let invite = (elem) => {
     let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite')
-    invite.on("invite_created", this.inviteCreatedHandler)
+    invite.on("invite_created", inviteCreatedHandler(socket, invite))
     invite.join()
   }
 }
@@ -53,7 +55,7 @@ let acceptInvite = (elem) => {
     let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite:' + token)
-    invite.on("game_started", this.gameStartedHandler(invite))
+    invite.on("game_started", gameStartedHandler(invite))
     invite.join()
     invite.push("accept_invite", {token: token})
   }
