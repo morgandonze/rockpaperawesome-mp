@@ -8,7 +8,10 @@ defmodule Rockpaperawesome.GameChannel do
   end
 
   def handle_info({:after_join, game_id}, socket) do
-    {:ok, _} = Presence.track(socket, socket.assigns.user_id, user_presence(socket, game_id))
+    {:ok, _} = Presence.track(
+      socket,
+      socket.assigns.user_id,
+      user_presence(socket, game_id))
     push(socket, "presence_state", Presence.list(socket))
     {:noreply, socket}
   end
