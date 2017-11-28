@@ -28,6 +28,7 @@ defmodule Rockpaperawesome.InvitationServer do
   def handle_call({:accept_invite, token}, _from, state) do
     case find_invite(token, state) do
       {:ok, invite} ->
+        player_id = Ecto.UUID.generate
         new_invite = Map.put(invite, :accepting_player, player_id)
         new_state = Map.put(state, invite.token, new_invite)
         {:ok, game_id} = GameServer.start_game(Invitation.players(invite))
