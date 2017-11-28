@@ -14,8 +14,8 @@ let invitedMessage = (invite_link) => {
   "<h3>Waiting for opponent to join...</h3>"
 }
 
-let gameStartedHandler = (preChannel) => {
-  (d) => {
+let gameStartedHandler = (parent, socket, preChannel) => {
+  return (d) => {
     let gameId = d && d['game_id']
     if (gameId) {
       preChannel.leave()
@@ -25,7 +25,7 @@ let gameStartedHandler = (preChannel) => {
   }
 }
 
-let inviteCreatedHandler = (socket, invite) => {
+let inviteCreatedHandler = (parent, socket, invite) => {
   return (d) => {
     let invite_token = d.invite_token
     let invite_link = "localhost:4000/invite/" + invite_token
@@ -33,7 +33,7 @@ let inviteCreatedHandler = (socket, invite) => {
     invite.leave()
 
     let waitInvite = socket.channel('invite:' + invite_token)
-    waitInvite.on('game_started', gameStartedHandler(waitInvite))
+    waitInvite.on('game_started', gameStartedHandler(parent, socket, waitInvite))
     waitInvite.join()
   }
 }
@@ -44,7 +44,7 @@ let invite = (elem) => {
     let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite')
-    invite.on("invite_created", inviteCreatedHandler(socket, invite))
+    invite.on("invite_created", inviteCreatedHandler(parent, socket, invite))
     invite.join()
   }
 }
@@ -55,7 +55,7 @@ let acceptInvite = (elem) => {
     let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite:' + token)
-    invite.on("game_started", gameStartedHandler(invite))
+    invite.on("game_started", gameStartedHandler(parent, socket, invite))
     invite.join()
     invite.push("accept_invite", {token: token})
   }
