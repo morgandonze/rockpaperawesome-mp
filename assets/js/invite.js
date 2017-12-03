@@ -1,5 +1,5 @@
 import { Socket, Presence } from 'phoenix'
-import setGame from './setGame'
+import setGameGenerator from './setGame'
 
 let inviteTokenFromAddress = () => {
   let path = document.location.pathname
@@ -14,18 +14,19 @@ let invitedMessage = (invite_link) => {
   "<h3>Waiting for opponent to join...</h3>"
 }
 
-let gameStartedHandler = (parent, socket, preChannel) => {
+let gameStartedHandler = (setGame, socket, preChannel) => {
   return (d) => {
     let gameId = d && d['game_id']
-    if (gameId) {
+    let playerId = d && d['user_id']
+    if (gameId && playerId) {
       preChannel.leave()
       let game = socket.channel('game:' + gameId)
-      setGame(parent)(game)
+      setGame(game, playerId)
     }
   }
 }
 
-let inviteCreatedHandler = (parent, socket, invite) => {
+let inviteCreatedHandler = (setGame, socket, invite) => {
   return (d) => {
     let invite_token = d.invite_token
     let invite_link = "localhost:4000/invite/" + invite_token
@@ -33,7 +34,7 @@ let inviteCreatedHandler = (parent, socket, invite) => {
     invite.leave()
 
     let waitInvite = socket.channel('invite:' + invite_token)
-    waitInvite.on('game_started', gameStartedHandler(parent, socket, waitInvite))
+    waitInvite.on('game_started', gameStartedHandler(setGame, socket, waitInvite))
     waitInvite.join()
   }
 }
@@ -44,7 +45,8 @@ let invite = (elem) => {
     let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite')
-    invite.on("invite_created", inviteCreatedHandler(parent, socket, invite))
+    let setGame = setGameGenerator(parent)
+    invite.on("invite_created", inviteCreatedHandler(setGame, socket, invite))
     invite.join()
   }
 }
@@ -55,7 +57,14 @@ let acceptInvite = (elem) => {
     let socket = new Socket('/socket')
     socket.connect()
     let invite = socket.channel('invite:' + token)
-    invite.on("game_started", gameStartedHandler(parent, socket, invite))
+    // Closing the connection to invite (as in gameStartedHandler)
+    // might cause a problem if it happens before the "player_id_created"
+    // message is received
+    let setGame = setGameGenerator(parent)
+    invite.on("game_started", gameStartedHandler(setGame, socket, invite))
+    invite.on("player_id_created", d => {
+      parent.setState({playerId: d.player_id})
+    })
     invite.join()
     invite.push("accept_invite", {token: token})
   }
