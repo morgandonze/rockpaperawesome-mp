@@ -17,21 +17,25 @@ let invitedMessage = (invite_link) => {
 let gameStartedHandler = (setGame, socket, preChannel) => {
   return (d) => {
     let gameId = d && d['game_id']
-    let playerId = d && d['user_id']
-    if (gameId && playerId) {
+    if (gameId) {
       preChannel.leave()
       let game = socket.channel('game:' + gameId)
-      setGame(game, playerId)
+      setGame(game)
     }
   }
 }
 
-let inviteCreatedHandler = (setGame, socket, invite) => {
+let inviteCreatedHandler = (parent, setGame, socket, invite) => {
   return (d) => {
     let invite_token = d.invite_token
+    let playerId = d.player_id
     let invite_link = "localhost:4000/invite/" + invite_token
     document.getElementById("looking").innerHTML = invitedMessage(invite_link)
     invite.leave()
+
+    if(!!playerId) {
+      parent.setState({playerId: playerId})
+    }
 
     let waitInvite = socket.channel('invite:' + invite_token)
     waitInvite.on('game_started', gameStartedHandler(setGame, socket, waitInvite))
@@ -46,7 +50,7 @@ let invite = (elem) => {
     socket.connect()
     let invite = socket.channel('invite')
     let setGame = setGameGenerator(parent)
-    invite.on("invite_created", inviteCreatedHandler(setGame, socket, invite))
+    invite.on("invite_created", inviteCreatedHandler(parent, setGame, socket, invite))
     invite.join()
   }
 }
@@ -62,7 +66,7 @@ let acceptInvite = (elem) => {
     // message is received
     let setGame = setGameGenerator(parent)
     invite.on("game_started", gameStartedHandler(setGame, socket, invite))
-    invite.on("player_id_created", d => {
+    invite.on("player_id", d => {
       parent.setState({playerId: d.player_id})
     })
     invite.join()
