@@ -1,6 +1,7 @@
 import { Socket } from 'phoenix'
+import setGame from './setGame'
 
-export default (setGame) => {
+export default (parent) => {
   let socket = new Socket('/socket')
   socket.connect()
   let queue = socket.channel('queue')
@@ -14,7 +15,8 @@ export default (setGame) => {
     let gameId = data['game_id']
     let playerId = data['user_id']
     let game = socket.channel('game:' + gameId)
-    setGame(game, playerId)
+    setGame(parent)(game)
+    parent.setState({playerId: playerId})
   })
 
   queue.join()
