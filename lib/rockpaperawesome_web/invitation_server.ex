@@ -29,8 +29,8 @@ defmodule Rockpaperawesome.InvitationServer do
     case find_invite(token, state) do
       {:ok, invite} ->
         new_invite = Map.put(invite, :accepting_player, player_id)
-        new_state = Map.put(state, invite.token, new_invite)
-        {:ok, game_id} = GameServer.start_game(Invitation.players(invite))
+        new_state = put_in(state, [:invitations, invite.token], new_invite)
+        {:ok, game_id} = GameServer.start_game(Invitation.players(new_invite))
         {:reply, {:ok, player_id, game_id}, new_state}
       _other ->
         {:reply, :ok, state}
