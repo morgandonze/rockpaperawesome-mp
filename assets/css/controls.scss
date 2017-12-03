@@ -1,14 +1,25 @@
 #controls {
   position: absolute;
-  bottom: 0;
+  bottom: 30px;
   width: 100%;
   left: 0;
   float: none;
   clear: both;
 
   #controlsWrap {
-    font-size: 60px;
+    font-size: 40px;
     margin: 0 auto;
     width: 66%;
+
+    .fa {
+      color: #696969;
+      margin: 0 .25em;
+
+      &:hover {
+        transition: color 0.2s ease-out;
+        color: #9b9b9b;
+        // color: #0a70ff;
+      }
+    }
   }
 }
