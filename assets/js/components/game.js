@@ -31,7 +31,6 @@ class Game extends Component {
     return (
       <div>
         <h1>Rockpaperawesome!</h1>
-        <p>Game: {game && game.topic}</p>
         <Scores data={data} player={player} />
         <Throws data={data} player={player} />
         <ThrowControls game={game} />
