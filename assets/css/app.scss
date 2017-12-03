@@ -1,4 +1,11 @@
 @import "./font-awesome.min.css";
+
 html {
   @import "./base";
+
+  #rockpaperawesome {
+    @import "./controls";
+
+    width: 100%
+  }
 }

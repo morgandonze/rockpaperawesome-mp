@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import FontAwesome from 'react-fontawesome'
 
 class ThrowControls extends Component {
   constructor (props) {
@@ -27,10 +28,18 @@ class ThrowControls extends Component {
 
   render () {
     return(
-      <div>
-        <a href="#" onClick={this.handleThrow(1)}>Rock</a>
-        <a href="#" onClick={this.handleThrow(2)}>Paper</a>
-        <a href="#" onClick={this.handleThrow(3)}>Scissors</a>
+      <div id="controls">
+        <div id="controlsWrap">
+          <a href="#" onClick={this.handleThrow(1)}>
+            <FontAwesome className="fa-3x fa-rotate-90 player-hand" name="hand-rock-o" />
+          </a>
+          <a href="#" onClick={this.handleThrow(2)}>
+            <FontAwesome className="fa-3x fa-rotate-90 player-hand" name="hand-paper-o" />
+          </a>
+          <a href="#" onClick={this.handleThrow(3)}>
+            <FontAwesome className="fa-3x fa-rotate-90 rotate-180-flip player-hand" name="hand-scissors-o" />
+          </a>
+        </div>
       </div>
     )
   }
