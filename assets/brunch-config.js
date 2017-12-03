@@ -44,14 +44,26 @@ exports.config = {
 
   // Configure your plugins
   plugins: {
-    copycat: {
-      "fonts": ["node_modules/font-awesome/fonts"],
-      "css": ["node_modules/font-awesome/css"]
-    },
     babel: {
       // Do not use ES6 compiler in vendor code
       ignore: [/vendor/],
       presets: ["stage-0"]
+    },
+    copycat: {
+      "fonts": [
+        "node_modules/font-awesome/fonts",
+        "node_modules/bootstrap-sass/assets/fonts/bootstrap"
+      ],
+      "js": ["node_modules/jquery/dist/jquery.min.js"],
+      "css": ["node_modules/font-awesome/css"]
+    },
+    sass: {
+      options: {
+        includePaths: [
+          "node_modules/bootstrap-sass/assets/stylesheets"
+        ],
+        precision: 8
+      }
     }
   },
 
@@ -62,6 +74,10 @@ exports.config = {
   },
 
   npm: {
-    enabled: true
+    enabled: true,
+    globals: {
+      $: 'jquery',
+      bootstrap: 'bootstrap-sass'
+    }
   }
 };
