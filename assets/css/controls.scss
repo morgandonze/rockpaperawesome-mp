@@ -1,14 +1,14 @@
 #controls {
   position: absolute;
-  // left: 0;
   bottom: 0;
-  // float: none;
-  // clear: both;
-  // width: 100%;
+  width: 100%;
+  left: 0;
+  float: none;
+  clear: both;
 
   #controlsWrap {
     font-size: 60px;
-    width: 100%
-    // text-align: center;
+    margin: 0 auto;
+    width: 66%;
   }
 }
