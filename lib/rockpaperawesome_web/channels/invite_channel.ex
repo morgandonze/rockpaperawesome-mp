@@ -15,7 +15,11 @@ defmodule Rockpaperawesome.InviteChannel do
     {:ok, _} = Presence.track(socket, socket.assigns.user_id, %{
       online_at: inspect(System.system_time(:seconds)),
     })
-    push(socket, "invite_created", %{invite_token: socket.assigns.invite_token})
+    push(socket, "invite_created",
+      %{
+        invite_token: socket.assigns.invite_token,
+        player_id: socket.assigns.user_id
+      })
 
     {:noreply, socket}
   end
@@ -29,7 +33,8 @@ defmodule Rockpaperawesome.InviteChannel do
   def handle_in("accept_invite", %{"token" => token}, socket) do
     player_id = socket.assigns.user_id
     with {:ok, player_id, game_id} <- InvitationServer.accept_invite(token, player_id) do
-      broadcast(socket, "game_started", %{game_id: game_id, user_id: player_id})
+      push(socket, "player_id", %{player_id: player_id})
+      broadcast(socket, "game_started", %{game_id: game_id})
     end
     {:reply, :ok, socket}
   end
