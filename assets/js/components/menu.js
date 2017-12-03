@@ -22,8 +22,8 @@ class Menu extends Component {
       <div>
         <h1>Rockpaperawesome!</h1>
         <div>
-          <button onClick={joinQueue(this)}>Join Queue</button>
-          <button onClick={Invite.invite(this)}>Invite a Friend to Play</button>
+          <div onClick={joinQueue(this)}>Join Queue</div>
+          <div onClick={Invite.invite(this)}>Invite a Friend to Play</div>
         </div>
         <div id={"looking"} />
       </div>

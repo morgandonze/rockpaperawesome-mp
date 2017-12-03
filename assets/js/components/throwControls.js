@@ -28,9 +28,9 @@ class ThrowControls extends Component {
   render () {
     return(
       <div>
-        <button onClick={this.handleThrow(1)}>Rock</button>
-        <button onClick={this.handleThrow(2)}>Paper</button>
-        <button onClick={this.handleThrow(3)}>Scissors</button>
+        <a href="#" onClick={this.handleThrow(1)}>Rock</a>
+        <a href="#" onClick={this.handleThrow(2)}>Paper</a>
+        <a href="#" onClick={this.handleThrow(3)}>Scissors</a>
       </div>
     )
   }
