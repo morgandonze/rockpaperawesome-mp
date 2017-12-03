@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Socket, Presence } from 'phoenix'
 import joinQueue from '../joinQueue'
-import setGame from '../setGame'
 import Invite from '../invite'
 
 class Menu extends Component {
