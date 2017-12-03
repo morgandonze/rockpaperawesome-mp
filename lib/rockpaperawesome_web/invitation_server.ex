@@ -21,18 +21,17 @@ defmodule Rockpaperawesome.InvitationServer do
     {:reply, {:ok, invite.token}, new_state}
   end
 
-  def accept_invite(token) do
-    GenServer.call(__MODULE__, {:accept_invite, token})
+  def accept_invite(token, player_id) do
+    GenServer.call(__MODULE__, {:accept_invite, token, player_id})
   end
 
-  def handle_call({:accept_invite, token}, _from, state) do
+  def handle_call({:accept_invite, token, player_id}, from, state) do
     case find_invite(token, state) do
       {:ok, invite} ->
-        player_id = Ecto.UUID.generate
         new_invite = Map.put(invite, :accepting_player, player_id)
         new_state = Map.put(state, invite.token, new_invite)
         {:ok, game_id} = GameServer.start_game(Invitation.players(invite))
-        {:reply, {:ok, game_id}, new_state}
+        {:reply, {:ok, player_id, game_id}, new_state}
       _other ->
         {:reply, :ok, state}
     end
