@@ -30,7 +30,6 @@ class Game extends Component {
     const { game, data, player } = this.state
     return (
       <div>
-        <h1>Rockpaperawesome!</h1>
         <Scores data={data} player={player} />
         <Throws data={data} player={player} />
         <ThrowControls game={game} />

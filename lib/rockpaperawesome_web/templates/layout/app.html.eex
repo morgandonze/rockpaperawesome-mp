@@ -13,6 +13,13 @@
 
   <body>
     <div class="container">
+      <a href="/">
+        <span class="fa fa-hand-rock-o big" ></span>
+        <span class="fa fa-hand-paper-o big" ></span>
+        <span class="fa fa-hand-scissors-o big" ></span>
+        <span class="fa fa-gamepad big" ></span>
+      </a>
+
       <main role="main">
         <%= render @view_module, @view_template, assigns %>
       </main>

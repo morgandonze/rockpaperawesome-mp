@@ -20,7 +20,6 @@ class Menu extends Component {
     let token = Invite.inviteTokenFromAddress()
     return (
       <div>
-        <h1>Rockpaperawesome!</h1>
         <div>
           <div onClick={joinQueue(this)}>Join Queue</div>
           <div onClick={Invite.invite(this)}>Invite a Friend to Play</div>
