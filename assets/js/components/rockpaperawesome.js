@@ -28,7 +28,9 @@ class Rockpaperawesome extends Component {
 
     if (!game) {
       return (
-        <Menu parent={this} />
+        <div>
+          <Menu parent={this} />
+        </div>
       )
     } else {
       return (

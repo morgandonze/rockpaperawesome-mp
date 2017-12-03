@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import FontAwesome from 'react-fontawesome'
 
 class Hand extends Component {
   constructor (props) {
@@ -10,16 +11,16 @@ class Hand extends Component {
   translateHand = (hand) => {
     switch (hand) {
       case 1:
-        return "[Rock]";
+        return <FontAwesome name="hand-rock-o" />
         break;
       case 2:
-        return "[Paper]";
+        return <FontAwesome name="hand-paper-o" />
         break;
       case 3:
-        return "[Scissors]";
+        return <FontAwesome name="hand-scissors-o" />
         break;
       default:
-        return "[]"
+        return <div/>
     }
   }
 
