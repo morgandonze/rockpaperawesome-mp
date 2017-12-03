@@ -1,6 +1,3 @@
-<div style="display: none; visibility: hidden">
-  User: <span id="User" ><%= @conn.params["user"] %></span>
-</div>
 <div id="rockpaperawesome">
 </div>
 
