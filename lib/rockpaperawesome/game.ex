@@ -28,6 +28,7 @@ defmodule Rockpaperawesome.Game do
   alias Rockpaperawesome.Game.Turn
 
   @default_mode 3
+  @moves ["rock", "paper", "scissocs"]
 
   def create(p1, p2, mode \\ @default_mode) do
     %{
@@ -51,7 +52,12 @@ defmodule Rockpaperawesome.Game do
   end
 
   def make_move(game, player_id, move) when is_bitstring(move) do
-    make_move(game, player_id, String.to_integer(move))
+    int_move =
+      @moves
+      |> Enum.find_index(fn(m) -> m == move end)
+      |> (fn(i) -> i + 1 end).()
+    
+    make_move(game, player_id, int_move)
   end
   def make_move(game, player_id, move) do
     {turn, prev_turns} = split_current_turn(game)
