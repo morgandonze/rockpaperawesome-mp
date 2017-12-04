@@ -5,28 +5,19 @@ import $ from 'jquery'
 class ThrowControls extends Component {
   constructor (props) {
     super(props)
-    const { game, handleThrow } = props
+    const { moveNum, game } = props
     this.state = {
+      moveNum: moveNum,
       game: game
     }
   }
 
   componentWillReceiveProps (props) {
-    this.setState(
-      Object.assign(
-        this.state,
-        {game: props.game}
-      )
-    )
-  }
-
-  handleThrow = (hand, control) => {
-    return () => {
-      $(".player-control").addClass('locked')
-      $("#"+control).addClass('chosen')
-      let game = this.state.game
-      game && game.push('throw', hand)
-    }
+    const { moveNum, game } = props
+    this.setState({
+      moveNum: moveNum,
+      game: game
+    })
   }
 
   render () {
@@ -39,6 +30,15 @@ class ThrowControls extends Component {
         </div>
       </div>
     )
+  }
+
+  handleThrow = (hand, control) => {
+    return () => {
+      $(".player-control").addClass('locked')
+      $("#"+control).addClass('chosen')
+      let game = this.state.game
+      game && game.push('throw', hand)
+    }
   }
 
   controlHand = (hand, handleThrow) => {

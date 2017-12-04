@@ -8,8 +8,7 @@ class Scores extends Component {
   }
 
   componentWillReceiveProps (props) {
-    const { data, player } = props
-    let scores = data && data.scores
+    const { scores, player } = props
     let orderedScores = orderByPlayer(scores, player)
     this.setState(
       Object.assign(this.state, {
