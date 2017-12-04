@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import FontAwesome from 'react-fontawesome'
 import $ from 'jquery'
+import orientation from '../iconOrientation'
 
 class ThrowControls extends Component {
   constructor (props) {
@@ -47,8 +48,9 @@ class ThrowControls extends Component {
     const { hand } = this.state
     let locked = this.isLocked() ? ' locked' : ''
     let chosen = (hand && elemHand == hand) ? ' chosen' : ''
-    let base = 'fa-3x fa-rotate-90 player-control'
-    return base + locked + chosen
+    let o = orientation(elemHand, 'control')
+    let base = 'fa-3x player-control'
+    return base + locked + chosen + o
   }
 
   handleThrow = (hand) => {
