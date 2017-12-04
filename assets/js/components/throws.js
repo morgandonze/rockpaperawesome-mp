@@ -18,16 +18,14 @@ class Throws extends Component {
 
   render () {
     const { turn } = this.state
-    if (turn) {
-      return (
-        <div id='throws'>
-          <Hand hand={turn[0]} side={'player'} />
-          <Hand hand={turn[1]}  side={'opponent'}/>
-        </div>
-      )
-    } else {
-      return(<div></div>)
-    }
+    let playerHand = (turn && turn[0]) || 1
+    let opponentHand = (turn && turn[1]) || 1
+    return (
+      <div id='throws'>
+        <Hand hand={playerHand} side={'player'} />
+        <Hand hand={opponentHand} side={'opponent'}/>
+      </div>
+    )
   }
 }
 
