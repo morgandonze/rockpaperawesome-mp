@@ -28,7 +28,7 @@ defmodule Rockpaperawesome.Game do
   alias Rockpaperawesome.Game.Turn
 
   @default_mode 3
-  @moves ["rock", "paper", "scissocs"]
+  @moves ["rock", "paper", "scissors"]
 
   def create(p1, p2, mode \\ @default_mode) do
     %{
