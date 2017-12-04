@@ -31,7 +31,7 @@ class Game extends Component {
       <div>
         <Scores scores={scores} player={player} />
         <Throws turn={turn} player={player} />
-        <ThrowControls moveNum={moveNum} game={game} />
+        <ThrowControls newMoveNum={moveNum} game={game} />
       </div>
     )
   }
