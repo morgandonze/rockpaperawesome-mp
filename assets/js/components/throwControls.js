@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import FontAwesome from 'react-fontawesome'
+import $ from 'jquery'
 
 class ThrowControls extends Component {
   constructor (props) {
@@ -19,8 +20,10 @@ class ThrowControls extends Component {
     )
   }
 
-  handleThrow = (hand) => {
+  handleThrow = (hand, control) => {
     return () => {
+      $(".player-control").addClass('locked')
+      $("#"+control).addClass('chosen')
       let game = this.state.game
       game && game.push('throw', hand)
     }
@@ -30,17 +33,20 @@ class ThrowControls extends Component {
     return(
       <div id="controls">
         <div id="controlsWrap">
-          <FontAwesome
-            onClick={this.handleThrow(1)}
-            className="fa-3x fa-rotate-90 player-hand" name="hand-rock-o" />
-          <FontAwesome
-            onClick={this.handleThrow(2)}
-            className="fa-3x fa-rotate-90 player-hand" name="hand-paper-o" />
-          <FontAwesome
-            onClick={this.handleThrow(3)}
-            className="fa-3x fa-rotate-90 rotate-180-flip player-hand" name="hand-scissors-o" />
+        {this.controlHand('rock', this.handleThrow)}
+        {this.controlHand('paper', this.handleThrow)}
+        {this.controlHand('scissors', this.handleThrow)}
         </div>
       </div>
+    )
+  }
+
+  controlHand = (hand, handleThrow) => {
+    return(
+      <FontAwesome
+        id={'control-'+hand}
+        onClick={handleThrow(hand, "control-"+hand)}
+        className="fa-3x fa-rotate-90 player-control" name={"hand-"+hand+"-o"} />
     )
   }
 }

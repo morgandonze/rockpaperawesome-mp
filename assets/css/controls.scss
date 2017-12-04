@@ -15,11 +15,14 @@
       color: #696969;
       margin: 0 .25em;
 
-      &:hover {
+      &:hover:not(.locked) {
         transition: color 0.2s ease-out;
         color: #9b9b9b;
-        // color: #0a70ff;
       }
+    }
+
+    .chosen {
+      color: #0a70ff;
     }
   }
 }
