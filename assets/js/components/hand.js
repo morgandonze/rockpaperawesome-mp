@@ -4,38 +4,33 @@ import FontAwesome from 'react-fontawesome'
 class Hand extends Component {
   constructor (props) {
     super(props)
-    const { hand } = props
-    this.state = {hand: this.translateHand(hand)}
-  }
-
-  translateHand = (hand) => {
-    switch (hand) {
-      case 1:
-        return <FontAwesome name="hand-rock-o" />
-        break;
-      case 2:
-        return <FontAwesome name="hand-paper-o" />
-        break;
-      case 3:
-        return <FontAwesome name="hand-scissors-o" />
-        break;
-      default:
-        return <div/>
+    const { hand, side } = props
+    this.state = {
+      hand: this.translateHand(hand),
+      side: side
     }
   }
 
   componentWillReceiveProps (props) {
-    const { hand } = props
-    this.setState(
-      Object.assign(this.state, {hand: this.translateHand(hand)})
-    )
+    const { hand, side } = props
+    this.setState({
+      hand: this.translateHand(hand),
+      side: side
+    })
   }
 
   render () {
-    const { hand } = this.state
+    const { hand, side } = this.state
     return (
-      <span>{hand}</span>
+      <FontAwesome
+        name={"hand-"+hand+"-o"}
+        className={"fa-3x " + side}
+      />
     )
+  }
+
+  translateHand = (hand) => {
+    return ['rock', 'paper', 'scissors'][hand-1]
   }
 }
 

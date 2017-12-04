@@ -20,9 +20,9 @@ class Throws extends Component {
     const { turn } = this.state
     if (turn) {
       return (
-        <div>
-          <Hand hand={turn[0]} />
-          <Hand hand={turn[1]} />
+        <div id='throws'>
+          <Hand hand={turn[0]} side={'player'} />
+          <Hand hand={turn[1]}  side={'opponent'}/>
         </div>
       )
     } else {
