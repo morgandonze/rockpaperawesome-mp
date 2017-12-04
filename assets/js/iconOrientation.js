@@ -1,25 +1,21 @@
   export default (hand, side) => {
-    if (side=='player') {
-      if (hand=='scissors') {
-        return ' rotate-180-flip'
-      } else {
-        return ' fa-rotate-90'
+    let info = {
+      player: {
+        scissors: 'rotate-180-flip',
+        rock: 'fa-rotate-90',
+        paper: 'fa-rotate-90'
+      },
+      control: {
+        scissors: 'rotate-270-flip',
+        rock: '',
+        paper: ''
+      },
+      opponent: {
+        scissors: '',
+        rock: 'rotate-270-flip',
+        paper: 'rotate-270-flip'
       }
     }
 
-    if (side=='control') {
-      if (hand=='scissors') {
-        return ' rotate-270-flip'
-      } else {
-        return ' '
-      }
-    }
-
-    if (side=='opponent') {
-      if (hand=='scissors') {
-        return ' '
-      } else {
-        return ' rotate-270-flip'
-      }
-    }
+    return ' ' + info[side][hand]
   }
