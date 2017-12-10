@@ -9,7 +9,7 @@ class ThrowControls extends Component {
     const { newMoveNum, game } = props
     this.state = {
       moveNum: newMoveNum,
-      unlockAt: 0,
+      locked: false,
       game: game,
       hand: null
     }
@@ -18,13 +18,13 @@ class ThrowControls extends Component {
   componentWillReceiveProps (props) {
     const { newMoveNum, game } = props
     const { moveNum } = this.state
-
-    let newState = Object.assign(
-      { moveNum: newMoveNum,
-      game: game },
-      newMoveNum > moveNum ? {hand: null} : null
-    )
-    this.setState(newState)
+    if(newMoveNum > moveNum) {
+      let unlockTimer = setTimeout(this.unlock, 800)
+    }
+    this.setState({
+      moveNum: newMoveNum,
+      game: game
+    })
   }
 
   render () {
@@ -40,8 +40,15 @@ class ThrowControls extends Component {
   }
 
   isLocked = () => {
-    const { moveNum, unlockAt } = this.state
-    return unlockAt > moveNum
+    const { locked } = this.state
+    return locked
+  }
+
+  unlock = () => {
+    this.setState({
+      locked: false,
+      hand: null
+    })
   }
 
   controlStyles = (elemHand) => {
@@ -58,7 +65,7 @@ class ThrowControls extends Component {
       if(this.isLocked()) { return }
 
       this.setState({
-        unlockAt: this.state.unlockAt+1,
+        locked: true,
         hand: hand
       })
       let game = this.state.game
