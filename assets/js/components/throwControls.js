@@ -6,25 +6,16 @@ import orientation from '../iconOrientation'
 class ThrowControls extends Component {
   constructor (props) {
     super(props)
-    const { newMoveNum, game } = props
+    const { game } = props
     this.state = {
-      moveNum: newMoveNum,
-      unlockAt: 0,
       game: game,
       hand: null
     }
   }
 
   componentWillReceiveProps (props) {
-    const { newMoveNum, game } = props
-    const { moveNum } = this.state
-
-    let newState = Object.assign(
-      { moveNum: newMoveNum,
-      game: game },
-      newMoveNum > moveNum ? {hand: null} : null
-    )
-    this.setState(newState)
+    const { game } = props
+    this.setState({game: game})
   }
 
   render () {
@@ -40,8 +31,7 @@ class ThrowControls extends Component {
   }
 
   isLocked = () => {
-    const { moveNum, unlockAt } = this.state
-    return unlockAt > moveNum
+    return false
   }
 
   controlStyles = (elemHand) => {
@@ -57,10 +47,7 @@ class ThrowControls extends Component {
     return () => {
       if(this.isLocked()) { return }
 
-      this.setState({
-        unlockAt: this.state.unlockAt+1,
-        hand: hand
-      })
+      this.setState({ hand: hand })
       let game = this.state.game
       game && game.push('throw', hand)
     }
