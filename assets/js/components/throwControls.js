@@ -16,7 +16,6 @@ class ThrowControls extends Component {
 
   componentWillReceiveProps (props) {
     const { game, active } = props
-    console.log('active', active)
     this.setState({
       game: game,
       active: active
