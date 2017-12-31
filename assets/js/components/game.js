@@ -7,11 +7,11 @@ const TURN_DURATION = 4000
 class Game extends Component {
   constructor (props) {
     super(props)
-    this.turnActive = false
     this.state = {
       game: props.game,
       player: props.player,
-      moveNum: 0
+      moveNum: 0,
+      turnActive: false
     }
   }
 
@@ -46,17 +46,15 @@ class Game extends Component {
   }
 
   startTurn = () => {
-    console.log('turn started')
     if (!!this.timerID) clearInterval(this.timerID)
     this.timerID = setInterval(this.expireTurn, TURN_DURATION)
-    this.turnActive = true
+    this.setState({turnActive: true})
   }
 
   expireTurn = () => {
-    console.log('turn expired')
     this.timerID && clearInterval(this.timerID)
     this.timerID = null
-    this.turnActive = false
+    this.setState({turnActive: false})
   }
 
   moveTime = () => {
@@ -65,13 +63,13 @@ class Game extends Component {
   }
 
   render () {
-    const { game, scores, turns, moveNum, player } = this.state
+    const { game, scores, turns, moveNum, turnActive, player } = this.state
     let turn = turns && turns[0]
     return (
       <div>
         <Scores scores={scores} player={player} />
         <Throws turn={turn} player={player} />
-        <ThrowControls newMoveNum={moveNum} game={game} />
+        <ThrowControls newMoveNum={moveNum} game={game} active={turnActive} />
       </div>
     )
   }
