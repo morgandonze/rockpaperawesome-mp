@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import Scores from './scores'
+import Prompt from './prompt'
 import Throws from './throws'
 import ThrowControls from './throwControls'
-const TURN_DURATION = 4000
+const TURN_DURATION = 10950
 
 class Game extends Component {
   constructor (props) {
@@ -11,6 +12,7 @@ class Game extends Component {
       game: props.game,
       player: props.player,
       moveNum: 0,
+      turnTime: 0,
       turnActive: false
     }
   }
@@ -47,27 +49,33 @@ class Game extends Component {
 
   startTurn = () => {
     if (!!this.timerID) clearInterval(this.timerID)
-    this.timerID = setInterval(this.expireTurn, TURN_DURATION)
-    this.setState({turnActive: true})
+    this.timerID = setInterval(this.turnTimerTick, 75)
+    this.turnStartTime = Date.now()
+    this.setState({turnActive: true, turnTime: 0})
+  }
+
+  turnTimerTick = () => {
+    let turnTime = Date.now() - this.turnStartTime
+    this.setState({turnTime: turnTime})
+
+    if (turnTime > TURN_DURATION) {
+      this.expireTurn()
+    }
   }
 
   expireTurn = () => {
-    this.timerID && clearInterval(this.timerID)
-    this.timerID = null
-    this.setState({turnActive: false})
-  }
-
-  moveTime = () => {
-    const { moveStart } = this.state
-    return Date.now() - moveStart
+    this.setState({
+      turnActive: false
+    })
   }
 
   render () {
-    const { game, scores, turns, moveNum, turnActive, player } = this.state
+    const { game, scores, turns, moveNum, turnTime, turnActive, player } = this.state
     let turn = turns && turns[0]
     return (
       <div>
         <Scores scores={scores} player={player} />
+        <Prompt turnTime={turnTime} />
         <Throws turn={turn} player={player} />
         <ThrowControls newMoveNum={moveNum} game={game} active={turnActive} />
       </div>
