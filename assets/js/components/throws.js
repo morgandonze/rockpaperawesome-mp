@@ -10,14 +10,15 @@ class Throws extends Component {
 
   componentWillReceiveProps (props) {
     const { turn, player } = props
-    let orderedHands = turn && orderByPlayer(turn, player)
-    this.setState( Object.assign(this.state, {
-      turn: orderedHands
-    }))
+    this.setState({
+      uoTurn: turn,
+      player: player
+    })
   }
 
   render () {
-    const { turn } = this.state
+    const { uoTurn, player } = this.state
+    let turn = uoTurn && orderByPlayer(uoTurn, player)
     let playerHand = (turn && turn[0]) || 1
     let opponentHand = (turn && turn[1]) || 1
     return (
