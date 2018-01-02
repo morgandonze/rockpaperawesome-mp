@@ -6,11 +6,12 @@ import orientation from '../iconOrientation'
 class ThrowControls extends Component {
   constructor (props) {
     super(props)
-    const { game, active } = props
+    const { active, game, recordMoveMade } = props
     this.state = {
+      active: active,
       game: game,
       hand: null,
-      active: active
+      recordMoveMade: recordMoveMade
     }
   }
 
@@ -48,11 +49,13 @@ class ThrowControls extends Component {
   }
 
   handleThrow = (hand) => {
+    const { recordMoveMade } = this.state
     return () => {
       if(this.isLocked()) { return }
 
       this.setState({ hand: hand })
       let game = this.state.game
+      recordMoveMade()
       game && game.push('throw', hand)
     }
   }

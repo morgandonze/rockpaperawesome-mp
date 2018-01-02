@@ -29,6 +29,7 @@ defmodule Rockpaperawesome.Game do
 
   @default_mode 3
   @moves ["rock", "paper", "scissors"]
+  @miss -1
 
   def create(p1, p2, mode \\ @default_mode) do
     %{
@@ -66,6 +67,13 @@ defmodule Rockpaperawesome.Game do
     Map.put(game, :turns, [new_turn] ++ prev_turns)
   end
 
+  def miss_move(game, player_id, move) do
+    {turn, prev_turns} = split_current_turn(game)
+    player_number = Game.player_number(game, player_id)
+    new_turn = Turn.move(turn, player_number, @miss)
+    Map.put(game, :turns, [new_turn] ++ prev_turns)
+  end
+
   def update_score(%{turns: [turn|_]}=game) do
     update_score(game, turn, Turn.complete?(turn))
   end
@@ -81,6 +89,15 @@ defmodule Rockpaperawesome.Game do
     game
   end
 
+  defp result_parity(p1_move, p2_move, mode) when (p1_move < 0 and p2_move < 0) do
+    -1 # Tie
+  end
+  defp result_parity(p1_move, p2_move, mode) when p2_move < 0 do
+    1 # Player 1 scores
+  end
+  defp result_parity(p1_move, p2_move, mode) when p1_move < 0 do
+    0 # Player 2 scores
+  end
   defp result_parity(p1_move, p2_move, mode) do
     Integer.mod((p1_move - p2_move + mode), mode)
   end

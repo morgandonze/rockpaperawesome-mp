@@ -3,17 +3,19 @@ import Scores from './scores'
 import Prompt from './prompt'
 import Throws from './throws'
 import ThrowControls from './throwControls'
-const TURN_DURATION = 10950
+const TURN_DURATION = 13950
 
 class Game extends Component {
   constructor (props) {
     super(props)
+    this.turnTime = 0
     this.state = {
       game: props.game,
       player: props.player,
       moveNum: 0,
+      moveMade: false,
+      turnActive: false,
       turnTime: 0,
-      turnActive: false
     }
   }
 
@@ -49,23 +51,42 @@ class Game extends Component {
 
   startTurn = () => {
     if (!!this.timerID) clearInterval(this.timerID)
-    this.timerID = setInterval(this.turnTimerTick, 75)
+    this.timerID = setInterval(this.turnTimerTick, 200)
     this.turnStartTime = Date.now()
-    this.setState({turnActive: true, turnTime: 0})
+    this.turnTime = 0
+    this.setState({
+      turnTime: 0,
+      moveMade: false,
+      turnActive: true
+    })
   }
 
   turnTimerTick = () => {
-    let turnTime = Date.now() - this.turnStartTime
-    this.setState({turnTime: turnTime})
+    this.turnTime = Date.now() - this.turnStartTime
+    const { turnTime } = this.state
 
-    if (turnTime > TURN_DURATION) {
+    if (this.turnTime - turnTime > 800) {
+      this.setState({turnTime: this.turnTime})
+    }
+
+    if (this.turnTime > TURN_DURATION) {
       this.expireTurn()
     }
   }
 
   expireTurn = () => {
+    const { game, moveMade } = this.state
+    if (!moveMade && game) {
+      game.push('miss')
+    }
     this.setState({
       turnActive: false
+    })
+  }
+
+  recordMoveMade = () => {
+    this.setState({
+      moveMade: true
     })
   }
 
@@ -77,7 +98,12 @@ class Game extends Component {
         <Scores scores={scores} player={player} />
         <Prompt turnTime={turnTime} />
         <Throws turn={turn} player={player} />
-        <ThrowControls newMoveNum={moveNum} game={game} active={turnActive} />
+        <ThrowControls
+          newMoveNum={moveNum}
+          game={game}
+          recordMoveMade={this.recordMoveMade}
+          active={turnActive}
+        />
       </div>
     )
   }
