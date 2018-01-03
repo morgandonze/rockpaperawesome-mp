@@ -3,7 +3,7 @@ import Scores from './scores'
 import Prompt from './prompt'
 import Throws from './throws'
 import ThrowControls from './throwControls'
-const TURN_DURATION = 13950
+import t from '../timing'
 
 class Game extends Component {
   constructor (props) {
@@ -69,7 +69,7 @@ class Game extends Component {
       this.setState({turnTime: this.turnTime})
     }
 
-    if (this.turnTime > TURN_DURATION) {
+    if (this.turnTime > t.TURN) {
       this.expireTurn()
     }
   }

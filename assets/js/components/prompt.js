@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import FontAwesome from 'react-fontawesome'
+import t from '../timing'
 
 class Prompt extends Component {
   constructor (props) {
@@ -35,19 +36,12 @@ class Prompt extends Component {
   }
 
   setSymbols = () => {
-    let handTime = 750
-    let timerTime = 900
     let symbols = []
-    symbols.push([null, 3000])
-    symbols.push(["hand-rock-o", handTime])
-    symbols.push(["hand-paper-o", handTime])
-    symbols.push(["hand-scissors-o", handTime])
-    symbols.push(["play", handTime])
-    symbols.push([null, 4500])
-    symbols.push(["hourglass-1", timerTime])
-    symbols.push(["hourglass-2", timerTime])
-    symbols.push(["hourglass-3", timerTime])
-    symbols.push(["times", 4000])
+    symbols.push([null, t.PRE_HURRY])
+    symbols.push(["hourglass-1", t.HURRY])
+    symbols.push(["hourglass-2", t.HURRY])
+    symbols.push(["hourglass-3", t.HURRY])
+    symbols.push(["times", t.MISSED])
     return symbols
   }
 
