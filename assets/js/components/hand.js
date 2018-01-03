@@ -32,6 +32,7 @@ class Hand extends Component {
   }
 
   translateHand = (hand) => {
+    if (hand == -1) return 'rock'
     return ['rock', 'paper', 'scissors'][hand-1]
   }
 }
