@@ -86,7 +86,8 @@ class Game extends Component {
 
   recordMoveMade = () => {
     this.setState({
-      moveMade: true
+      moveMade: true,
+      turnActive: false
     })
   }
 

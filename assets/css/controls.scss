@@ -21,7 +21,7 @@
         color: #525151;
       }
 
-      &.locked {
+      &.locked:not(.chosen) {
         //color: #9e6262;
         color: #525151;
       }

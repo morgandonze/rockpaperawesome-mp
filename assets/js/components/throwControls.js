@@ -16,7 +16,11 @@ class ThrowControls extends Component {
   }
 
   componentWillReceiveProps (props) {
-    const { game, active } = props
+    const { game, active, hand } = props
+    const { preActive } = this.state
+    if (!!active && !preActive ) {
+      this.setState({hand: null})
+    }
     this.setState({
       game: game,
       active: active
@@ -42,7 +46,7 @@ class ThrowControls extends Component {
   controlStyles = (elemHand) => {
     const { hand } = this.state
     let locked = this.isLocked() ? ' locked' : ''
-    let chosen = (hand && elemHand == hand) ? ' chosen' : ''
+    let chosen = (!!hand && elemHand == hand) ? ' chosen' : ''
     let o = orientation(elemHand, 'control')
     let base = 'fa-3x player-control'
     return base + locked + chosen + o
