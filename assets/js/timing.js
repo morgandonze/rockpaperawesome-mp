@@ -1,5 +1,10 @@
+const MOVE_TIME = 2650
+const HURRY = 850
+const RESULT = 850
+
 export default {
-  MOVE_TIME: 3500,
-  HURRY: 850,
-  TURN: 3500 + 3*850
+  MOVE_TIME: MOVE_TIME,
+  HURRY: HURRY,
+  RESULT: RESULT,
+  TURN: RESULT + MOVE_TIME + 3*HURRY
 }
