@@ -7,20 +7,22 @@ class Prompt extends Component {
     super(props)
     this.state = {
       turnTime: props.turnTime || 0,
-      symbols: this.setSymbols()
+      symbols: this.setSymbols(),
+      moveMade: false
     }
   }
 
   componentWillReceiveProps (props) {
-    const { turnTime } = props
+    const { turnTime, moveMade } = props
     this.setState({
-      turnTime: turnTime
+      turnTime: turnTime,
+      moveMade: moveMade
     })
   }
 
   render () {
-    const { turnTime } = this.state
-    if (!!this.promptSymbol()) {
+    const { turnTime, moveMade } = this.state
+    if (!!this.promptSymbol() && !moveMade) {
       return (
         <div id="prompt">
           <FontAwesome name={this.promptSymbol()} />
@@ -37,11 +39,10 @@ class Prompt extends Component {
 
   setSymbols = () => {
     let symbols = []
-    symbols.push([null, t.PRE_HURRY])
+    symbols.push([null, t.MOVE_TIME])
     symbols.push(["hourglass-1", t.HURRY])
     symbols.push(["hourglass-2", t.HURRY])
     symbols.push(["hourglass-3", t.HURRY])
-    symbols.push(["times", t.MISSED])
     return symbols
   }
 

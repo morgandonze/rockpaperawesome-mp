@@ -92,12 +92,12 @@ class Game extends Component {
   }
 
   render () {
-    const { game, scores, turns, moveNum, turnTime, turnActive, player } = this.state
+    const { game, scores, turns, moveNum, turnTime, moveMade, turnActive, player } = this.state
     let turn = turns && turns[0]
     return (
       <div>
         <Scores scores={scores} player={player} />
-        <Prompt turnTime={turnTime} />
+        <Prompt turnTime={turnTime} moveMade={moveMade} />
         <Throws turn={turn} player={player} />
         <ThrowControls
           newMoveNum={moveNum}

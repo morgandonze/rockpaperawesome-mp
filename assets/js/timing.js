@@ -1,6 +1,5 @@
 export default {
-  TURN: 9750,
-  PRE_HURRY: 3500,
-  HURRY: 750,
-  MISSED: 4000
+  MOVE_TIME: 3500,
+  HURRY: 850,
+  TURN: 3500 + 3*850
 }
