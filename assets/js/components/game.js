@@ -27,8 +27,9 @@ class Game extends Component {
     const { data } = props
     let newMoveNum = (data && data.turns && data.turns.length) || 0
     let prevScores = this.state.scores || [0,0]
+    let newTurn = newMoveNum > moveNum
 
-    if (newMoveNum > moveNum) {
+    if (newTurn) {
       this.startTurn()
       this.setState({
         moveNum: newMoveNum
@@ -42,7 +43,7 @@ class Game extends Component {
       player: props.player,
       scores: data && data.scores,
       turns: data && data.turns,
-      result: (data && this.calcResult(data.scores, prevScores, props.player)) || 0
+      result: (data && this.calcResult(data.scores, prevScores, newTurn, props.player)) || 0
     })
   }
 
@@ -66,13 +67,13 @@ class Game extends Component {
     })
   }
 
-  calcResult(scores, prevScores, player) {
-    if (!scores || !prevScores) return 0
+  calcResult(scores, prevScores, newTurn, player) {
+    if (!scores || !prevScores || !newTurn) return 0
     let dPlayScore = orderByPlayer(scores, player)[0] - orderByPlayer(prevScores, player)[0]
     let dOppScore = orderByPlayer(scores, player)[1] - orderByPlayer(prevScores, player)[1]
     if (dPlayScore > 0) return 1
     if (dPlayScore==0 && dOppScore > 0) return 2
-    return 0
+    return 3
   }
 
   turnTimerTick = () => {
