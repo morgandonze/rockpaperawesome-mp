@@ -7,7 +7,7 @@ class Prompt extends Component {
     super(props)
     this.state = {
       turnTime: props.turnTime || 0,
-      symbols: this.setSymbols(),
+      symbolTimings: this.setSymbols(),
       moveMade: false,
       result: 0,
     }
@@ -40,47 +40,39 @@ class Prompt extends Component {
   }
 
   setSymbols = () => {
-    let neutralSymbols = []
-    neutralSymbols.push([null, t.MOVE_TIME])
-    neutralSymbols.push([null, t.RESULT])
-    neutralSymbols.push(["hourglass-1", t.HURRY])
-    neutralSymbols.push(["hourglass-2", t.HURRY])
-    neutralSymbols.push(["hourglass-3", t.HURRY])
+    let symbols = []
+    symbols.push([[null, "star", "bomb", "compress"], t.MOVE_TIME])
+    symbols.push([[null], t.RESULT])
+    symbols.push([["hourglass-1"], t.HURRY])
+    symbols.push([["hourglass-2"], t.HURRY])
+    symbols.push([["hourglass-3"], t.HURRY])
 
-    let winSymbols = []
-    winSymbols.push(["star", t.RESULT])
-    winSymbols.push([null, t.MOVE_TIME])
-    winSymbols.push(["hourglass-1", t.HURRY])
-    winSymbols.push(["hourglass-2", t.HURRY])
-    winSymbols.push(["hourglass-3", t.HURRY])
-
-    let loseSymbols = []
-    loseSymbols.push(["bomb", t.RESULT])
-    loseSymbols.push([null, t.MOVE_TIME])
-    loseSymbols.push(["hourglass-1", t.HURRY])
-    loseSymbols.push(["hourglass-2", t.HURRY])
-    loseSymbols.push(["hourglass-3", t.HURRY])
-
-    return {
-      0: neutralSymbols,
-      1: winSymbols,
-      2: loseSymbols,
-    }
+    return symbols
   }
 
   promptSymbol = () => {
-    let { turnTime, symbols, result } = this.state
+    let { turnTime, symbolTimings, result } = this.state
     let cumulativeTime = 0
 
-    for (let s of symbols[result]) {
-      let time = s[1]
-      let symbol = s[0]
+    for (let symbolTiming of symbolTimings) {
+      let time = symbolTiming[1]
+      let symbols = symbolTiming[0]
 
       cumulativeTime += time
-      if (cumulativeTime > turnTime) return symbol
+      if (cumulativeTime > turnTime) {
+        return this.resultSymbol(symbols, result)
+      }
     }
 
     return null
+  }
+
+  resultSymbol = (symbols, result) => {
+    if (symbols.length == 1) {
+      return symbols[0]
+    } else {
+      return symbols[result]
+    }
   }
 }
 
