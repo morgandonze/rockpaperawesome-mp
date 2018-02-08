@@ -71,7 +71,7 @@ class Game extends Component {
     let dPlayScore = orderByPlayer(scores, player)[0] - orderByPlayer(prevScores, player)[0]
     let dOppScore = orderByPlayer(scores, player)[1] - orderByPlayer(prevScores, player)[1]
     if (dPlayScore > 0) return 1
-    if (dPlayScore==0 && dOppScore > 0) return -1
+    if (dPlayScore==0 && dOppScore > 0) return 2
     return 0
   }
 
