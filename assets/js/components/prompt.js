@@ -41,8 +41,8 @@ class Prompt extends Component {
 
   setSymbols = () => {
     let symbols = []
-    symbols.push([[null, "star", "bomb", "compress"], t.MOVE_TIME])
-    symbols.push([[null], t.RESULT])
+    symbols.push([[null, "star", "bomb", "compress"], t.RESULT])
+    symbols.push([[null], t.MOVE_TIME])
     symbols.push([["hourglass-1"], t.HURRY])
     symbols.push([["hourglass-2"], t.HURRY])
     symbols.push([["hourglass-3"], t.HURRY])

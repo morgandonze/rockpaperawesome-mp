@@ -1,6 +1,6 @@
 const MOVE_TIME = 3000
 const HURRY = 2000
-const RESULT = 1200
+const RESULT = 1000
 
 export default {
   MOVE_TIME: MOVE_TIME,
