@@ -27,9 +27,10 @@ class Game extends Component {
     const { data } = props
     let newMoveNum = (data && data.turns && data.turns.length) || 0
     let prevScores = this.state.scores || [0,0]
-    let newTurn = newMoveNum > moveNum
+    let isNewTurn = newMoveNum > moveNum
+    let prevTurn = data && data.turns[0]
 
-    if (newTurn) {
+    if (isNewTurn) {
       this.startTurn()
       this.setState({
         moveNum: newMoveNum
@@ -43,7 +44,7 @@ class Game extends Component {
       player: props.player,
       scores: data && data.scores,
       turns: data && data.turns,
-      result: (data && this.calcResult(data.scores, prevScores, newTurn, props.player)) || 0
+      result: (data && this.calcResult(prevTurn, data.scores, prevScores, isNewTurn, props.player)) || 0
     })
   }
 
@@ -67,13 +68,17 @@ class Game extends Component {
     })
   }
 
-  calcResult(scores, prevScores, newTurn, player) {
-    if (!scores || !prevScores || !newTurn) return 0
+  calcResult(turn, scores, prevScores, newTurn, player) {
+    if (turn && orderByPlayer(turn, player)[0] == -1) {
+      return 3 // didn't make a move
+    }
+    if (!scores || !prevScores || !newTurn) return 0 // first move
     let dPlayScore = orderByPlayer(scores, player)[0] - orderByPlayer(prevScores, player)[0]
     let dOppScore = orderByPlayer(scores, player)[1] - orderByPlayer(prevScores, player)[1]
-    if (dPlayScore > 0) return 1
-    if (dPlayScore==0 && dOppScore > 0) return 2
-    return 3
+
+    if (dPlayScore > 0) return 1 // win
+    if (dPlayScore==0 && dOppScore > 0) return 2 // lose
+    return 0
   }
 
   turnTimerTick = () => {
