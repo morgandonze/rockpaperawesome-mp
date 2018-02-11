@@ -9,16 +9,15 @@ class Scores extends Component {
 
   componentWillReceiveProps (props) {
     const { scores, player } = props
-    let orderedScores = orderByPlayer(scores, player)
-    this.setState(
-      Object.assign(this.state, {
-        scores: orderedScores,
-        player: player
-      }))
+    this.setState({
+      uoScores: scores,
+      player: player
+    })
   }
 
   render () {
-    const { scores } = this.state
+    const { uoScores, player } = this.state
+    let scores = orderByPlayer(uoScores, player)
     if (!scores) {
       return( <div>0 0</div>)
     }

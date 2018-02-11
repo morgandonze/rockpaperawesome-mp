@@ -14,10 +14,7 @@ class Rockpaperawesome extends Component {
 
   componentWillReceiveProps (props) {
     const { game } = props
-    this.setState( Object.assign(
-      this.state,
-      { game: game, data: data }
-    ))
+    this.setState({game: game})
   }
 
   render () {
@@ -34,7 +31,11 @@ class Rockpaperawesome extends Component {
       )
     } else {
       return (
-        <Game game={game} data={data} player={player} />
+        <Game
+          game={game}
+          data={data} 
+          player={player}
+        />
       )
     }
   }

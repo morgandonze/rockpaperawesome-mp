@@ -20,6 +20,11 @@
         // color: #9b9b9b;
         color: #525151;
       }
+
+      &.locked:not(.chosen) {
+        //color: #9e6262;
+        color: #525151;
+      }
     }
 
     .chosen {

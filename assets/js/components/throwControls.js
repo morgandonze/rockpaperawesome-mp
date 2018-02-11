@@ -6,24 +6,24 @@ import orientation from '../iconOrientation'
 class ThrowControls extends Component {
   constructor (props) {
     super(props)
-    const { newMoveNum, game } = props
+    const { active, game, recordMoveMade } = props
     this.state = {
-      moveNum: newMoveNum,
-      locked: false,
+      active: active,
       game: game,
-      hand: null
+      hand: null,
+      recordMoveMade: recordMoveMade
     }
   }
 
   componentWillReceiveProps (props) {
-    const { newMoveNum, game } = props
-    const { moveNum } = this.state
-    if(newMoveNum > moveNum) {
-      let unlockTimer = setTimeout(this.unlock, 800)
+    const { game, active, hand } = props
+    const { preActive } = this.state
+    if (!!active && !preActive ) {
+      this.setState({hand: null})
     }
     this.setState({
-      moveNum: newMoveNum,
-      game: game
+      game: game,
+      active: active
     })
   }
 
@@ -40,8 +40,7 @@ class ThrowControls extends Component {
   }
 
   isLocked = () => {
-    const { locked } = this.state
-    return locked
+    return !this.state.active
   }
 
   unlock = () => {
@@ -54,21 +53,20 @@ class ThrowControls extends Component {
   controlStyles = (elemHand) => {
     const { hand } = this.state
     let locked = this.isLocked() ? ' locked' : ''
-    let chosen = (hand && elemHand == hand) ? ' chosen' : ''
+    let chosen = (!!hand && elemHand == hand) ? ' chosen' : ''
     let o = orientation(elemHand, 'control')
     let base = 'fa-3x player-control'
     return base + locked + chosen + o
   }
 
   handleThrow = (hand) => {
+    const { recordMoveMade } = this.state
     return () => {
       if(this.isLocked()) { return }
 
-      this.setState({
-        locked: true,
-        hand: hand
-      })
+      this.setState({ hand: hand })
       let game = this.state.game
+      recordMoveMade()
       game && game.push('throw', hand)
     }
   }

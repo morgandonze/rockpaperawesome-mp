@@ -31,6 +31,21 @@ defmodule Rockpaperawesome.GameChannel do
     {:noreply, socket}
   end
 
+  def handle_in("miss", %{}, socket) do
+    user_id = socket.assigns.user_id
+    game_id = game_id(socket, user_id)
+
+    with {:ok, game} <- GameServer.get_game(game_id),
+        game <- Game.miss_move(game, user_id, 'miss'),
+        game <- Game.update_score(game) do
+
+      GameServer.update_game(game, game_id)
+      broadcast_throw_complete(socket, game)
+    end
+
+    {:noreply, socket}
+  end
+
   def broadcast_throw_complete(socket, %{turns: [turn|_]}=game) do
     if Rockpaperawesome.Game.Turn.complete?(turn) do
       broadcast(socket, "throw_complete", game)
