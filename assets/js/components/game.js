@@ -58,7 +58,7 @@ class Game extends Component {
 
   startTurn = () => {
     if (!!this.timerID) clearInterval(this.timerID)
-    this.timerID = setInterval(this.turnTimerTick, 200)
+    this.timerID = setInterval(this.turnTimerTick, 100)
     this.turnStartTime = Date.now()
     this.turnTime = 0
     this.setState({
@@ -118,7 +118,7 @@ class Game extends Component {
       <div>
         <Scores scores={scores} player={player} />
         <Prompt turnTime={turnTime} moveMade={moveMade} result={result} />
-        <Throws turn={turn} player={player} />
+        <Throws turn={turn} turnTime={turnTime} player={player} />
         <ThrowControls
           newMoveNum={moveNum}
           game={game}
