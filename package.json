@@ -1,5 +1,17 @@
 {
-  "devDependencies": {
-    "babel-preset-stage-0": "^6.24.1"
+  "name": "rockpaperawesome",
+  "version": "1.0.0",
+  "description": "Rock Paper Scissors Mutliplayer Game",
+  "main": "index.js",
+  "scripts": {
+    "deploy": "brunch build --production",
+    "watch": "brunch watch --stdin"
+  },
+  "repository": "https://github.com/mlaco/rockpaperawesome-mp.git",
+  "author": "Morgan Laco <morganlaco@gmail.com>",
+  "private": true,
+  "engines": {
+    "node": "v8.6.0",
+    "npm": "5.6.0"
   }
 }
