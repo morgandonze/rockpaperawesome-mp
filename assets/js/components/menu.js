@@ -18,7 +18,6 @@ class Menu extends Component {
 
   render () {
     let token = Invite.inviteTokenFromAddress()
-    joinQueue(this)()
     return (
       <div>
         <div>
