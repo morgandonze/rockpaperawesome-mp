@@ -1,4 +1,4 @@
-const SHAKE_TIME = 1000
+const SHAKE_TIME = 3000
 const RESULT = 1000
 const MOVE_TIME = 3000
 const HURRY = 2000

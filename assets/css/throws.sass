@@ -1,0 +1,46 @@
+@import "./math"
+
+#throws 
+  font-size: 60px
+
+  .player 
+    color: #0a70ff
+    float: left
+  
+
+  .opponent 
+    color: #f6cd46
+    float: right
+  
+
+  // safari and chrome
+  // 86deg 94deg
+  // 18,30s/(\d)\s/$1, /g
+  // 25,$s/-((cos)|(sin))/-1 * $1/g
+  
+  $middle-angle: pi() * -0.5
+  $up-angle: $middle-angle + pi() * 0.08
+  $down-angle: $middle-angle - pi() * 0.01
+  $up-shift: -50
+  $down-shift: 20
+
+  @mixin handState($angle, $shift)
+    -webkit-transform: matrix(cos($angle), -1 * sin($angle), sin($angle), cos($angle), 0, $shift)
+  
+  @keyframes player-wiggle 
+    0%
+      @include handState($middle-angle, 0)
+
+    45%
+      @include handState($up-angle, $up-shift)
+
+    90%
+      @include handState($down-angle, $down-shift)
+
+    100%
+      @include handState($middle-angle, 0)
+  
+
+  .player-wiggle 
+    animation: 0.42s 4 normal ease-in player-wiggle 
+  

@@ -1,0 +1,34 @@
+#controls 
+  position: absolute
+  bottom: 30px
+  width: 100%
+  left: 0
+  float: none
+  clear: both
+
+  #controlsWrap 
+    font-size: 40px
+    margin: 0 auto
+    width: 66%
+
+    .fa 
+      color: #696969
+      margin: 0 .25em
+
+      &:hover:not(.locked) 
+        transition: color 0.2s ease-out
+        // color: #9b9b9b
+        color: #525151
+      
+
+      &.locked:not(.chosen) 
+        //color: #9e6262
+        color: #525151
+      
+    
+
+    .chosen 
+      // color: #0a70ff
+      color: #9b9b9b
+    
+  
