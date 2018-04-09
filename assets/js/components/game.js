@@ -75,8 +75,12 @@ class Game extends Component {
     })
   }
 
+  missedMove(turn, player) {
+    return turn && orderByPlayer(turn, player)[0] == -1
+  }
+
   calcResult(turn, scores, prevScores, newTurn, player) {
-    if (turn && orderByPlayer(turn, player)[0] == -1) {
+    if (this.missedMove(turn, player)) {
       return 3 // didn't make a move
     }
     if (!scores || !prevScores || !newTurn) return 0 // first move
@@ -121,6 +125,9 @@ class Game extends Component {
   render () {
     const { game, scores, result, turns, moveNum, turnTime, moveMade, turnActive, firstTurn, player } = this.state
     let turn = turns && turns[0]
+    const missed = this.missedMove(turn, player)
+
+
     return (
       <div>
         <Scores scores={scores} player={player} />
@@ -132,7 +139,8 @@ class Game extends Component {
           recordMoveMade={this.recordMoveMade}
           turnTime={turnTime}
           firstTurn={firstTurn}
-          moveMade={moveMade}
+          moveMade={moveMade} // refers to upcoming move
+          missedMove={this.missedMove} // refers to previous move
           active={turnActive}
         />
       </div>
