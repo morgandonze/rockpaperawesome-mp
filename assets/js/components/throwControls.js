@@ -7,7 +7,7 @@ import t from "../timing"
 class ThrowControls extends Component {
   constructor (props) {
     super(props)
-    const { active, turnTime, firstTurn, game, recordMoveMade } = props
+    const { active, turnTime, firstTurn, moveMade, game, recordMoveMade } = props
     this.state = {
       active: active,
       game: game,
@@ -61,9 +61,13 @@ class ThrowControls extends Component {
   }
 
   highlightStyles = () => {
-    const { turnTime, firstTurn } = this.props
+    const { turnTime, firstTurn, moveMade } = this.props
     const baseStyle = "controlHighlight fa-2x "
     const offStyle = baseStyle + "highlight-off "
+
+    if ( moveMade ) {
+      return offStyle
+    }
 
     if ( firstTurn && turnTime > t.SHAKE_TIME) {
       return baseStyle

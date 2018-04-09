@@ -132,6 +132,7 @@ class Game extends Component {
           recordMoveMade={this.recordMoveMade}
           turnTime={turnTime}
           firstTurn={firstTurn}
+          moveMade={moveMade}
           active={turnActive}
         />
       </div>
