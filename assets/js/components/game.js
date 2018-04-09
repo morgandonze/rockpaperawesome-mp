@@ -17,6 +17,7 @@ class Game extends Component {
       moveNum: 0,
       moveMade: false,
       turnActive: false,
+      firstTurn: true,
       turnTime: 0,
       result: 0,
     }
@@ -29,6 +30,12 @@ class Game extends Component {
     let prevScores = this.state.scores || [0,0]
     let isNewTurn = newMoveNum > moveNum
     let prevTurn = data && data.turns[0]
+
+    if (newMoveNum > 0) {
+      this.setState({
+        firstTurn: false
+      })
+    }
 
     if (isNewTurn) {
       this.startTurn()
@@ -85,7 +92,7 @@ class Game extends Component {
     this.turnTime = Date.now() - this.turnStartTime
     const { turnTime } = this.state
 
-    if (this.turnTime - turnTime > 800) {
+    if (this.turnTime - turnTime > 50) {
       this.setState({turnTime: this.turnTime})
     }
 
@@ -112,7 +119,7 @@ class Game extends Component {
   }
 
   render () {
-    const { game, scores, result, turns, moveNum, turnTime, moveMade, turnActive, player } = this.state
+    const { game, scores, result, turns, moveNum, turnTime, moveMade, turnActive, firstTurn, player } = this.state
     let turn = turns && turns[0]
     return (
       <div>
@@ -123,6 +130,8 @@ class Game extends Component {
           newMoveNum={moveNum}
           game={game}
           recordMoveMade={this.recordMoveMade}
+          turnTime={turnTime}
+          firstTurn={firstTurn}
           active={turnActive}
         />
       </div>

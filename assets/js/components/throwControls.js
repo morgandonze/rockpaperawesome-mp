@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import FontAwesome from 'react-fontawesome'
 import $ from 'jquery'
 import orientation from '../iconOrientation'
+import t from "../timing"
 
 class ThrowControls extends Component {
   constructor (props) {
     super(props)
-    const { active, game, recordMoveMade } = props
+    const { active, turnTime, firstTurn, game, recordMoveMade } = props
     this.state = {
       active: active,
       game: game,
@@ -31,9 +32,9 @@ class ThrowControls extends Component {
     return(
       <div id="controls">
         <div id="controlsWrap">
-        {this.controlHand('rock', this.handleThrow)}
-        {this.controlHand('paper', this.handleThrow)}
-        {this.controlHand('scissors', this.handleThrow)}
+          {this.controlHand('rock', this.handleThrow)}
+          {this.controlHand('paper', this.handleThrow)}
+          {this.controlHand('scissors', this.handleThrow)}
         </div>
       </div>
     )
@@ -59,6 +60,22 @@ class ThrowControls extends Component {
     return base + locked + chosen + o
   }
 
+  highlightStyles = () => {
+    const { turnTime, firstTurn } = this.props
+    const baseStyle = "controlHighlight fa-2x "
+    const offStyle = baseStyle + "highlight-off "
+
+    if ( firstTurn && turnTime > t.SHAKE_TIME) {
+      return baseStyle
+    }
+
+    if (turnTime > t.HURRY_START) {
+      return baseStyle
+    }
+
+    return offStyle
+  }
+
   handleThrow = (hand) => {
     const { recordMoveMade } = this.state
     return () => {
@@ -73,10 +90,13 @@ class ThrowControls extends Component {
 
   controlHand = (hand, handleThrow) => {
     return(
-      <FontAwesome
-        id={'control-'+hand}
-        onClick={handleThrow(hand)}
-        className={this.controlStyles(hand)} name={"hand-"+hand+"-o"} />
+      <div>
+        <FontAwesome className={this.highlightStyles()} name={"arrow-circle-down"} />
+        <FontAwesome
+          id={'control-'+hand}
+          onClick={handleThrow(hand)}
+          className={this.controlStyles(hand)} name={"hand-"+hand+"-o"} />
+      </div>
     )
   }
 }

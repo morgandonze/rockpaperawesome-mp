@@ -6,24 +6,38 @@
   float: none
   clear: both
 
-  #controlsWrap 
+  #controlsWrap
     font-size: 40px
-    margin: 0 auto
-    width: 66%
+    display: flex
+    justify-content: center
 
-    .fa 
-      color: #696969
-      margin: 0 .25em
+    div
+      display: flex
+      flex-direction: column
+      align-items: center
+      margin-right: 50px
 
-      &:hover:not(.locked) 
-        transition: color 0.2s ease-out
-        // color: #9b9b9b
-        color: #525151
-      
+      .fa 
+        margin: 0 .25em
 
-      &.locked:not(.chosen) 
-        //color: #9e6262
-        color: #525151
+        &.controlHighlight
+          margin-bottom: 20px
+
+        &.highlight-off
+          visibility: hidden
+
+        &.player-control
+          color: #696969
+
+        &:hover:not(.locked) 
+          transition: color 0.2s ease-out
+          // color: #9b9b9b
+          color: #525151
+        
+
+        &.locked:not(.chosen) 
+          //color: #9e6262
+          color: #525151
       
     
 
