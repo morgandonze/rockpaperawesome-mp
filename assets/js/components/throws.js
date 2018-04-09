@@ -9,6 +9,11 @@ class Throws extends Component {
     this.state = {}
   }
 
+  reveal = () => {
+    const { turnTime } = this.state
+    return turnTime >= t.SHAKE_TIME
+  }
+
   componentWillReceiveProps (props) {
     const { turn, turnTime, player } = props
     this.setState({
@@ -21,10 +26,9 @@ class Throws extends Component {
   render () {
     const { uoTurn, turnTime, player } = this.state
     let turn = uoTurn && orderByPlayer(uoTurn, player)
-    let reveal = (turnTime >= t.SHAKE_TIME)
-    let classes = reveal ? "" : " player-wiggle"
-    let playerHand = reveal ? ((turn && turn[0]) || 1) : 1
-    let opponentHand = reveal ? ((turn && turn[1]) || 1) : 1
+    let classes = this.reveal() ? "" : " player-wiggle"
+    let playerHand = this.reveal() ? ((turn && turn[0]) || 1) : 1
+    let opponentHand = this.reveal() ? ((turn && turn[1]) || 1) : 1
 
     return (
       <div id='throws'>
