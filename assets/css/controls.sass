@@ -17,14 +17,23 @@
       align-items: center
       margin-right: 50px
 
-      .fa 
-        margin: 0 .25em
+      @keyframes prompt-pulse
+        0%
+          color: #696969
 
-        &.controlHighlight
-          margin-bottom: 20px
+        100%
+          color: #ffffff
+
+      .fa.controlHighlight
+        margin: 0 .25em
+        margin-bottom: 20px
+        animation: 0.6s infinite ease-in-out alternate-reverse prompt-pulse
 
         &.highlight-off
           visibility: hidden
+
+      .fa.player-control
+        margin: 0 .25em
 
         &.player-control
           color: #696969
