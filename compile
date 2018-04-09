@@ -1,8 +1,8 @@
+gem install sass
+
 brunch build --production
 
 cd $phoenix_dir
-
-gem install sass
 
 mix "${phoenix_ex}.digest"
 
