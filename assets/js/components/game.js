@@ -123,7 +123,18 @@ class Game extends Component {
   }
 
   render () {
-    const { game, scores, result, turns, moveNum, turnTime, moveMade, turnActive, firstTurn, player } = this.state
+    const {
+      game,
+      scores,
+      result,
+      turns,
+      moveNum,
+      turnTime,
+      moveMade,
+      turnActive,
+      firstTurn,
+      player
+    } = this.state
     let turn = turns && turns[0]
     const missed = this.missedMove(turn, player)
 
@@ -132,7 +143,7 @@ class Game extends Component {
       <div>
         <Scores scores={scores} player={player} />
         <Prompt turnTime={turnTime} moveMade={moveMade} result={result} />
-        <Throws turn={turn} turnTime={turnTime} player={player} />
+        <Throws turn={turn} turnTime={turnTime} missedMove={this.missedMove(turn, player)} firstTurn={firstTurn} player={player} />
         <ThrowControls
           newMoveNum={moveNum}
           game={game}
@@ -140,7 +151,7 @@ class Game extends Component {
           turnTime={turnTime}
           firstTurn={firstTurn}
           moveMade={moveMade} // refers to upcoming move
-          missedMove={this.missedMove} // refers to previous move
+          missedMove={this.missedMove(turn, player)} // refers to previous move
           active={turnActive}
         />
       </div>
