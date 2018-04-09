@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import FontAwesome from 'react-fontawesome'
 import $ from 'jquery'
 import orientation from '../iconOrientation'
-import t from "../timing"
+import t from '../timing'
 
 class ThrowControls extends Component {
   constructor (props) {
@@ -56,28 +56,25 @@ class ThrowControls extends Component {
     let locked = this.isLocked() ? ' locked' : ''
     let chosen = (!!hand && elemHand == hand) ? ' chosen' : ''
     let o = orientation(elemHand, 'control')
-    let base = 'fa-3x player-control'
-    return base + locked + chosen + o
+    return locked + chosen + o
   }
 
   highlightStyles = () => {
-    const { turnTime, firstTurn, moveMade } = this.props
-    const baseStyle = "controlHighlight fa-2x "
-    const offStyle = baseStyle + "highlight-off "
+    const { turnTime, firstTurn, moveMade, moveMissed } = this.props
 
     if ( moveMade ) {
-      return offStyle
+      return 'highlight-off'
     }
 
-    if ( firstTurn && turnTime > t.SHAKE_TIME) {
-      return baseStyle
+    if ( (firstTurn || moveMissed) && turnTime > t.SHAKE_TIME) {
+      return ''
     }
 
     if (turnTime > t.HURRY_START) {
-      return baseStyle
+      return ''
     }
 
-    return offStyle
+    return 'highlight-off'
   }
 
   handleThrow = (hand) => {
@@ -95,11 +92,11 @@ class ThrowControls extends Component {
   controlHand = (hand, handleThrow) => {
     return(
       <div>
-        <FontAwesome className={this.highlightStyles()} name={"arrow-circle-down"} />
+        <FontAwesome className={'controlHighlight fa-2x ' + this.highlightStyles()} name={"arrow-circle-down"} />
         <FontAwesome
           id={'control-'+hand}
           onClick={handleThrow(hand)}
-          className={this.controlStyles(hand)} name={"hand-"+hand+"-o"} />
+          className={"fa-3x player-control " + this.controlStyles(hand)} name={"hand-"+hand+"-o"} />
       </div>
     )
   }
