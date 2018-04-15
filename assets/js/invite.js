@@ -29,7 +29,7 @@ let inviteCreatedHandler = (parent, setGame, socket, invite) => {
   return (d) => {
     let invite_token = d.invite_token
     let playerId = d.player_id
-    let invite_link = "localhost:4000/invite/" + invite_token
+    let invite_link = "http://www." + window.location.hostname + "/invite/" + invite_token
     document.getElementById("looking").innerHTML = invitedMessage(invite_link)
     invite.leave()
 
