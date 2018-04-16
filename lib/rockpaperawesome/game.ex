@@ -12,7 +12,7 @@ defmodule Rockpaperawesome.Game do
     end
 
     def move(turn, player, move) do
-      List.replace_at(turn, player - 1, move)
+      List.replace_at(turn, player, move)
     end
 
     def p1(turn) do
@@ -42,10 +42,7 @@ defmodule Rockpaperawesome.Game do
   end
 
   def player_number(game, player_id) do
-    case Enum.find_index(game.players, &(&1 == player_id)) do
-      nil -> nil
-      i -> i + 1
-    end
+    Enum.find_index(game.players, &(&1 == player_id))
   end
 
   def player_in?(player_id, game) do
