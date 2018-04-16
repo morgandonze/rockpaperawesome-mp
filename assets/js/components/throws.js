@@ -23,23 +23,25 @@ class Throws extends Component {
     })
   }
 
-  wiggleClass = () => {
-    const { firstTurn, missedMove } = this.props
-    console.log(firstTurn, missedMove)
-    return !firstTurn && !missedMove ? ' player-wiggle' : ''
+  wiggleClasses = () => {
+    const { firstTurn, missedMoves, player } = this.props
+    return [
+      !firstTurn && !missedMoves[player] ? ' player-wiggle' : '',
+      !firstTurn && !missedMoves[1 - player] ? ' opponent-wiggle' : ''
+    ]
   }
 
   render () {
     const { uoTurn, turnTime, player } = this.state
     let turn = uoTurn && orderByPlayer(uoTurn, player)
-    let classes = this.reveal() ? "" : this.wiggleClass()
+    let classes = this.reveal() ? "" : this.wiggleClasses()
     let playerHand = this.reveal() ? ((turn && turn[0]) || 1) : 1
     let opponentHand = this.reveal() ? ((turn && turn[1]) || 1) : 1
 
     return (
       <div id='throws'>
-        <Hand hand={playerHand} classes={classes} side={'player'} />
-        <Hand hand={opponentHand} side={'opponent'}/>
+        <Hand hand={playerHand} classes={classes[player]} side={'player'} />
+        <Hand hand={opponentHand} classes={classes[1-player]} side={'opponent'}/>
       </div>
     )
   }
