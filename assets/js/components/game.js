@@ -19,12 +19,12 @@ class Game extends Component {
       turnActive: false,
       firstTurn: true,
       turnTime: 0,
-      result: 0,
+      results: [0, 0],
     }
   }
 
   componentWillReceiveProps(props) {
-    const { moveNum, result } = this.state
+    const { moveNum, results } = this.state
     const { data } = props
     let newMoveNum = (data && data.turns && data.turns.length) || 0
     let prevScores = this.state.scores || [0,0]
@@ -51,7 +51,7 @@ class Game extends Component {
       player: props.player,
       scores: data && data.scores,
       turns: data && data.turns,
-      result: (data && this.calcResult(prevTurn, data.scores, prevScores, isNewTurn, props.player)) || 0
+      results: (data && this.calcResults(prevTurn, data.scores, prevScores, isNewTurn, props.player)) || [0, 0]
     })
   }
 
@@ -75,12 +75,22 @@ class Game extends Component {
     })
   }
 
-  missedMove(turn, player) {
-    return turn && orderByPlayer(turn, player)[0] == -1
+  missedMoves(turn) {
+    if(!turn) return [false, false]
+    return [0,1].map(player => {
+      return orderByPlayer(turn, player)[0] == -1
+    })
+  }
+
+  calcResults(turn, scores, prevScores, newTurn) {
+    let results = [0,1].map(player => {
+      return this.calcResult(turn, scores, prevScores, newTurn, player)
+    })
+    return results
   }
 
   calcResult(turn, scores, prevScores, newTurn, player) {
-    if (this.missedMove(turn, player)) {
+    if (this.missedMoves(turn)[player]) {
       return 3 // didn't make a move
     }
     if (!scores || !prevScores || !newTurn) return 0 // first move
@@ -126,7 +136,7 @@ class Game extends Component {
     const {
       game,
       scores,
-      result,
+      results,
       turns,
       moveNum,
       turnTime,
@@ -136,14 +146,19 @@ class Game extends Component {
       player
     } = this.state
     let turn = turns && turns[0]
-    const missed = this.missedMove(turn, player)
 
 
     return (
       <div>
         <Scores scores={scores} player={player} />
-        <Prompt turnTime={turnTime} moveMade={moveMade} result={result} />
-        <Throws turn={turn} turnTime={turnTime} missedMove={this.missedMove(turn, player)} firstTurn={firstTurn} player={player} />
+        <Prompt turnTime={turnTime} moveMade={moveMade} result={results[player]} />
+        <Throws
+          turn={turn}
+          turnTime={turnTime}
+          missedMoves={this.missedMoves(turn)}
+          firstTurn={firstTurn}
+          player={player}
+        />
         <ThrowControls
           newMoveNum={moveNum}
           game={game}
@@ -151,7 +166,7 @@ class Game extends Component {
           turnTime={turnTime}
           firstTurn={firstTurn}
           moveMade={moveMade} // refers to upcoming move
-          missedMove={this.missedMove(turn, player)} // refers to previous move
+          missedMove={this.missedMoves(turn)[player]} // refers to previous move
           active={turnActive}
         />
       </div>
