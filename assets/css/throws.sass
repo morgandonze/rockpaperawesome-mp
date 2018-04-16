@@ -24,23 +24,41 @@
   $up-shift: -50
   $down-shift: 20
 
-  @mixin handState($angle, $shift)
+  @mixin playerHandState($angle, $shift)
     -webkit-transform: matrix(cos($angle), -1 * sin($angle), sin($angle), cos($angle), 0, $shift)
+
+  @mixin oppoHandState($angle, $shift)
+    -webkit-transform: matrix(-1 * cos($angle), -1 * sin($angle), -1 * sin($angle), cos($angle), 0, $shift)
   
   @keyframes player-wiggle 
     0%
-      @include handState($middle-angle, 0)
+      @include playerHandState($middle-angle, 0)
 
     45%
-      @include handState($up-angle, $up-shift)
+      @include playerHandState($up-angle, $up-shift)
 
     90%
-      @include handState($down-angle, $down-shift)
+      @include playerHandState($down-angle, $down-shift)
 
     100%
-      @include handState($middle-angle, 0)
+      @include playerHandState($middle-angle, 0)
+
+  @keyframes opponent-wiggle 
+    0%
+      @include oppoHandState($middle-angle, 0)
+
+    45%
+      @include oppoHandState($up-angle, $up-shift)
+
+    90%
+      @include oppoHandState($down-angle, $down-shift)
+
+    100%
+      @include oppoHandState($middle-angle, 0)
   
 
   .player-wiggle 
     animation: 0.45s 4 normal ease-in player-wiggle 
   
+  .opponent-wiggle
+    animation: 0.45s 4 normal ease-in opponent-wiggle 
