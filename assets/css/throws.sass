@@ -12,12 +12,6 @@
     color: #f6cd46
     float: right
   
-
-  // safari and chrome
-  // 86deg 94deg
-  // 18,30s/(\d)\s/$1, /g
-  // 25,$s/-((cos)|(sin))/-1 * $1/g
-  
   $middle-angle: pi() * -0.5
   $up-angle: $middle-angle + pi() * 0.08
   $down-angle: $middle-angle - pi() * 0.01
@@ -32,14 +26,6 @@
     -ms-transform: $matrix
     transform: $matrix
 
-  @mixin oppoHandState($angle, $shift)
-    $matrix: matrix(-1 * cos($angle), sin($angle), sin($angle), cos($angle), 0, $shift)
-    -webkit-transform: $matrix
-    // -moz-transform: $matrix
-    // -o-transform: $matrix
-    // -ms-transform: $matrix
-    // transform: $matrix
-  
   @keyframes player-wiggle 
     0%
       @include playerHandState($middle-angle, 0)
@@ -53,64 +39,40 @@
     100%
       @include playerHandState($middle-angle, 0)
 
-  @keyframes oppo-wiggle-fn
-    0%
-      @include oppoHandState($middle-angle, 0)
-
-    45%
-      @include oppoHandState($up-angle, $up-shift)
-
-    90%
-      @include oppoHandState($down-angle, $down-shift)
-
-    100%
-      @include oppoHandState($middle-angle, 0)
-
-  @keyframes opponent-wiggle-matrix
-    $sin-mid: -1
+  @keyframes opponent-wiggle
+    $sin-mid: 1
     $cos-mid: 0
-    $sin-up: -0.96858
-    $cos-up: 0.24869
-    $sin-down: -0.99951
-    $cos-down: -0.03141
+    $sin-up: 0.96858
+    $cos-up: -0.24869
+    $sin-down: 0.99951
+    $cos-down: 0.03141
 
-    $a: 1
+    $a: -1
+    $c: -1
     $b: -1
-    $c: 1
     $d: 1
 
-    $matrix-ident: matrix(1, 0, 0, 1, 0, 0)
-    $matrix-ref-x: matrix(-1, 0, 0, 1, 0, 0)
-    $matrix-mid: matrix( $a * $cos-mid, $b * $sin-mid, $c * $sin-mid, $d * $cos-mid, 0, 0 )
-    $matrix-up: matrix( $a * $cos-up, $b * $sin-up, $c * $sin-up, $d * $cos-up, 0, -50 )
-    $matrix-down: matrix( $a * $cos-down, $b * $sin-down, $c * $sin-down, $d * $cos-down, 0, 20 )
+    // $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0 )
+    // $matrix-mid: matrix( 1, 0, 0, 1, 0, 0 )
+    // $matrix-mid: matrix( -1, 0, 0, 1, 0, 0 ) // reflect-x
+    // $matrix-mid: matrix( 0, 1, -1, 0, 0, 0 ) // rotate cw
+    // $matrix-mid: matrix( 0, -1, 1, 0, 0, 0 ) // rotate ccw
+    // $matrix-mid: matrix( 0, -1, -1, 0, 0, 0 ) // reflect then rotate ccw
+    $matrix-mid: matrix( 0, 1, 1, 0, 0, 0 ) // rotate ccw then reflect
+
+    $matrix-up: matrix( $a * $cos-up, $c * $sin-up, $b * $sin-up, $d * $cos-up, 0, 0 )
+    $matrix-down: matrix( $a * $cos-down, $c * $sin-down, $b * $sin-down, $d * $cos-down, 0, 0 )
 
     0%
-      -webkit-transform: $matrix-mid
-      -moz-transform: $matrix-mid
-      -o-transform: $matrix-mid
-      -ms-transform: $matrix-mid
       transform: $matrix-mid
+      backface-visibility: hidden
     100%
-      -webkit-transform: $matrix-mid
-      -moz-transform: $matrix-mid
-      -o-transform: $matrix-mid
-      -ms-transform: $matrix-mid
       transform: $matrix-mid
-
-  @keyframes opponent-wiggle
-    0%
-      -webkit-transform: rotate(270deg) scale(-1,1)
-    33%
-      -webkit-transform: rotate(265deg) scale(-1, 1)
-    66%
-      -webkit-transform: rotate(275deg) scale(-1, 1)
-    100%
-      -webkit-transform: rotate(270deg) scale(-1, 1)
-  
+      backface-visibility: hidden
 
   .player-wiggle 
     animation: 0.45s 4 normal ease-in player-wiggle 
   
   .opponent-wiggle
-    animation: 0.45s 4 normal ease-in opponent-wiggle-fn 
+    animation: 0.45s 4 normal ease-in opponent-wiggle
+    backface-visibility: hidden
