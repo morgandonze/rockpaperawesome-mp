@@ -14,6 +14,15 @@ class Throws extends Component {
     return turnTime >= t.SHAKE_TIME
   }
 
+  overrideOrientation = () => {
+    const { firstTurn, missedMoves, player } = this.props
+    const { turnTime } = this.state
+    return [
+      !firstTurn && !missedMoves[player] && turnTime <= t.SHAKE_TIME,
+      !firstTurn && !missedMoves[1 - player] && turnTime <= t.SHAKE_TIME
+    ]
+  }
+
   componentWillReceiveProps (props) {
     const { turn, turnTime, player } = props
     this.setState({
@@ -32,16 +41,17 @@ class Throws extends Component {
   }
 
   render () {
-    const { uoTurn, turnTime, player } = this.state
+    const { uoTurn, player } = this.state
     let turn = uoTurn && orderByPlayer(uoTurn, player)
     let classes = this.reveal() ? "" : this.wiggleClasses()
+    let noOrientation = this.overrideOrientation()
     let playerHand = this.reveal() ? ((turn && turn[0]) || 1) : 1
     let opponentHand = this.reveal() ? ((turn && turn[1]) || 1) : 1
 
     return (
       <div id='throws'>
-        <Hand hand={playerHand} classes={classes[player]} side={'player'} />
-        <Hand hand={opponentHand} classes={classes[1-player]} side={'opponent'}/>
+        <Hand hand={playerHand} classes={classes[0]} side={'player'} noOrient={noOrientation[0]} />
+        <Hand hand={opponentHand} classes={classes[1]} side={'opponent'} noOrient={noOrientation[1]} />
       </div>
     )
   }

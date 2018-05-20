@@ -5,26 +5,28 @@ import orientation from '../iconOrientation'
 class Hand extends Component {
   constructor (props) {
     super(props)
-    const { hand, side, classes } = props
+    const { hand, side, classes, noOrient } = props
     this.state = {
       hand: this.translateHand(hand),
       side: side,
-      classes: (classes && " " + classes) || ""
+      classes: (classes && " " + classes) || "",
+      noOrient: noOrient
     }
   }
 
   componentWillReceiveProps (props) {
-    const { hand, side, classes } = props
+    const { hand, side, classes, noOrient } = props
     this.setState({
       hand: this.translateHand(hand),
       side: side,
-      classes: (classes && " " + classes) || ""
+      classes: (classes && " " + classes) || "",
+      noOrient: noOrient
     })
   }
 
   render () {
-    const { hand, side, classes } = this.state
-    let o = orientation(hand, side)
+    const { hand, side, classes, noOrient } = this.state
+    let o = noOrient ? "" : orientation(hand, side)
     return (
       <FontAwesome
         name={"hand-"+hand+"-o"}
