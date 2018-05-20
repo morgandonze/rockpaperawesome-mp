@@ -18,8 +18,8 @@ class Throws extends Component {
     const { firstTurn, missedMoves, player } = this.props
     const { turnTime } = this.state
     return [
-      !firstTurn && !missedMoves[player] && turnTime <= t.SHAKE_TIME,
-      !firstTurn && !missedMoves[1 - player] && turnTime <= t.SHAKE_TIME
+      !firstTurn && !missedMoves[player] && turnTime < t.SHAKE_TIME,
+      !firstTurn && !missedMoves[1 - player] && turnTime < t.SHAKE_TIME
     ]
   }
 
