@@ -33,12 +33,12 @@
     transform: $matrix
 
   @mixin oppoHandState($angle, $shift)
-    $matrix: matrix(-1 * cos($angle), -1 * sin($angle), -1 * sin($angle), cos($angle), 0, $shift)
+    $matrix: matrix(-1 * cos($angle), sin($angle), sin($angle), cos($angle), 0, $shift)
     -webkit-transform: $matrix
-    -moz-transform: $matrix
-    -o-transform: $matrix
-    -ms-transform: $matrix
-    transform: $matrix
+    // -moz-transform: $matrix
+    // -o-transform: $matrix
+    // -ms-transform: $matrix
+    // transform: $matrix
   
   @keyframes player-wiggle 
     0%
@@ -75,7 +75,7 @@
     $cos-down: -0.03141
 
     $a: 1
-    $b: 1
+    $b: -1
     $c: 1
     $d: 1
 
