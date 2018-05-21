@@ -6,76 +6,48 @@
   .player 
     color: #0a70ff
     float: left
-  
 
   .opponent 
     color: #f6cd46
     float: right
-  
-  $middle-angle: pi() * -0.5
-  $up-angle: $middle-angle + pi() * 0.08
-  $down-angle: $middle-angle - pi() * 0.01
-  $up-shift: -50
-  $down-shift: 20
 
-  @mixin playerHandState($angle, $shift)
-    $matrix: matrix(cos($angle), -1 * sin($angle), sin($angle), cos($angle), 0, $shift)
-    -webkit-transform: $matrix
-    -moz-transform: $matrix
-    -o-transform: $matrix
-    -ms-transform: $matrix
-    transform: $matrix
-
-  @keyframes player-wiggle 
-    0%
-      @include playerHandState($middle-angle, 0)
-
-    45%
-      @include playerHandState($up-angle, $up-shift)
-
-    90%
-      @include playerHandState($down-angle, $down-shift)
-
-    100%
-      @include playerHandState($middle-angle, 0)
-
-  @keyframes opponent-wiggle
-    $sin-mid: 1
+  @keyframes player-wiggle
+    $sin-mid: -1
     $cos-mid: 0
-    $sin-up: 0.96858
-    $cos-up: -0.24869
-    $sin-down: 0.99951
-    $cos-down: -0.03141
+    $sin-up: 0.2486898872
+    $cos-up: 0.9685831611
+    $sin-down: 0.03141075908
+    $cos-down: 0.9995065604
 
-    $a: -1 * $cos-mid
-    $c: 1 * $sin-mid
-    $b: 1 * $sin-mid
-    $d: 1 * $cos-mid
+    $a: 1
+    $c: -1
+    $b: 1
+    $d: 1
 
-    $a-up: -1 * $cos-up
-    $c-up: 1 * $sin-up
-    $b-up: 1 * $sin-up
-    $d-up: 1 * $cos-up
+    $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0)
 
-    $a-down: -1 * $cos-down
-    $c-down: 1 * $sin-down
-    $b-down: 1 * $sin-down
-    $d-down: 1 * $cos-down
+    $up-a: $a * ( $cos-mid * $cos-up - $sin-mid * $sin-up ) // cos( mid + up )
+    $up-c: $c * ( $sin-mid * $cos-up + $sin-up * $cos-mid ) // sin( mid + up )
+    $up-b: $b * ( $sin-mid * $cos-up + $sin-up * $cos-mid )
+    $up-d: $d * ( $cos-mid * $cos-up - $sin-mid * $sin-up )
 
-    $matrix-mid-x: matrix( 0, 1, 1, 0, 0, 0 ) // rotate ccw then reflect
+    $matrix-up: matrix( $up-a, $up-c, $up-b, $up-d, 0, 0)
+    
+    $down-a: $a * ( $cos-mid * $cos-down + $sin-mid * $sin-down ) // cos( mid - down )
+    $down-c: $c * ( $sin-mid * $cos-down - $sin-down * $cos-mid ) // sin( mid - down )
+    $down-b: $b * ( $sin-mid * $cos-down - $sin-down * $cos-mid )
+    $down-d: $d * ( $cos-mid * $cos-down + $sin-mid * $sin-down )
 
-    $matrix-mid: matrix( $a, $c, $b, $d, 0, 0 )
-    $matrix-up: matrix( $a-up, $c-up, $b-up, $d-up, 0, 20 )
-    $matrix-down: matrix( $a-down, $c-down, $b-down, $d-down, 0, -50 )
+    $matrix-down: matrix( $down-a, $down-c, $down-b, $down-d, 0, 0) 
 
     0%
       transform: $matrix-mid
       backface-visibility: hidden
     45%
-      transform: $matrix-down
+      transform: $matrix-up
       backface-visibility: hidden
     90%
-      transform: $matrix-up
+      transform: $matrix-down
       backface-visibility: hidden
     100%
       transform: $matrix-mid
@@ -85,4 +57,4 @@
     animation: 0.45s 4 normal ease-in player-wiggle 
   
   .opponent-wiggle
-    animation: 0.45s 4 normal ease-in opponent-wiggle
+    animation: 0.45s 4 normal ease-in player-wiggle
