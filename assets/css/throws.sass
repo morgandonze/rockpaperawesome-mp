@@ -45,26 +45,37 @@
     $sin-up: 0.96858
     $cos-up: -0.24869
     $sin-down: 0.99951
-    $cos-down: 0.03141
+    $cos-down: -0.03141
 
-    $a: -1
-    $c: -1
-    $b: -1
-    $d: 1
+    $a: -1 * $cos-mid
+    $c: 1 * $sin-mid
+    $b: 1 * $sin-mid
+    $d: 1 * $cos-mid
 
-    // $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0 )
-    // $matrix-mid: matrix( 1, 0, 0, 1, 0, 0 )
-    // $matrix-mid: matrix( -1, 0, 0, 1, 0, 0 ) // reflect-x
-    // $matrix-mid: matrix( 0, 1, -1, 0, 0, 0 ) // rotate cw
-    // $matrix-mid: matrix( 0, -1, 1, 0, 0, 0 ) // rotate ccw
-    // $matrix-mid: matrix( 0, -1, -1, 0, 0, 0 ) // reflect then rotate ccw
-    $matrix-mid: matrix( 0, 1, 1, 0, 0, 0 ) // rotate ccw then reflect
+    $a-up: -1 * $cos-up
+    $c-up: 1 * $sin-up
+    $b-up: 1 * $sin-up
+    $d-up: 1 * $cos-up
 
-    $matrix-up: matrix( $a * $cos-up, $c * $sin-up, $b * $sin-up, $d * $cos-up, 0, 0 )
-    $matrix-down: matrix( $a * $cos-down, $c * $sin-down, $b * $sin-down, $d * $cos-down, 0, 0 )
+    $a-down: -1 * $cos-down
+    $c-down: 1 * $sin-down
+    $b-down: 1 * $sin-down
+    $d-down: 1 * $cos-down
+
+    $matrix-mid-x: matrix( 0, 1, 1, 0, 0, 0 ) // rotate ccw then reflect
+
+    $matrix-mid: matrix( $a, $c, $b, $d, 0, 0 )
+    $matrix-up: matrix( $a-up, $c-up, $b-up, $d-up, 0, 20 )
+    $matrix-down: matrix( $a-down, $c-down, $b-down, $d-down, 0, -50 )
 
     0%
       transform: $matrix-mid
+      backface-visibility: hidden
+    45%
+      transform: $matrix-down
+      backface-visibility: hidden
+    90%
+      transform: $matrix-up
       backface-visibility: hidden
     100%
       transform: $matrix-mid
@@ -75,4 +86,3 @@
   
   .opponent-wiggle
     animation: 0.45s 4 normal ease-in opponent-wiggle
-    backface-visibility: hidden
