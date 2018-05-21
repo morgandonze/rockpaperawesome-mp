@@ -1,5 +1,3 @@
-@import "./math"
-
 #throws 
   font-size: 60px
 
@@ -53,8 +51,50 @@
       transform: $matrix-mid
       backface-visibility: hidden
 
+  @keyframes opponent-wiggle
+      $sin-mid: 1
+      $cos-mid: 0
+      $sin-up: 0.2486898872
+      $cos-up: 0.9685831611
+      $sin-down: 0.03141075908
+      $cos-down: 0.9995065604
+
+      $a: -1
+      $c: 1
+      $b: 1
+      $d: -1
+
+      $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0)
+
+      $up-a: $a * ( $cos-mid * $cos-up + $sin-mid * $sin-up ) // cos( mid - up )
+      $up-c: $c * ( $sin-mid * $cos-up - $sin-up * $cos-mid ) // sin( mid - up )
+      $up-b: $b * ( $sin-mid * $cos-up - $sin-up * $cos-mid )
+      $up-d: $d * ( $cos-mid * $cos-up + $sin-mid * $sin-up )
+
+      $matrix-up: matrix( $up-a, $up-c, $up-b, $up-d, 0, 0)
+      
+      $down-a: $a * ( $cos-mid * $cos-down - $sin-mid * $sin-down ) // cos( mid + down )
+      $down-c: $c * ( $sin-mid * $cos-down + $sin-down * $cos-mid ) // sin( mid + down )
+      $down-b: $b * ( $sin-mid * $cos-down + $sin-down * $cos-mid )
+      $down-d: $d * ( $cos-mid * $cos-down - $sin-mid * $sin-down )
+
+      $matrix-down: matrix( $down-a, $down-c, $down-b, $down-d, 0, 0) 
+
+      0%
+        transform: $matrix-mid
+        backface-visibility: hidden
+      45%
+        transform: $matrix-up
+        backface-visibility: hidden
+      90%
+        transform: $matrix-down
+        backface-visibility: hidden
+      100%
+        transform: $matrix-mid
+        backface-visibility: hidden
+
   .player-wiggle 
     animation: 0.45s 4 normal ease-in player-wiggle 
   
   .opponent-wiggle
-    animation: 0.45s 4 normal ease-in player-wiggle
+    animation: 0.9s 4 normal ease-in opponent-wiggle
