@@ -95,11 +95,14 @@
       45%
         transform: $matrix-up
         backface-visibility: hidden
-      // 90%
-      //   transform: $matrix-down
-      //   backface-visibility: hidden
+      85%
+        transform: matrix( -0.00001, 0.9960387795, 0.9960387795, -0.00001, 0, 0 )
+        backface-visibility: hidden
+      90%
+        transform: $matrix-down
+        backface-visibility: hidden
       100%
-        transform: $matrix-mid
+        transform: $matrix-mid-final
         backface-visibility: hidden
 
   .player-wiggle 
