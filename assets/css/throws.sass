@@ -58,6 +58,7 @@
       $cos-up: 0.9685831611
       $sin-down: 0.03141075908
       $cos-down: 0.9995065604
+      $ep: 0.000001
 
       $a: -1
       $b: 1
@@ -65,7 +66,8 @@
       $d: 1
 
       // MID
-      $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0)
+      $matrix-mid: matrix( $a * $cos-mid - $ep, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid + $ep, 0, 0)
+      $matrix-mid-final: matrix( $a * $cos-mid + $ep, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid - $ep, 0, 0)
       // $matrix-mid: rotate(270deg) scale(-1, 1)
 
       // UP
@@ -104,4 +106,4 @@
     animation: 0.45s 4 normal ease-in player-wiggle 
   
   .opponent-wiggle
-    animation: 0.9s 4 normal ease-in opponent-wiggle
+    animation: 0.45s 4 normal ease-in opponent-wiggle
