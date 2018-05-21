@@ -18,22 +18,22 @@
     $cos-down: 0.9995065604
 
     $a: 1
-    $c: -1
     $b: 1
+    $c: -1
     $d: 1
 
     $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0)
 
     $up-a: $a * ( $cos-mid * $cos-up - $sin-mid * $sin-up ) // cos( mid + up )
-    $up-c: $c * ( $sin-mid * $cos-up + $sin-up * $cos-mid ) // sin( mid + up )
     $up-b: $b * ( $sin-mid * $cos-up + $sin-up * $cos-mid )
+    $up-c: $c * ( $sin-mid * $cos-up + $sin-up * $cos-mid ) // sin( mid + up )
     $up-d: $d * ( $cos-mid * $cos-up - $sin-mid * $sin-up )
 
     $matrix-up: matrix( $up-a, $up-c, $up-b, $up-d, 0, 0)
     
     $down-a: $a * ( $cos-mid * $cos-down + $sin-mid * $sin-down ) // cos( mid - down )
-    $down-c: $c * ( $sin-mid * $cos-down - $sin-down * $cos-mid ) // sin( mid - down )
     $down-b: $b * ( $sin-mid * $cos-down - $sin-down * $cos-mid )
+    $down-c: $c * ( $sin-mid * $cos-down - $sin-down * $cos-mid ) // sin( mid - down )
     $down-d: $d * ( $cos-mid * $cos-down + $sin-mid * $sin-down )
 
     $matrix-down: matrix( $down-a, $down-c, $down-b, $down-d, 0, 0) 
@@ -60,24 +60,31 @@
       $cos-down: 0.9995065604
 
       $a: -1
-      $c: 1
       $b: 1
-      $d: -1
+      $c: 1
+      $d: 1
 
+      // MID
       $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0)
+      // $matrix-mid: rotate(270deg) scale(-1, 1)
 
-      $up-a: $a * ( $cos-mid * $cos-up + $sin-mid * $sin-up ) // cos( mid - up )
-      $up-c: $c * ( $sin-mid * $cos-up - $sin-up * $cos-mid ) // sin( mid - up )
-      $up-b: $b * ( $sin-mid * $cos-up - $sin-up * $cos-mid )
-      $up-d: $d * ( $cos-mid * $cos-up + $sin-mid * $sin-up )
-
+      // UP
+      $cosDiff: ( $cos-mid * $cos-up + $sin-mid * $sin-up )
+      $sinDiff: ( $sin-mid * $cos-up - $sin-up * $cos-mid )
+      $up-a: $a * $cosDiff
+      $up-b: $b * $sinDiff
+      $up-c: $c * $sinDiff
+      $up-d: $d * $cosDiff
       $matrix-up: matrix( $up-a, $up-c, $up-b, $up-d, 0, 0)
+      // $matrix-up: rotate(290deg) scale(-1, 1)
       
-      $down-a: $a * ( $cos-mid * $cos-down - $sin-mid * $sin-down ) // cos( mid + down )
-      $down-c: $c * ( $sin-mid * $cos-down + $sin-down * $cos-mid ) // sin( mid + down )
-      $down-b: $b * ( $sin-mid * $cos-down + $sin-down * $cos-mid )
-      $down-d: $d * ( $cos-mid * $cos-down - $sin-mid * $sin-down )
-
+      // DOWN
+      $cosSum: ( $cos-mid * $cos-down - $sin-mid * $sin-down )
+      $sinSum: ( $sin-mid * $cos-down + $sin-down * $cos-mid )
+      $down-a: $a * $cosSum
+      $down-b: $b * $sinSum
+      $down-c: $c * $sinSum
+      $down-d: $d * $cosSum
       $matrix-down: matrix( $down-a, $down-c, $down-b, $down-d, 0, 0) 
 
       0%
@@ -86,9 +93,9 @@
       45%
         transform: $matrix-up
         backface-visibility: hidden
-      90%
-        transform: $matrix-down
-        backface-visibility: hidden
+      // 90%
+      //   transform: $matrix-down
+      //   backface-visibility: hidden
       100%
         transform: $matrix-mid
         backface-visibility: hidden
