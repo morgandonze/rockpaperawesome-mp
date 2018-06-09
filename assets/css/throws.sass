@@ -10,100 +10,32 @@
     float: right
 
   @keyframes player-wiggle
-    $sin-mid: -1
-    $cos-mid: 0
-    $sin-up: 0.2486898872
-    $cos-up: 0.9685831611
-    $sin-down: 0.03141075908
-    $cos-down: 0.9995065604
-
-    $a: 1
-    $b: 1
-    $c: -1
-    $d: 1
-
-    $matrix-mid: matrix( $a * $cos-mid, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid, 0, 0)
-
-    $up-a: $a * ( $cos-mid * $cos-up - $sin-mid * $sin-up ) // cos( mid + up )
-    $up-b: $b * ( $sin-mid * $cos-up + $sin-up * $cos-mid )
-    $up-c: $c * ( $sin-mid * $cos-up + $sin-up * $cos-mid ) // sin( mid + up )
-    $up-d: $d * ( $cos-mid * $cos-up - $sin-mid * $sin-up )
-
-    $matrix-up: matrix( $up-a, $up-c, $up-b, $up-d, 0, 0)
-    
-    $down-a: $a * ( $cos-mid * $cos-down + $sin-mid * $sin-down ) // cos( mid - down )
-    $down-b: $b * ( $sin-mid * $cos-down - $sin-down * $cos-mid )
-    $down-c: $c * ( $sin-mid * $cos-down - $sin-down * $cos-mid ) // sin( mid - down )
-    $down-d: $d * ( $cos-mid * $cos-down + $sin-mid * $sin-down )
-
-    $matrix-down: matrix( $down-a, $down-c, $down-b, $down-d, 0, 0) 
-
-    0%
-      transform: $matrix-mid
-      backface-visibility: hidden
-    45%
-      transform: $matrix-up
-      backface-visibility: hidden
-    90%
-      transform: $matrix-down
-      backface-visibility: hidden
-    100%
-      transform: $matrix-mid
-      backface-visibility: hidden
-
-  @keyframes opponent-wiggle
-      $sin-mid: 1
-      $cos-mid: 0
-      $sin-up: 0.2486898872
-      $cos-up: 0.9685831611
-      $sin-down: 0.03141075908
-      $cos-down: 0.9995065604
-      $ep: 0.000001
-
-      $a: -1
-      $b: 1
-      $c: 1
-      $d: 1
-
-      // MID
-      $matrix-mid: matrix( $a * $cos-mid - $ep, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid + $ep, 0, 0)
-      $matrix-mid-final: matrix( $a * $cos-mid + $ep, $c * $sin-mid, $b * $sin-mid, $d * $cos-mid - $ep, 0, 0)
-      // $matrix-mid: rotate(270deg) scale(-1, 1)
-
-      // UP
-      $cosDiff: ( $cos-mid * $cos-up + $sin-mid * $sin-up )
-      $sinDiff: ( $sin-mid * $cos-up - $sin-up * $cos-mid )
-      $up-a: $a * $cosDiff
-      $up-b: $b * $sinDiff
-      $up-c: $c * $sinDiff
-      $up-d: $d * $cosDiff
-      $matrix-up: matrix( $up-a, $up-c, $up-b, $up-d, 0, 0)
-      // $matrix-up: rotate(290deg) scale(-1, 1)
-      
-      // DOWN
-      $cosSum: ( $cos-mid * $cos-down - $sin-mid * $sin-down )
-      $sinSum: ( $sin-mid * $cos-down + $sin-down * $cos-mid )
-      $down-a: $a * $cosSum
-      $down-b: $b * $sinSum
-      $down-c: $c * $sinSum
-      $down-d: $d * $cosSum
-      $matrix-down: matrix( $down-a, $down-c, $down-b, $down-d, 0, 0) 
+      $transform-mid: rotate(90deg)
+      $transform-up: translateY(-35px) rotate(75deg) 
+      $transform-down: translateY(5px) rotate(100deg)
 
       0%
-        transform: $matrix-mid
-        backface-visibility: hidden
-      45%
-        transform: $matrix-up
-        backface-visibility: hidden
-      85%
-        transform: matrix( -0.00001, 0.9960387795, 0.9960387795, -0.00001, 0, 0 )
-        backface-visibility: hidden
-      90%
-        transform: $matrix-down
-        backface-visibility: hidden
+        transform: $transform-mid
+      33%
+        transform: $transform-up
+      66%
+        transform: $transform-down
       100%
-        transform: $matrix-mid-final
-        backface-visibility: hidden
+        transform: $transform-mid
+
+  @keyframes opponent-wiggle
+    $mid: translateY(0px) scale(-1, 1) rotate(90deg)
+    $up: translateY(-35px) scale(-1, 1) rotate(75deg)
+    $down: translateY(5px) scale(-1, 1) rotate(100deg)
+
+    0%
+      transform: $mid
+    33%
+      transform: $up
+    66%
+      transform: $down
+    100%
+      transform: $mid
 
   .player-wiggle 
     animation: 0.45s 4 normal ease-in player-wiggle 
