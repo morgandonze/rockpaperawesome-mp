@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import orderByPlayer from '../orderByPlayer'
+import t from '../timing'
 
 class Scores extends Component {
   constructor (props) {
@@ -8,16 +9,28 @@ class Scores extends Component {
   }
 
   componentWillReceiveProps (props) {
-    const { scores, player } = props
+    const { scores, prevScores, turnTime, player } = props
     this.setState({
       uoScores: scores,
+      prevScores: prevScores,
+      turnTime: turnTime,
       player: player
     })
   }
 
+  scoreToDisplay = () => {
+    const { uoScores, prevScores, turnTime, player } = this.state
+    let scores
+    if ( turnTime >= t.SHAKE_TIME ) {
+      scores = orderByPlayer(uoScores, player)
+    } else {
+      scores = orderByPlayer(prevScores, player)
+    }
+    return scores
+  }
+
   render () {
-    const { uoScores, player } = this.state
-    let scores = orderByPlayer(uoScores, player)
+    let scores = this.scoreToDisplay()
     if (!scores) {
       return( <div>0 0</div>)
     }

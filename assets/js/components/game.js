@@ -14,6 +14,7 @@ class Game extends Component {
       game: props.game,
       player: props.player,
       scores: [0, 0],
+      prevScores: [0, 0],
       moveNum: 0,
       moveMade: false,
       turnActive: false,
@@ -50,6 +51,7 @@ class Game extends Component {
       game: props.game,
       player: props.player,
       scores: data && data.scores,
+      prevScores: data && prevScores,
       turns: data && data.turns,
       results: (data && this.calcResults(prevTurn, data.scores, prevScores, isNewTurn, props.player)) || [0, 0]
     })
@@ -136,6 +138,7 @@ class Game extends Component {
     const {
       game,
       scores,
+      prevScores,
       results,
       turns,
       moveNum,
@@ -150,7 +153,7 @@ class Game extends Component {
 
     return (
       <div>
-        <Scores scores={scores} player={player} />
+        <Scores scores={scores} prevScores={prevScores} turnTime={turnTime} player={player} />
         <Prompt turnTime={turnTime} moveMade={moveMade} result={results[player]} />
         <Throws
           turn={turn}
