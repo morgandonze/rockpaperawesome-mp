@@ -30,18 +30,19 @@ class Scores extends Component {
     return scores
   }
 
-  translateScore = (score) => {
+  translateScore = (score, keySuffix) => {
     let scoreIcons = []
     for (var i=1; i <= score; i++) {
       scoreIcons.push(
         <FontAwesome
-          name="diamond"
-          className="fa fa-3x"
+          name="star"
+          className="fa"
+          key={`scoreIcon-${i}-${keySuffix}`}
         />
       )
     }
     return (
-      <div class="scoreGroupContainer">
+      <div className="scoreGroupContainer">
         {scoreIcons}
       </div>
     )
@@ -54,7 +55,7 @@ class Scores extends Component {
     }
     return (
       <div id="score-row">
-        {this.translateScore(scores[0])} {this.translateScore(scores[1])}
+        {this.translateScore(scores[0], 0)} {this.translateScore(scores[1], 1)}
       </div>
     )
   }
