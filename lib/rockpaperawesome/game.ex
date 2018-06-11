@@ -50,6 +50,7 @@ defmodule Rockpaperawesome.Game do
   end
 
   def make_move(game, player_id, move) when is_bitstring(move) do
+    # Translates string moves into ints
     int_move =
       @moves
       |> Enum.find_index(fn(m) -> m == move end)
@@ -58,6 +59,7 @@ defmodule Rockpaperawesome.Game do
     make_move(game, player_id, int_move)
   end
   def make_move(game, player_id, move) do
+    # Int moves
     {turn, prev_turns} = split_current_turn(game)
     player_number = Game.player_number(game, player_id)
     new_turn = Turn.move(turn, player_number, move)
@@ -77,8 +79,8 @@ defmodule Rockpaperawesome.Game do
   def update_score(%{scores: scores}=game, turn, turn_complete) when turn_complete do
     result = result_parity(Turn.p1(turn), Turn.p2(turn), game.mode)
     new_scores = [
-      Enum.at(scores,0) + score_diff_for_player(result, 1),
-      Enum.at(scores,1) + score_diff_for_player(result, 2)
+      Enum.at(scores, 0) + score_diff_for_player(result, 1),
+      Enum.at(scores, 1) + score_diff_for_player(result, 2)
     ]
     Map.put(game, :scores, new_scores)
   end
@@ -93,7 +95,7 @@ defmodule Rockpaperawesome.Game do
     1 # Player 1 scores
   end
   defp result_parity(p1_move, p2_move, mode) when p1_move < 0 do
-    0 # Player 2 scores
+    2 # Player 2 scores
   end
   defp result_parity(p1_move, p2_move, mode) do
     Integer.mod((p1_move - p2_move + mode), mode)
