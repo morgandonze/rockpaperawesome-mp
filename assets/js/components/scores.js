@@ -40,16 +40,20 @@ class Scores extends Component {
         />
       )
     }
-    return scoreIcons
+    return (
+      <div class="scoreGroupContainer">
+        {scoreIcons}
+      </div>
+    )
   }
 
   render () {
     let scores = this.scoreToDisplay()
     if (!scores) {
-      return( <div></div>)
+      return( <div id="score-row"></div>)
     }
     return (
-      <div>
+      <div id="score-row">
         {this.translateScore(scores[0])} {this.translateScore(scores[1])}
       </div>
     )
