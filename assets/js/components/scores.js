@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import orderByPlayer from '../orderByPlayer'
+import FontAwesome from 'react-fontawesome'
 import t from '../timing'
 
 class Scores extends Component {
@@ -29,14 +30,27 @@ class Scores extends Component {
     return scores
   }
 
+  translateScore = (score) => {
+    let scoreIcons = []
+    for (var i=1; i <= score; i++) {
+      scoreIcons.push(
+        <FontAwesome
+          name="diamond"
+          className="fa fa-3x"
+        />
+      )
+    }
+    return scoreIcons
+  }
+
   render () {
     let scores = this.scoreToDisplay()
     if (!scores) {
-      return( <div>0 0</div>)
+      return( <div></div>)
     }
     return (
       <div>
-        {scores[0]} {scores[1]}
+        {this.translateScore(scores[0])} {this.translateScore(scores[1])}
       </div>
     )
   }
