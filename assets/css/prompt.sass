@@ -1,6 +1,21 @@
+$mobile: 320px
+$tablet: 768px
+$desktop: 1224px
+
 #prompt 
   height: 50px
-  margin-bottom: 150px
+
+  @media (min-width: $mobile) and (orientation: landscape)
+    margin-bottom: 30px
+
+  @media (min-width: $mobile) and (orientation: portrait)
+    margin-bottom: 180px
+
+  @media (min-width: $tablet)
+    margin-bottom: 90px
+
+  @media (min-width: $desktop)
+    margin-bottom: 150px
 
   .fa 
     font-size: 80px

@@ -1,5 +1,20 @@
+$mobile: 320px
+$tablet: 768px
+$desktop: 1224px
+
 #throws 
-  font-size: 60px
+  @media (min-width: $mobile)
+    font-size: 40px
+
+  @media (min-width: $mobile) and (orientation: landscape)
+    margin-left: 50px
+    margin-right: 50px
+
+  @media (min-width: $tablet)
+    font-size: 50px
+
+  @media (min-width: $desktop)
+    font-size: 60px
 
   .player 
     color: #0a70ff

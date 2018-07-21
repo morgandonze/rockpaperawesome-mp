@@ -1,3 +1,7 @@
+$mobile: 320px
+$tablet: 768px
+$desktop: 1224px
+
 #controls 
   position: absolute
   bottom: 30px
@@ -7,7 +11,14 @@
   clear: both
 
   #controlsWrap
-    font-size: 40px
+    font-size: 15px
+
+    @media (min-width: $tablet)
+      font-size: 30px
+
+    @media (min-width: $desktop)
+      font-size: 40px
+
     display: flex
     justify-content: center
 
@@ -15,7 +26,9 @@
       display: flex
       flex-direction: column
       align-items: center
-      margin-right: 50px
+
+      &:not(:last-child)
+        margin-right: 50px
 
       @keyframes prompt-pulse
         0%
