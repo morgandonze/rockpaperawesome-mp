@@ -4,26 +4,31 @@ $desktop: 1224px
 
 #prompt 
   height: 50px
+  display: flex
+  justify-content: space-around
 
   @media (min-width: $mobile) and (orientation: landscape)
-    margin-bottom: 30px
-
+    margin-bottom: 15px
   @media (min-width: $mobile) and (orientation: portrait)
-    margin-bottom: 180px
-
-  @media (min-width: $tablet)
-    margin-bottom: 90px
-
+    margin-bottom: 125px
+  @media (min-width: $tablet) and (orientation: landscape)
+    margin-bottom: 175px
+  @media (min-width: $tablet) and (orientation: portrait)
+    margin-bottom: 300px
   @media (min-width: $desktop)
-    margin-bottom: 150px
+    margin-bottom: 125px
 
-  .fa 
-    font-size: 80px
-    width: 20%
-    position: absolute
-    left: 50%
-  
+  .fa
+    @media (min-width: $mobile) and (orientation: landscape)
+      font-size: 60px
+    @media (min-width: $mobile) and (orientation: portrait)
+      font-size: 60px
+    @media (min-width: $tablet) and (orientation: landscape)
+      font-size: 70px
+    @media (min-width: $tablet) and (orientation: portrait)
+      font-size: 70px
+    @media (min-width: $desktop)
+      font-size: 80px
 
-  .invis 
-    visibility: hidden
-  
+  // .invis 
+  //   visibility: hidden
